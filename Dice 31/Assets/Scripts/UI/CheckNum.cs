@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class CheckNum : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject[] DiceFaceList;
+    public int[] DiceNumList;
+
+    private int listCount;
+    private GameObject diceTemp;
+    private float highTemp;
+    public int ResultNum;
+
+    private void Start()
     {
-        
+        listCount = DiceFaceList.Length;
     }
 
-    // Update is called once per frame
-    void Update()
+    private int GetResultNum()
     {
-        
+        ResultNum = 0;
+        highTemp = 0;
+
+        for(int i=0; i < listCount; i++)
+        {
+            diceTemp = DiceFaceList[i];
+            if (diceTemp.transform.position.y > highTemp)
+            {
+                highTemp = diceTemp.transform.position.y;
+                ResultNum = i;
+            }
+        }
+        return DiceNumList[i];
     }
 }

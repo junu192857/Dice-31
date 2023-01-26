@@ -5,6 +5,12 @@ using UnityEngine;
 public class DiceController : MonoBehaviour
 {
     Vector3 mousePosition;
+    public Vector3 DefaultPos;
+
+    public void Start()
+    {
+        DefaultPos = transform.position;
+    }
 
     private Vector3 GetMousePosition()
     {
@@ -18,4 +24,9 @@ public class DiceController : MonoBehaviour
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
     }
+
+    // only if dice collision.transform.tag == "plate" is true can roll dice
+    // When dice roll end, If come back to default position
+    // When dragging, it can't go through the table
+
 }
