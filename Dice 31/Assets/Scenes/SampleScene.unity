@@ -880,7 +880,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2049233606}
         m_TargetAssemblyTypeName: PlayManager, Assembly-CSharp
-        m_MethodName: ResetMatch
+        m_MethodName: Initiate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

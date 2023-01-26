@@ -43,7 +43,7 @@ public class PlayManager : MonoBehaviour
     public int bombDiceNum = 0;
 
     //???? ?????? ????? Game Start ????? ?????? ?????? Initiate ???.
-    public void ResetMatch() {
+    public void Initiate() {
 
         index = 0;
         curCount = 0;
@@ -196,7 +196,7 @@ public class PlayManager : MonoBehaviour
     {
         Debug.Log($"{playerInfo.playerName} is dead");
         playerInfo.Die();
-        ResetMatch();
+        Initiate();
     }
     
     public void Update()
