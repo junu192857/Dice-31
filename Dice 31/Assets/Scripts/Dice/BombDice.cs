@@ -8,4 +8,9 @@ public class BombDice : Dice
     {
         
     }
+
+    private void Start()
+    {
+        color = Color.Red;
+    }
 }

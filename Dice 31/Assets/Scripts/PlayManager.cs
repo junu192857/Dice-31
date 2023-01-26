@@ -9,6 +9,10 @@ public class PlayManager : MonoBehaviour
     public List<GameObject> players;
     private int index;
 
+    //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
+    private Dictionary<String, int> winCount;
+    private int maxWinCount;
+
     /* curCount: 한 라운드 내에서 현재 숫자
      * maxCount: 라운드 종료의 기준 숫자. 일반적으로 31, 연장 주사위에 의해 변경 가능, 나중에 설정으로 바꿀 수 있게 할 수도 있음
      * roundCount: Round를 나타내는 숫자. 한 명이 죽을 때마다 1씩 증가
@@ -42,30 +46,51 @@ public class PlayManager : MonoBehaviour
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate() {
-
-        index = 0;
-        curCount = 0;
-        maxCount = 31;
-        GameManager.Inst.gsm.WaitForPlayerTurn();
-
+        matchCount = 0;
+        winCount["Red"] = 0;
+        winCount["Blue"] = 0;
+        maxWinCount = 1;
+        ResetMatch();
+        //TODO: 모든 플레이어의 모든 특수 주사위 활성화
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
-    private void ResetRound() { 
-        
+    private void ResetRound() {
+        curCount = 0;
+        maxCount = 31;
+        roundCount++;
+        GameManager.Inst.gsm.WaitForPlayerTurn();
+        //TODO: 이미 사용한 초록색 특수 주사위 재활성화
     }
 
     //Match가 바뀔 때마다 초기화할 것들
-    private void ResetMatch() { 
-    
+    private void ResetMatch() {
+        index = 0;
+        roundCount = 0;
+        matchCount++;
+        AssignDices();
+        ResetRound();
+        //TODO: 이미 사용한 빨간색 특수 주사위 재활성화
     }
-    private void Awake()
-    {
-        commands = new List<Action>();
-        players = GameObject.FindGameObjectsWithTag("Player").ToList();
+    
 
-        //모든 플레이어에게 Normal Dice를 하나씩 할당하는 과정
-        foreach (var player in players) {
+
+    /*플레이어 턴 진행
+     * 1. 주사위를 굴리기 전 처리가 필요하다면 한다. (연산자 주사위의 2++같은 것)
+     * 2. 주사위를 굴린다: 버튼 누르면(또는 주사위를 드래그하면?) 
+     * 3. 주사위를 굴린 후 처리를 한다
+     * 4. activatedPlayer를 다음 사람으로 넘긴다
+    */
+    private void AssignDices() {
+        //모든 플레이어에게 할당된 주사위를 없애고, Normal Dice를 하나씩 새로 할당하는 과정
+        foreach (var player in players)
+        {
+            var children = player.GetComponentsInChildren<Transform>();
+            foreach (var child in children) {
+                if (child != player.transform) {
+                    Destroy(child.gameObject);
+                }
+            }
             GameObject normalDice = Instantiate(Resources.Load("NormalDice")) as GameObject;
             normalDice.transform.SetParent(player.transform);
         }
@@ -82,19 +107,7 @@ public class PlayManager : MonoBehaviour
             specialDice.transform.SetParent(players[i].transform);
         }
     }
-    private void Start()
-    {
-        Debug.Log($"Current Count is {curCount}, Max Count is {maxCount}");
-        GameManager.Inst.gsm.PrepareGame();
-    }
 
-
-    /*플레이어 턴 진행
-     * 1. 주사위를 굴리기 전 처리가 필요하다면 한다. (연산자 주사위의 2++같은 것)
-     * 2. 주사위를 굴린다: 버튼 누르면(또는 주사위를 드래그하면?) 
-     * 3. 주사위를 굴린 후 처리를 한다
-     * 4. activatedPlayer를 다음 사람으로 넘긴다
-    */
     public void StartPlayerTurn() {
 
         if (GameManager.Inst.gsm.State != GameState.InPlayerTurn) return;
@@ -153,6 +166,20 @@ public class PlayManager : MonoBehaviour
         GameManager.Inst.gsm.WaitForPlayerTurn();
     }
 
+    private void Awake()
+    {
+        commands = new List<Action>();
+        players = GameObject.FindGameObjectsWithTag("Player").ToList();
+        winCount = new Dictionary<String, int>() {
+            {"Red", 0 },
+            {"Blue", 0 }
+        };
+    }
+    private void Start()
+    {
+        Debug.Log($"Current Count is {curCount}, Max Count is {maxCount}");
+        GameManager.Inst.gsm.PrepareGame();
+    }
     public void Update()
     {
         if (GameManager.Inst.gsm.State == GameState.BeforePlayerTurn)

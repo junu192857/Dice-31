@@ -10,4 +10,9 @@ public class NormalDice : Dice
         Debug.Log($"You rolled {value} from Normal Dice");
         GameManager.Inst.pm.curCount += value;
     }
+
+    private void Start()
+    {
+        color = Color.Yellow;
+    }
 }

@@ -8,4 +8,9 @@ public class CorruptedDice : Dice
     {
         
     }
+
+    private void Start()
+    {
+        color = Color.Purple;
+    }
 }

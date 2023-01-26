@@ -7,4 +7,9 @@ public class RevivalDice : Dice
     public override void Roll()
     {
     }
+
+    private void Start()
+    {
+        color = Color.Red;
+    }
 }
