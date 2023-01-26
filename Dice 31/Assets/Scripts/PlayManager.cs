@@ -9,15 +9,15 @@ public class PlayManager : MonoBehaviour
     public List<GameObject> players;
     private int index;
 
-    //winCount�� n�� m���� ü������ ���� �� �� �̰�ĸ� ��Ÿ��. maxCount�� m�� �ش��ϴ� ����
+    //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
     private Dictionary<String, int> winCount;
     private int maxWinCount;
 
-    /* curCount: �� ���� ������ ���� ����
-     * maxCount: ���� ������ ���� ����. �Ϲ������� 31, ���� �ֻ����� ���� ���� ����, ���߿� �������� �ٲ� �� �ְ� �� ���� ����
-     * roundCount: Round�� ��Ÿ���� ����. �� ���� ���� ������ 1�� ����
-     * matchCount: Match�� ��Ÿ���� ����. ���а� ������ ������ 1�� ����, ���� ����� ���д� Match�� �������� 3�� 2����, 5�� 3���� �� �̷� ����
-     * Round�� ���۵� ��, Match�� ���۵� ��, ��Ⱑ ���۵� �� � ������ �ʱ�ȭ���Ѿ� �� �� ���ؾ� ��
+    /* curCount: 한 라운드 내에서 현재 숫자
+     * maxCount: 라운드 종료의 기준 숫자. 일반적으로 31, 연장 주사위에 의해 변경 가능, 나중에 설정으로 바꿀 수 있게 할 수도 있음
+     * roundCount: Round를 나타내는 숫자. 한 명이 죽을 때마다 1씩 증가
+     * matchCount: Match를 나타내는 숫자. 승패가 결정될 때마다 1씩 증가, 실제 경기의 승패는 Match를 기준으로 3판 2선승, 5판 3선승 뭐 이런 느낌
+     * Round가 시작될 때, Match가 시작될 때, 경기가 시작될 때 어떤 값들을 초기화시켜야 할 지 정해야 함
      */
     [HideInInspector]
     public int curCount;
@@ -42,12 +42,12 @@ public class PlayManager : MonoBehaviour
 
 
 
-    // ??? ??????? ?????? ?? 1~6 ?????? ????? ??????
-    // ???????? ?? ????? ???? ????? ?????? ?? ????? ?????? bombDiceNum?? 0???? ?????? <~~ EndPlayerTurn???? ???
+    // 폭탄 주사위를 굴렸을 때 1~6 사이의 숫자로 설정됨
+    // 누군가가 이 숫자와 같은 숫자를 굴리면 그 사람이 탈락하고 bombDiceNum은 0으로 초기화됨 <~~ EndPlayerTurn에서 처리
     public int bombDiceNum = 0;
 
-    //���� �÷��� ȭ�鿡�� Game Start ��ư�� ������ �۵��ϴ� Initiate �Լ�.
-    //���� ������ �� �ʿ��� ������ �ʱ갪���� ����
+    //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
+    //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate() {
         matchCount = 0;
         winCount["Red"] = 0;
@@ -57,35 +57,35 @@ public class PlayManager : MonoBehaviour
         //TODO: ��� �÷��̾��� ��� Ư�� �ֻ��� Ȱ��ȭ
     }
 
-    //���尡 �ٲ� ������ �ʱ�ȭ��ų �͵�
+    //라운드가 바뀔 때마다 초기화시킬 것들
     private void ResetRound() {
         curCount = 0;
         maxCount = 31;
         roundCount++;
         GameManager.Inst.gsm.WaitForPlayerTurn();
-        //TODO: �̹� ����� �ʷϻ� Ư�� �ֻ��� ��Ȱ��ȭ
+        //TODO: 이미 사용한 초록색 특수 주사위 재활성화
     }
 
-    //Match�� �ٲ� ������ �ʱ�ȭ�� �͵�
+    //라운드가 바뀔 때마다 초기화시킬 것들
     private void ResetMatch() {
         index = 0;
         roundCount = 0;
         matchCount++;
         AssignDices();
         ResetRound();
-        //TODO: �̹� ����� ������ Ư�� �ֻ��� ��Ȱ��ȭ
+        //TODO: 이미 사용한 빨간색 특수 주사위 재활성화
     }
     
 
 
-    /*�÷��̾� �� ����
-     * 1. �ֻ����� ������ �� ó���� �ʿ��ϴٸ� �Ѵ�. (������ �ֻ����� 2++���� ��)
-     * 2. �ֻ����� ������: ��ư ������(�Ǵ� �ֻ����� �巡���ϸ�?) 
-     * 3. �ֻ����� ���� �� ó���� �Ѵ�
-     * 4. activatedPlayer�� ���� ������� �ѱ��
+    /*플레이어 턴 진행
+     * 1. 주사위를 굴리기 전 처리가 필요하다면 한다. (연산자 주사위의 2++같은 것)
+     * 2. 주사위를 굴린다: 버튼 누르면(또는 주사위를 드래그하면?) 
+     * 3. 주사위를 굴린 후 처리를 한다
+     * 4. activatedPlayer를 다음 사람으로 넘긴다
     */
     private void AssignDices() {
-        //��� �÷��̾�� �Ҵ�� �ֻ����� ���ְ�, Normal Dice�� �ϳ��� ���� �Ҵ��ϴ� ����
+        //모든 플레이어에게 할당된 주사위를 없애고, Normal Dice를 하나씩 새로 할당하는 과정
         foreach (var player in players)
         {
             var children = player.GetComponentsInChildren<Transform>();
@@ -98,7 +98,7 @@ public class PlayManager : MonoBehaviour
             normalDice.transform.SetParent(player.transform);
         }
 
-        //??? ????????? Special Dice?? ????? ????? ???, ??????? ?????? ????
+        //모든 플레이어에게 Special Dice를 하나씩 겹치지 않게, 랜덤하게 할당하는 과정
         System.Random Rand = new System.Random();
         var shuffled = specialDiceNames.OrderBy(_ => Rand.Next()).ToList();
 
@@ -123,7 +123,6 @@ public class PlayManager : MonoBehaviour
             return;
         }
         
-        // ???? ????? ???? ??????? ????? ??????.
         foreach (var dice in dicesToRoll)
         {
             dice.EffectBeforeNextPlayerRoll();
@@ -165,17 +164,17 @@ public class PlayManager : MonoBehaviour
     }
     
 
-    //????????, ??? ??????? ??????? check???? ?? ????? ???
+    //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand() {
         dicesToRoll.Add(playerInfo.transform.GetChild(1).GetComponent<Dice>());
     }
-    //????????, ??? ??????? ??????? check?? ???????? ?? ????? ???
+    //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand() { 
         dicesToRoll.Remove(playerInfo.transform.GetChild(1).GetComponent<Dice>());
     }
 
 
-    // ??????? ?????? ????? ?????? ?? ????? ???
+    // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
     public void OnRollPlayerDice() {
         if (GameManager.Inst.gsm.State != GameState.WaitingForInput) return;
         GameManager.Inst.gsm.BeginRoll();
@@ -193,13 +192,13 @@ public class PlayManager : MonoBehaviour
         EndPlayerTurn();
     }
 
-    //????? ?????? ???? ???
+    //주사위 굴리기 이후 처리
     private void EndPlayerTurn() {
-        /* (0. ????? ????? ???? ???? ?????? ????????? Roll ?????? ???????. ?? ????? ?????? ??????? 2++?? ?????? ??)
-         * 1. curCount >= maxCount?? ?? ???? ??????? ??? ???
-         * 2. ??????? ??? ??? ??? (??????? ??? ?????)
-         * 3. ??????? ??? ??? ??????? ???? ??????? ??? ???(??? ?????, ??? ?????, ??? ?????, ??? ?????)
-         * 4. ????? ??????? ???? ???? ???????, 
+        /* (0. 주사위 숫자로 인한 카운트 증가는 주사위들의 Roll 메소드에서 처리했음. 단 예외로 연산자 주사위의 2++을 처리해야 함)
+         * 1. curCount >= maxCount일 때 현재 플레이어 사망 처리
+         * 2. 주사위의 특수 능력 발동 (대부분의 특수 주사위)
+         * 3. 주사위의 특수 능력 발동으로 인한 플레이어 사망 처리(폭탄 주사위, 암살 주사위, 부활 주사위, 타락 주사위)
+         * 4. 사망한 플레이어가 있다면 라운드를 초기화하고, 
          */
         foreach (var dice in dicesToRoll)
         {
