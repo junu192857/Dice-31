@@ -14,4 +14,9 @@ public class JQKDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Green;
+    }
 }

@@ -13,4 +13,9 @@ public class OperatorDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Green;
+    }
 }

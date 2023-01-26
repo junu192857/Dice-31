@@ -14,4 +14,9 @@ public class CorruptedDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Purple;
+    }
 }

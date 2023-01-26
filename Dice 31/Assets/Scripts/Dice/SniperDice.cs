@@ -13,4 +13,9 @@ public class SniperDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Red;
+    }
 }

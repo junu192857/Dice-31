@@ -14,4 +14,9 @@ public class RevivalDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Red;
+    }
 }

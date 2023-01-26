@@ -13,4 +13,9 @@ public class PlusDice : Dice
     {
         throw new NotImplementedException();
     }
+
+    private void Start()
+    {
+        color = Color.Green;
+    }
 }

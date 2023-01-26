@@ -19,4 +19,9 @@ public class NormalDice : Dice
     {
         GameManager.Inst.pm.curCount += value;
     }
+
+    private void Start()
+    {
+        color = Color.Yellow;
+    }
 }
