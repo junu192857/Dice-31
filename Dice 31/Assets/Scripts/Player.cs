@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public bool alive { get; private set; }
     public bool dead { get => !alive; }
 
-    private Team team;
+    public Team team { get; private set; }
 
     public Dice normalDice;
     public Dice specialDice;
@@ -27,11 +27,28 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-        alive = false;
+        if (alive)
+        {
+            alive = false;
+        }
+        
     }
 
     public void Revive()
     {
-        alive = true;
+        if (!alive)
+        {
+            alive = true;
+        }
+    }
+
+    public void SetRedTeam() 
+    {
+        team = Team.Red;
+    }
+
+    public void SetBlueTeam()
+    { 
+        team = Team.Blue;
     }
 }

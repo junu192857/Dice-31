@@ -49,33 +49,89 @@ public class PlayManager : MonoBehaviour
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate() {
+
         matchCount = 0;
         winCount["Red"] = 0;
         winCount["Blue"] = 0;
         maxWinCount = 1;
+        for (int index = 0; index < players.Count; index++) {
+            if (index % 2 == 0)
+            { 
+                players[index].GetComponent<Player>().SetRedTeam();
+            }
+            else 
+            {
+                players[index].GetComponent<Player>().SetBlueTeam();
+            }
+        }
         ResetMatch();
         //TODO: 모든 플레이어의 특수 주사위 활성화
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
     private void ResetRound() {
-        curCount = 0;
-        maxCount = 31;
-        roundCount++;
-        GameManager.Inst.gsm.WaitForPlayerTurn();
+        if (MatchOver()) {
+            ResetMatch();
+        }
+        else
+        {
+            curCount = 0;
+            maxCount = 31;
+            roundCount++;
+            GameManager.Inst.gsm.WaitForPlayerTurn();
+        }
         //TODO: 이미 사용한 초록색 특수 주사위 재활성화
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
     private void ResetMatch() {
-        index = 0;
-        roundCount = 0;
-        matchCount++;
-        AssignDices();
-        ResetRound();
+        if (GameOver())
+        {
+            GameManager.Inst.gsm.OperateGameOver();
+            //TODO: 결과창 띄우고, 경기 재시작 버튼 등 누를 수 있게 하기
+        }
+        else
+        {
+            index = 0;
+            roundCount = 0;
+            matchCount++;
+            foreach (var player in players) {
+                player.GetComponent<Player>().Revive();
+            }
+            AssignDices();
+            ResetRound();
+        }
         //TODO: 이미 사용한 빨간색 특수 주사위 재활성화
     }
-    
+
+    private bool MatchOver() {
+        if (RedTeamDead())
+        {
+            winCount["Blue"]++;
+            Debug.Log($"Blue Team won match {matchCount}");
+            return true;
+        }
+        else if (BlueTeamDead())
+        {
+            winCount["Red"]++;
+            Debug.Log($"Red Team won match {matchCount}");
+            return true;
+        }
+        else return false;
+    }
+    private bool GameOver() {
+        if (winCount["Red"] >= maxWinCount)
+        {
+            Debug.Log("Red Team Win!");
+            return true;
+        }
+        else if (winCount["Blue"] >= maxWinCount)
+        {
+            Debug.Log("Blue Team Win!");
+            return true;
+        }
+        else return false;
+    }
 
 
     /*플레이어 턴 진행
@@ -193,7 +249,8 @@ public class PlayManager : MonoBehaviour
     }
 
     //주사위 굴리기 이후 처리
-    private void EndPlayerTurn() {
+    private void EndPlayerTurn()
+    {
         /* (0. 주사위 숫자로 인한 카운트 증가는 주사위들의 Roll 메소드에서 처리했음. 단 예외로 연산자 주사위의 2++을 처리해야 함)
          * 1. curCount >= maxCount일 때 현재 플레이어 사망 처리
          * 2. 주사위의 특수 능력 발동 (대부분의 특수 주사위)
@@ -210,8 +267,13 @@ public class PlayManager : MonoBehaviour
             CurrentPlayerDie();
         }
 
-        GameManager.Inst.gsm.WaitForPlayerTurn();
+        if (GameManager.Inst.gsm.State != GameState.Gameover) 
+        {
+            GameManager.Inst.gsm.WaitForPlayerTurn();
+        }
     }
+
+
 
     private void Awake()
     {
@@ -225,7 +287,6 @@ public class PlayManager : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log($"Current Count is {curCount}, Max Count is {maxCount}");
         GameManager.Inst.gsm.PrepareGame();
     }
     private void CurrentPlayerDie()
@@ -234,7 +295,14 @@ public class PlayManager : MonoBehaviour
         playerInfo.Die();
         ResetRound();
     }
-    
+
+    private bool RedTeamDead() {
+        return (!players.Any(player => player.GetComponent<Player>().team == Team.Red && player.GetComponent<Player>().alive));
+    }
+
+    private bool BlueTeamDead() {
+        return (!players.Any(player => player.GetComponent<Player>().team == Team.Blue && player.GetComponent<Player>().alive));
+    }
     public void Update()
     {
         switch (GameManager.Inst.gsm.State)
