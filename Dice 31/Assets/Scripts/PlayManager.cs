@@ -9,15 +9,15 @@ public class PlayManager : MonoBehaviour
     public List<GameObject> players;
     private int index;
 
-    //winCount´Â nÆÇ m¼±½Â Ã¼Á¦¿¡¼­ ÆÀÀÌ ¸î ¹ø ÀÌ°å³Ä¸¦ ³ªÅ¸³¿. maxCount´Â m¿¡ ÇØ´çÇÏ´Â ¼ıÀÚ
+    //winCountëŠ” níŒ mì„ ìŠ¹ ì²´ì œì—ì„œ íŒ€ì´ ëª‡ ë²ˆ ì´ê²¼ëƒë¥¼ ë‚˜íƒ€ëƒ„. maxCountëŠ” mì— í•´ë‹¹í•˜ëŠ” ìˆ«ì
     private Dictionary<String, int> winCount;
     private int maxWinCount;
 
-    /* curCount: ÇÑ ¶ó¿îµå ³»¿¡¼­ ÇöÀç ¼ıÀÚ
-     * maxCount: ¶ó¿îµå Á¾·áÀÇ ±âÁØ ¼ıÀÚ. ÀÏ¹İÀûÀ¸·Î 31, ¿¬Àå ÁÖ»çÀ§¿¡ ÀÇÇØ º¯°æ °¡´É, ³ªÁß¿¡ ¼³Á¤À¸·Î ¹Ù²Ü ¼ö ÀÖ°Ô ÇÒ ¼öµµ ÀÖÀ½
-     * roundCount: Round¸¦ ³ªÅ¸³»´Â ¼ıÀÚ. ÇÑ ¸íÀÌ Á×À» ¶§¸¶´Ù 1¾¿ Áõ°¡
-     * matchCount: Match¸¦ ³ªÅ¸³»´Â ¼ıÀÚ. ½ÂÆĞ°¡ °áÁ¤µÉ ¶§¸¶´Ù 1¾¿ Áõ°¡, ½ÇÁ¦ °æ±âÀÇ ½ÂÆĞ´Â Match¸¦ ±âÁØÀ¸·Î 3ÆÇ 2¼±½Â, 5ÆÇ 3¼±½Â ¹¹ ÀÌ·± ´À³¦
-     * Round°¡ ½ÃÀÛµÉ ¶§, Match°¡ ½ÃÀÛµÉ ¶§, °æ±â°¡ ½ÃÀÛµÉ ¶§ ¾î¶² °ªµéÀ» ÃÊ±âÈ­½ÃÄÑ¾ß ÇÒ Áö Á¤ÇØ¾ß ÇÔ
+    /* curCount: í•œ ë¼ìš´ë“œ ë‚´ì—ì„œ í˜„ì¬ ìˆ«ì
+     * maxCount: ë¼ìš´ë“œ ì¢…ë£Œì˜ ê¸°ì¤€ ìˆ«ì. ì¼ë°˜ì ìœ¼ë¡œ 31, ì—°ì¥ ì£¼ì‚¬ìœ„ì— ì˜í•´ ë³€ê²½ ê°€ëŠ¥, ë‚˜ì¤‘ì— ì„¤ì •ìœ¼ë¡œ ë°”ê¿€ ìˆ˜ ìˆê²Œ í•  ìˆ˜ë„ ìˆìŒ
+     * roundCount: Roundë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìˆ«ì. í•œ ëª…ì´ ì£½ì„ ë•Œë§ˆë‹¤ 1ì”© ì¦ê°€
+     * matchCount: Matchë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìˆ«ì. ìŠ¹íŒ¨ê°€ ê²°ì •ë  ë•Œë§ˆë‹¤ 1ì”© ì¦ê°€, ì‹¤ì œ ê²½ê¸°ì˜ ìŠ¹íŒ¨ëŠ” Matchë¥¼ ê¸°ì¤€ìœ¼ë¡œ 3íŒ 2ì„ ìŠ¹, 5íŒ 3ì„ ìŠ¹ ë­ ì´ëŸ° ëŠë‚Œ
+     * Roundê°€ ì‹œì‘ë  ë•Œ, Matchê°€ ì‹œì‘ë  ë•Œ, ê²½ê¸°ê°€ ì‹œì‘ë  ë•Œ ì–´ë–¤ ê°’ë“¤ì„ ì´ˆê¸°í™”ì‹œì¼œì•¼ í•  ì§€ ì •í•´ì•¼ í•¨
      */
     [HideInInspector]
     public int curCount;
@@ -33,56 +33,59 @@ public class PlayManager : MonoBehaviour
     public Player playerInfo;
 
     [SerializeField]
-    private List<Action> commands;
+    private List<Dice> dicesToRoll;
+
+    private List<Func<bool>> dieCheckList;
+
     [SerializeField]
     private List<String> specialDiceNames;
 
 
 
-    // ÆøÅº ÁÖ»çÀ§¸¦ ±¼·ÈÀ» ¶§ 1~6 »çÀÌÀÇ ¼ıÀÚ·Î ¼³Á¤µÊ
-    // ´©±º°¡°¡ ÀÌ ¼ıÀÚ¿Í °°Àº ¼ıÀÚ¸¦ ±¼¸®¸é ±× »ç¶÷ÀÌ Å»¶ôÇÏ°í bombDiceNumÀº 0À¸·Î ÃÊ±âÈ­µÊ <~~ EndPlayerTurn¿¡¼­ Ã³¸®
+    // í­íƒ„ ì£¼ì‚¬ìœ„ë¥¼ êµ´ë ¸ì„ ë•Œ 1~6 ì‚¬ì´ì˜ ìˆ«ìë¡œ ì„¤ì •ë¨
+    // ëˆ„êµ°ê°€ê°€ ì´ ìˆ«ìì™€ ê°™ì€ ìˆ«ìë¥¼ êµ´ë¦¬ë©´ ê·¸ ì‚¬ëŒì´ íƒˆë½í•˜ê³  bombDiceNumì€ 0ìœ¼ë¡œ ì´ˆê¸°í™”ë¨ <~~ EndPlayerTurnì—ì„œ ì²˜ë¦¬
     public int bombDiceNum = 0;
 
-    //°ÔÀÓ ÇÃ·¹ÀÌ È­¸é¿¡¼­ Game Start ¹öÆ°À» ´©¸£¸é ÀÛµ¿ÇÏ´Â Initiate ÇÔ¼ö.
-    //°ÔÀÓ ½ÃÀÛÇÒ ¶§ ÇÊ¿äÇÑ °ªµéÀ» ÃÊ±ê°ªÀ¸·Î ¼¼ÆÃ
+    //ê²Œì„ í”Œë ˆì´ í™”ë©´ì—ì„œ Game Start ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì‘ë™í•˜ëŠ” Initiate í•¨ìˆ˜.
+    //ê²Œì„ ì‹œì‘í•  ë•Œ í•„ìš”í•œ ê°’ë“¤ì„ ì´ˆê¹ƒê°’ìœ¼ë¡œ ì„¸íŒ…
     public void Initiate() {
         matchCount = 0;
         winCount["Red"] = 0;
         winCount["Blue"] = 0;
         maxWinCount = 1;
         ResetMatch();
-        //TODO: ¸ğµç ÇÃ·¹ÀÌ¾îÀÇ ¸ğµç Æ¯¼ö ÁÖ»çÀ§ È°¼ºÈ­
+        //TODO: ëª¨ë“  í”Œë ˆì´ì–´ì˜ íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„ í™œì„±í™”
     }
 
-    //¶ó¿îµå°¡ ¹Ù²ğ ¶§¸¶´Ù ÃÊ±âÈ­½ÃÅ³ °Íµé
+    //ë¼ìš´ë“œê°€ ë°”ë€” ë•Œë§ˆë‹¤ ì´ˆê¸°í™”ì‹œí‚¬ ê²ƒë“¤
     private void ResetRound() {
         curCount = 0;
         maxCount = 31;
         roundCount++;
         GameManager.Inst.gsm.WaitForPlayerTurn();
-        //TODO: ÀÌ¹Ì »ç¿ëÇÑ ÃÊ·Ï»ö Æ¯¼ö ÁÖ»çÀ§ ÀçÈ°¼ºÈ­
+        //TODO: ì´ë¯¸ ì‚¬ìš©í•œ ì´ˆë¡ìƒ‰ íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„ ì¬í™œì„±í™”
     }
 
-    //Match°¡ ¹Ù²ğ ¶§¸¶´Ù ÃÊ±âÈ­ÇÒ °Íµé
+    //ë¼ìš´ë“œê°€ ë°”ë€” ë•Œë§ˆë‹¤ ì´ˆê¸°í™”ì‹œí‚¬ ê²ƒë“¤
     private void ResetMatch() {
         index = 0;
         roundCount = 0;
         matchCount++;
         AssignDices();
         ResetRound();
-        //TODO: ÀÌ¹Ì »ç¿ëÇÑ »¡°£»ö Æ¯¼ö ÁÖ»çÀ§ ÀçÈ°¼ºÈ­
+        //TODO: ì´ë¯¸ ì‚¬ìš©í•œ ë¹¨ê°„ìƒ‰ íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„ ì¬í™œì„±í™”
     }
     
 
 
-    /*ÇÃ·¹ÀÌ¾î ÅÏ ÁøÇà
-     * 1. ÁÖ»çÀ§¸¦ ±¼¸®±â Àü Ã³¸®°¡ ÇÊ¿äÇÏ´Ù¸é ÇÑ´Ù. (¿¬»êÀÚ ÁÖ»çÀ§ÀÇ 2++°°Àº °Í)
-     * 2. ÁÖ»çÀ§¸¦ ±¼¸°´Ù: ¹öÆ° ´©¸£¸é(¶Ç´Â ÁÖ»çÀ§¸¦ µå·¡±×ÇÏ¸é?) 
-     * 3. ÁÖ»çÀ§¸¦ ±¼¸° ÈÄ Ã³¸®¸¦ ÇÑ´Ù
-     * 4. activatedPlayer¸¦ ´ÙÀ½ »ç¶÷À¸·Î ³Ñ±ä´Ù
+    /*í”Œë ˆì´ì–´ í„´ ì§„í–‰
+     * 1. ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦¬ê¸° ì „ ì²˜ë¦¬ê°€ í•„ìš”í•˜ë‹¤ë©´ í•œë‹¤. (ì—°ì‚°ì ì£¼ì‚¬ìœ„ì˜ 2++ê°™ì€ ê²ƒ)
+     * 2. ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦°ë‹¤: ë²„íŠ¼ ëˆ„ë¥´ë©´(ë˜ëŠ” ì£¼ì‚¬ìœ„ë¥¼ ë“œë˜ê·¸í•˜ë©´?) 
+     * 3. ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦° í›„ ì²˜ë¦¬ë¥¼ í•œë‹¤
+     * 4. activatedPlayerë¥¼ ë‹¤ìŒ ì‚¬ëŒìœ¼ë¡œ ë„˜ê¸´ë‹¤
     */
     private void AssignDices() {
-        //¸ğµç ÇÃ·¹ÀÌ¾î¿¡°Ô ÇÒ´çµÈ ÁÖ»çÀ§¸¦ ¾ø¾Ö°í, Normal Dice¸¦ ÇÏ³ª¾¿ »õ·Î ÇÒ´çÇÏ´Â °úÁ¤
+        //ëª¨ë“  í”Œë ˆì´ì–´ì—ê²Œ í• ë‹¹ëœ ì£¼ì‚¬ìœ„ë¥¼ ì—†ì• ê³ , Normal Diceë¥¼ í•˜ë‚˜ì”© ìƒˆë¡œ í• ë‹¹í•˜ëŠ” ê³¼ì •
         foreach (var player in players)
         {
             var children = player.GetComponentsInChildren<Transform>();
@@ -95,7 +98,7 @@ public class PlayManager : MonoBehaviour
             normalDice.transform.SetParent(player.transform);
         }
 
-        //¸ğµç ÇÃ·¹ÀÌ¾î¿¡°Ô Special Dice¸¦ ÇÏ³ª¾¿ °ãÄ¡Áö ¾Ê°Ô, ·£´ıÇÏ°Ô ÇÒ´çÇÏ´Â °úÁ¤
+        //ëª¨ë“  í”Œë ˆì´ì–´ì—ê²Œ Special Diceë¥¼ í•˜ë‚˜ì”© ê²¹ì¹˜ì§€ ì•Šê²Œ, ëœë¤í•˜ê²Œ í• ë‹¹í•˜ëŠ” ê³¼ì •
         System.Random Rand = new System.Random();
         var shuffled = specialDiceNames.OrderBy(_ => Rand.Next()).ToList();
 
@@ -109,66 +112,111 @@ public class PlayManager : MonoBehaviour
     }
 
     public void StartPlayerTurn() {
+        Debug.Assert(GameManager.Inst.gsm.State == GameState.InPlayerTurn);
+        
+        AdvancePlayer();
 
-        if (GameManager.Inst.gsm.State != GameState.InPlayerTurn) return;
-        else {
-            activatedPlayer = players[index];
-            playerInfo = activatedPlayer.GetComponent<Player>();
-            Debug.Log($"{playerInfo.playerName}'s turn");
-            index++;
-            index %= 8;
-
-            if (!playerInfo.alive) {
-                GameManager.Inst.gsm.WaitForPlayerTurn();
-                Debug.Log($"{playerInfo.playerName} is dead");
-                return;
-            }
-
-            commands.Clear();
-            commands.Add(playerInfo.transform.GetChild(0).GetComponent<Dice>().Roll);
-
-            GameManager.Inst.gsm.WaitForInput();
-            //TODO: ÁÖ»çÀ§ ±¼¸®±â Àü Ã³¸®
+        if (playerInfo.dead)
+        {
+            GameManager.Inst.gsm.WaitForPlayerTurn();
+            Debug.Log($"{playerInfo.playerName} is already dead; skip");
+            return;
         }
+        
+        foreach (var dice in dicesToRoll)
+        {
+            dice.EffectBeforeNextPlayerRoll();
+        }
+
+        if (CountExceeded())
+        {
+            CurrentPlayerDie();
+        }
+
+        LoadDicesToRoll();
+        UpdateDieCheckList();
+
+        GameManager.Inst.gsm.WaitForInput();
+    }
+    
+    bool CountExceeded() {
+        return curCount >= maxCount;
     }
 
-    //ÀÎ°ÔÀÓ¿¡¼­, Æ¯¼ö ÁÖ»çÀ§¸¦ ±¼¸°´Ù°í checkÇßÀ» ¶§ ÀÛµ¿ÇÒ ÇÔ¼ö
+    private void AdvancePlayer()
+    {
+        activatedPlayer = players[index];
+        playerInfo = activatedPlayer.GetComponent<Player>();
+        Debug.Log($"{playerInfo.playerName}'s turn");
+        index++;
+        index %= 8;
+    }
+
+    private void LoadDicesToRoll()
+    {
+        dicesToRoll.Clear();
+        dicesToRoll.Add(playerInfo.transform.GetChild(0).GetComponent<Dice>());
+    }
+
+    private void UpdateDieCheckList()
+    {
+        // TODO
+    }
+    
+
+    //ì¸ê²Œì„ì—ì„œ, íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦°ë‹¤ê³  checkí–ˆì„ ë•Œ ì‘ë™í•  í•¨ìˆ˜
     public void AddSpecialDiceCommand() {
-        commands.Add(playerInfo.transform.GetChild(1).GetComponent<Dice>().Roll);
+        dicesToRoll.Add(playerInfo.transform.GetChild(1).GetComponent<Dice>());
     }
-    //ÀÎ°ÔÀÓ¿¡¼­, Æ¯¼ö ÁÖ»çÀ§¸¦ ±¼¸°´Ù´Â check¸¦ ÇØÁ¦ÇßÀ» ¶§ ÀÛµ¿ÇÒ ÇÔ¼ö
+    //ì¸ê²Œì„ì—ì„œ, íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦°ë‹¤ëŠ” checkë¥¼ í•´ì œí–ˆì„ ë•Œ ì‘ë™í•  í•¨ìˆ˜
     public void RemoveSpecialDiceCommand() { 
-        commands.Remove(playerInfo.transform.GetChild(1).GetComponent<Dice>().Roll);
+        dicesToRoll.Remove(playerInfo.transform.GetChild(1).GetComponent<Dice>());
     }
 
 
-    // ÁÖ»çÀ§¸¦ ±¼¸®´Â ¹öÆ°À» ´­·¶À» ¶§ ÀÛµ¿ÇÒ ÇÔ¼ö
-    public void RollPlayerDice() {
+    // ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦¬ëŠ” ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ì‘ë™í•  í•¨ìˆ˜
+    public void OnRollPlayerDice() {
         if (GameManager.Inst.gsm.State != GameState.WaitingForInput) return;
-        foreach (var command in commands) {
-            command();
+        GameManager.Inst.gsm.BeginRoll();
+        StartCoroutine(RollPlayerDice());
+    }
+
+    private IEnumerator RollPlayerDice()
+    {
+        var coroutines = dicesToRoll.ConvertAll(dice => StartCoroutine(dice.Roll()));
+        foreach (var coroutine in coroutines)
+        {
+            yield return coroutine;
         }
-        Debug.Log($"Current Count is {curCount}");
-        // TODO: ÁÖ»çÀ§ ±¼¸®´Â ¾Ö´Ï¸ŞÀÌ¼Ç
-        // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ¿ÏÀüÈ÷ ÀÛµ¿µÈ ÈÄ¿¡ EndPlayerTurnÀÌ ½ÇÇàµÇ¾î¾ß ÇÔ
+        
         EndPlayerTurn();
     }
 
-    //ÁÖ»çÀ§ ±¼¸®±â ÀÌÈÄ Ã³¸®
-    public void EndPlayerTurn() {
-        /* (0. ÁÖ»çÀ§ ¼ıÀÚ·Î ÀÎÇÑ Ä«¿îÆ® Áõ°¡´Â ÁÖ»çÀ§µéÀÇ Roll ¸Ş¼Òµå¿¡¼­ Ã³¸®ÇßÀ½. ´Ü ¿¹¿Ü·Î ¿¬»êÀÚ ÁÖ»çÀ§ÀÇ 2++À» Ã³¸®ÇØ¾ß ÇÔ)
-         * 1. curCount >= maxCountÀÏ ¶§ ÇöÀç ÇÃ·¹ÀÌ¾î »ç¸Á Ã³¸®
-         * 2. ÁÖ»çÀ§ÀÇ Æ¯¼ö ´É·Â ¹ßµ¿ (´ëºÎºĞÀÇ Æ¯¼ö ÁÖ»çÀ§)
-         * 3. ÁÖ»çÀ§ÀÇ Æ¯¼ö ´É·Â ¹ßµ¿À¸·Î ÀÎÇÑ ÇÃ·¹ÀÌ¾î »ç¸Á Ã³¸®(ÆøÅº ÁÖ»çÀ§, ¾Ï»ì ÁÖ»çÀ§, ºÎÈ° ÁÖ»çÀ§, Å¸¶ô ÁÖ»çÀ§)
-         * 4. »ç¸ÁÇÑ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´Ù¸é ¶ó¿îµå¸¦ ÃÊ±âÈ­ÇÏ°í, 
+    //ì£¼ì‚¬ìœ„ êµ´ë¦¬ê¸° ì´í›„ ì²˜ë¦¬
+    private void EndPlayerTurn() {
+        /* (0. ì£¼ì‚¬ìœ„ ìˆ«ìë¡œ ì¸í•œ ì¹´ìš´íŠ¸ ì¦ê°€ëŠ” ì£¼ì‚¬ìœ„ë“¤ì˜ Roll ë©”ì†Œë“œì—ì„œ ì²˜ë¦¬í–ˆìŒ. ë‹¨ ì˜ˆì™¸ë¡œ ì—°ì‚°ì ì£¼ì‚¬ìœ„ì˜ 2++ì„ ì²˜ë¦¬í•´ì•¼ í•¨)
+         * 1. curCount >= maxCountì¼ ë•Œ í˜„ì¬ í”Œë ˆì´ì–´ ì‚¬ë§ ì²˜ë¦¬
+         * 2. ì£¼ì‚¬ìœ„ì˜ íŠ¹ìˆ˜ ëŠ¥ë ¥ ë°œë™ (ëŒ€ë¶€ë¶„ì˜ íŠ¹ìˆ˜ ì£¼ì‚¬ìœ„)
+         * 3. ì£¼ì‚¬ìœ„ì˜ íŠ¹ìˆ˜ ëŠ¥ë ¥ ë°œë™ìœ¼ë¡œ ì¸í•œ í”Œë ˆì´ì–´ ì‚¬ë§ ì²˜ë¦¬(í­íƒ„ ì£¼ì‚¬ìœ„, ì•”ì‚´ ì£¼ì‚¬ìœ„, ë¶€í™œ ì£¼ì‚¬ìœ„, íƒ€ë½ ì£¼ì‚¬ìœ„)
+         * 4. ì‚¬ë§í•œ í”Œë ˆì´ì–´ê°€ ìˆë‹¤ë©´ ë¼ìš´ë“œë¥¼ ì´ˆê¸°í™”í•˜ê³ , 
          */
+        foreach (var dice in dicesToRoll)
+        {
+            dice.EffectAfterCurrentPlayerRoll();
+        }
+        Debug.Log($"Current Count is {curCount}");
+        if (dieCheckList.Exists(shouldDie => shouldDie()))
+        {
+            CurrentPlayerDie();
+        }
 
         GameManager.Inst.gsm.WaitForPlayerTurn();
     }
 
     private void Awake()
     {
-        commands = new List<Action>();
+        dicesToRoll = new List<Dice>();
+        dieCheckList = new List<Func<bool>> { CountExceeded };
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
         winCount = new Dictionary<String, int>() {
             {"Red", 0 },
@@ -180,12 +228,21 @@ public class PlayManager : MonoBehaviour
         Debug.Log($"Current Count is {curCount}, Max Count is {maxCount}");
         GameManager.Inst.gsm.PrepareGame();
     }
+    private void CurrentPlayerDie()
+    {
+        Debug.Log($"{playerInfo.playerName} is dead");
+        playerInfo.Die();
+        ResetRound();
+    }
+    
     public void Update()
     {
-        if (GameManager.Inst.gsm.State == GameState.BeforePlayerTurn)
+        switch (GameManager.Inst.gsm.State)
         {
-            GameManager.Inst.gsm.BeginPlayerTurn();
-            StartPlayerTurn();
+            case GameState.BeforePlayerTurn:
+                GameManager.Inst.gsm.BeginPlayerTurn();
+                StartPlayerTurn();
+                break;
         }
     }
 }

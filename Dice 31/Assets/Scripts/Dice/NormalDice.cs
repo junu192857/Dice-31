@@ -1,13 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class NormalDice : Dice
 {
-    public override void Roll()
+    private int value;
+    public override IEnumerator Roll()
     {
-        int value = Random.Range(1, 7);
+        Debug.Log("Rolling...");
+        yield return new WaitForSeconds(1);
+        value = Random.Range(1, 7);
         Debug.Log($"You rolled {value} from Normal Dice");
+    }
+
+    public override void EffectAfterCurrentPlayerRoll()
+    {
         GameManager.Inst.pm.curCount += value;
     }
 

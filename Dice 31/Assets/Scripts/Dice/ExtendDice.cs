@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class ExtendDice : Dice
 {
-    public override void Roll() { }
+    public override IEnumerator Roll()
+    {
+        yield break;
+    }
+
+    public override void EffectAfterCurrentPlayerRoll()
+    {
+    }
 
     private void Start()
     {

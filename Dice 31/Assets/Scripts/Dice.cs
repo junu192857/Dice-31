@@ -8,8 +8,15 @@ public enum Color {
     Red,
     Purple
 }
+
 public abstract class Dice : MonoBehaviour
 {
+    public abstract IEnumerator Roll();
+
+    public void EffectBeforeNextPlayerRoll()
+    {
+    }
+
+    public abstract void EffectAfterCurrentPlayerRoll();
     public Color color;
-    public abstract void Roll();
 }
