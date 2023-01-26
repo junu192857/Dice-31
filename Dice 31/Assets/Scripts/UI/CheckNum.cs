@@ -21,8 +21,9 @@ public class CheckNum : MonoBehaviour
     {
         ResultNum = 0;
         highTemp = 0;
+        int i;
 
-        for(int i=0; i < listCount; i++)
+        for(i=0; i < listCount; i++)
         {
             diceTemp = DiceFaceList[i];
             if (diceTemp.transform.position.y > highTemp)
