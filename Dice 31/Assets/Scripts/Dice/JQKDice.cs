@@ -8,4 +8,9 @@ public class JQKDice : Dice
     {
         
     }
+
+    private void Start()
+    {
+        color = Color.Green;
+    }
 }

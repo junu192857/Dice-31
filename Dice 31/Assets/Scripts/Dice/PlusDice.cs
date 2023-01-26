@@ -7,4 +7,9 @@ public class PlusDice : Dice
     public override void Roll()
     {
     }
+
+    private void Start()
+    {
+        color = Color.Green;
+    }
 }
