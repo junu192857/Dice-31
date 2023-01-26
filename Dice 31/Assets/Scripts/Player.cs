@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
 {
     public string playerName;
 
-    public bool alive;
+    public bool alive { get; private set; }
+    public bool dead { get => !alive; }
 
     private Team team;
 
@@ -21,6 +22,16 @@ public class Player : MonoBehaviour
     public void Start()
     {
         playerName = gameObject.name;
+        alive = true;
+    }
+
+    public void Die()
+    {
+        alive = false;
+    }
+
+    public void Revive()
+    {
         alive = true;
     }
 }
