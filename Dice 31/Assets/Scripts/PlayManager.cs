@@ -40,6 +40,7 @@ public class PlayManager : MonoBehaviour
     public int bombDiceNum = 0;
 
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
+    //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate() {
 
         index = 0;
@@ -49,6 +50,15 @@ public class PlayManager : MonoBehaviour
 
     }
 
+    //라운드가 바뀔 때마다 초기화시킬 것들
+    private void ResetRound() { 
+        
+    }
+
+    //Match가 바뀔 때마다 초기화할 것들
+    private void ResetMatch() { 
+    
+    }
     private void Awake()
     {
         commands = new List<Action>();
