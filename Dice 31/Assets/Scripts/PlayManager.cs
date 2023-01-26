@@ -54,7 +54,7 @@ public class PlayManager : MonoBehaviour
         winCount["Blue"] = 0;
         maxWinCount = 1;
         ResetMatch();
-        //TODO: ��� �÷��̾��� ��� Ư�� �ֻ��� Ȱ��ȭ
+        //TODO: 모든 플레이어의 특수 주사위 활성화
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
@@ -232,7 +232,7 @@ public class PlayManager : MonoBehaviour
     {
         Debug.Log($"{playerInfo.playerName} is dead");
         playerInfo.Die();
-        Initiate();
+        ResetRound();
     }
     
     public void Update()
