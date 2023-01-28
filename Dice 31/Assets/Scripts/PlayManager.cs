@@ -144,6 +144,11 @@ public class PlayManager : MonoBehaviour
     */
     private void AssignDices() {
         //모든 플레이어에게 할당된 주사위를 없애고, Normal Dice를 하나씩 새로 할당하는 과정
+        GameObject[] dices = GameObject.FindGameObjectsWithTag("Dice");
+        foreach (var dice in dices) {
+            Destroy(dice);
+        }
+
         foreach (var player in playerInfos) {
             player.normalDice = null;
             player.specialDice = null;

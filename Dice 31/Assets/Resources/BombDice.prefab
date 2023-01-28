@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6741213437834394163}
   m_Layer: 0
   m_Name: BombDice
-  m_TagString: Untagged
+  m_TagString: Dice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36162d2a7edb9004d8686c38f6479be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
+  diceName: 

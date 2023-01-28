@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8189508322548591781}
   m_Layer: 0
   m_Name: PlusDice
-  m_TagString: Untagged
+  m_TagString: Dice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1f8c89e358bc74c851c1f09a51dc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: 0
+  diceName: 
