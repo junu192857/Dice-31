@@ -19,4 +19,5 @@ public abstract class Dice : MonoBehaviour
 
     public abstract void EffectAfterCurrentPlayerRoll();
     public Color color;
+    public string diceName;
 }

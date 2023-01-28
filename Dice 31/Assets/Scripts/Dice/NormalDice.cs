@@ -10,7 +10,7 @@ public class NormalDice : Dice
     public override IEnumerator Roll()
     {
         Debug.Log("Rolling...");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.01f);
         value = Random.Range(1, 7);
         Debug.Log($"You rolled {value} from Normal Dice");
     }
@@ -20,8 +20,7 @@ public class NormalDice : Dice
         GameManager.Inst.pm.curCount += value;
     }
 
-    private void Start()
-    {
-        color = Color.Yellow;
+    public NormalDice() {
+        this.color = Color.Yellow;
     }
 }

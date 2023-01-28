@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayManager : MonoBehaviour
 {
     public List<GameObject> players;
+    public List<Player> playerInfos;
+
     private int index;
 
     //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
@@ -29,8 +31,8 @@ public class PlayManager : MonoBehaviour
     public int matchCount;
 
 
-    public GameObject activatedPlayer;
-    public Player playerInfo;
+    public Player activatedPlayer;
+    //public Player playerInfo;
 
     [SerializeField]
     private List<Dice> dicesToRoll;
@@ -57,11 +59,11 @@ public class PlayManager : MonoBehaviour
         for (int index = 0; index < players.Count; index++) {
             if (index % 2 == 0)
             { 
-                players[index].GetComponent<Player>().SetRedTeam();
+                playerInfos[index].SetRedTeam();
             }
             else 
             {
-                players[index].GetComponent<Player>().SetBlueTeam();
+                playerInfos[index].SetBlueTeam();
             }
         }
         ResetMatch();
@@ -95,8 +97,8 @@ public class PlayManager : MonoBehaviour
             index = 0;
             roundCount = 0;
             matchCount++;
-            foreach (var player in players) {
-                player.GetComponent<Player>().Revive();
+            foreach (var player in playerInfos) {
+                player.Revive();
             }
             AssignDices();
             ResetRound();
@@ -142,28 +144,21 @@ public class PlayManager : MonoBehaviour
     */
     private void AssignDices() {
         //모든 플레이어에게 할당된 주사위를 없애고, Normal Dice를 하나씩 새로 할당하는 과정
-        foreach (var player in players)
-        {
-            var children = player.GetComponentsInChildren<Transform>();
-            foreach (var child in children) {
-                if (child != player.transform) {
-                    Destroy(child.gameObject);
-                }
-            }
+        foreach (var player in playerInfos) {
+            player.normalDice = null;
+            player.specialDice = null;
+
             GameObject normalDice = Instantiate(Resources.Load("NormalDice")) as GameObject;
-            normalDice.transform.SetParent(player.transform);
+            player.normalDice = normalDice.GetComponent<Dice>();
         }
 
-        //모든 플레이어에게 Special Dice를 하나씩 겹치지 않게, 랜덤하게 할당하는 과정
         System.Random Rand = new System.Random();
         var shuffled = specialDiceNames.OrderBy(_ => Rand.Next()).ToList();
 
-        specialDiceNames = shuffled;
-
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < playerInfos.Count; i++)
         {
             GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
-            specialDice.transform.SetParent(players[i].transform);
+            playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
         }
     }
 
@@ -172,10 +167,10 @@ public class PlayManager : MonoBehaviour
         
         AdvancePlayer();
 
-        if (playerInfo.dead)
+        if (activatedPlayer.dead)
         {
             GameManager.Inst.gsm.WaitForPlayerTurn();
-            Debug.Log($"{playerInfo.playerName} is already dead; skip");
+            Debug.Log($"{activatedPlayer.playerName} is already dead; skip");
             return;
         }
         
@@ -201,9 +196,8 @@ public class PlayManager : MonoBehaviour
 
     private void AdvancePlayer()
     {
-        activatedPlayer = players[index];
-        playerInfo = activatedPlayer.GetComponent<Player>();
-        Debug.Log($"{playerInfo.playerName}'s turn");
+        activatedPlayer = playerInfos[index];
+        Debug.Log($"{activatedPlayer.playerName}'s turn");
         index++;
         index %= 8;
     }
@@ -211,7 +205,7 @@ public class PlayManager : MonoBehaviour
     private void LoadDicesToRoll()
     {
         dicesToRoll.Clear();
-        dicesToRoll.Add(playerInfo.transform.GetChild(0).GetComponent<Dice>());
+        dicesToRoll.Add(activatedPlayer.normalDice);
     }
 
     private void UpdateDieCheckList()
@@ -222,11 +216,11 @@ public class PlayManager : MonoBehaviour
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand() {
-        dicesToRoll.Add(playerInfo.transform.GetChild(1).GetComponent<Dice>());
+        dicesToRoll.Add(activatedPlayer.specialDice);
     }
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand() { 
-        dicesToRoll.Remove(playerInfo.transform.GetChild(1).GetComponent<Dice>());
+        dicesToRoll.Remove(activatedPlayer.specialDice);
     }
 
 
@@ -273,13 +267,16 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-
+    private Player Convert(GameObject player) {
+        return player.GetComponent<Player>();
+    }
 
     private void Awake()
     {
         dicesToRoll = new List<Dice>();
         dieCheckList = new List<Func<bool>> { CountExceeded };
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
+        playerInfos = players.ConvertAll(new Converter<GameObject, Player>(Convert)).ToList();
         winCount = new Dictionary<String, int>() {
             {"Red", 0 },
             {"Blue", 0 }
@@ -291,17 +288,17 @@ public class PlayManager : MonoBehaviour
     }
     private void CurrentPlayerDie()
     {
-        Debug.Log($"{playerInfo.playerName} is dead");
-        playerInfo.Die();
+        Debug.Log($"{activatedPlayer.playerName} is dead");
+        activatedPlayer.Die();
         ResetRound();
     }
 
     private bool RedTeamDead() {
-        return (!players.Any(player => player.GetComponent<Player>().team == Team.Red && player.GetComponent<Player>().alive));
+        return (!playerInfos.Any(player => player.team == Team.Red && player.alive == true));
     }
 
     private bool BlueTeamDead() {
-        return (!players.Any(player => player.GetComponent<Player>().team == Team.Blue && player.GetComponent<Player>().alive));
+        return (!playerInfos.Any(player => player.team == Team.Blue && player.alive == true));
     }
     public void Update()
     {
