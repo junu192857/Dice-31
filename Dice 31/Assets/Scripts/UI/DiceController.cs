@@ -6,10 +6,13 @@ public class DiceController : MonoBehaviour
 {
     Vector3 mousePosition;
     public Vector3 DefaultPos;
+    public GameObject Table;
+    private Vector3 TablePos;
 
     public void Start()
     {
         DefaultPos = transform.position;
+        TablePos = Table.transform.position;
     }
 
     private Vector3 GetMousePosition()
@@ -18,15 +21,23 @@ public class DiceController : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        mousePosition = Input.mousePosition - GetMousePosition();
+            mousePosition = Input.mousePosition - GetMousePosition();
     }
     private void OnMouseDrag()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
+        Vector3 objectPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
+        if (objectPosition.y >= 0) {
+            transform.position = objectPosition;
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+
     }
 
     // only if dice collision.transform.tag == "plate" is true can roll dice
     // When dice roll end, If come back to default position
-    // When dragging, it can't go through the table
+    // When dragging, it can't go through the table or outside screen and table
 
 }
