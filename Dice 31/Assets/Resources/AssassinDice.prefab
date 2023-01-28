@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7461197912291093855}
   - component: {fileID: 8923621565382985876}
   m_Layer: 0
-  m_Name: SniperDice
+  m_Name: AssassinDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

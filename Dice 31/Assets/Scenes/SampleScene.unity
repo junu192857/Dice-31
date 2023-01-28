@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &37126920
@@ -260,7 +259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &136468232
@@ -376,7 +374,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &307969947
@@ -526,7 +523,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &552917058
@@ -574,7 +570,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &643389881
@@ -1020,7 +1015,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &1794793188
@@ -1068,7 +1062,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &1822688776
@@ -1227,7 +1220,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
-  alive: 0
   normalDice: {fileID: 0}
   specialDice: {fileID: 0}
 --- !u!1 &2049233604
@@ -1275,12 +1267,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+  playerInfos: []
   curCount: 0
   maxCount: 0
   roundCount: 0
   matchCount: 0
   activatedPlayer: {fileID: 0}
-  playerInfo: {fileID: 0}
+  dicesToRoll: []
   specialDiceNames:
   - PlusDice
   - MinusDice
@@ -1288,7 +1281,7 @@ MonoBehaviour:
   - OperatorDice
   - JQKDice
   - ExtendDice
-  - SniperDice
+  - AssassinDice
   - BombDice
   - RevivalDice
   - CorruptedDice
