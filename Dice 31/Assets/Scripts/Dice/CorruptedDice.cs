@@ -25,7 +25,7 @@ public class CorruptedDice : Dice
         }
         else
         {
-            Debug.Log($"pass: {GameManager.Inst.pm.corruptStack}");
+            Debug.Log($"corrupt pass: {GameManager.Inst.pm.corruptStack}");
             owner = GameManager.Inst.pm.activatedPlayer;
         }
     }

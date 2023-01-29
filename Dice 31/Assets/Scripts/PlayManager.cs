@@ -23,34 +23,29 @@ public class PlayManager : MonoBehaviour
      * matchCount: Match를 나타내는 숫자. 승패가 결정될 때마다 1씩 증가, 실제 경기의 승패는 Match를 기준으로 3판 2선승, 5판 3선승 뭐 이런 느낌
      * Round가 시작될 때, Match가 시작될 때, 경기가 시작될 때 어떤 값들을 초기화시켜야 할 지 정해야 함
      */
-    [HideInInspector]
-    public int curCount { get; private set; }
-    [HideInInspector]
-    public int maxCount { get; private set; }
-    [HideInInspector]
-    public int roundCount;
-    [HideInInspector]
-    public int matchCount;
+    [HideInInspector] public int curCount { get; private set; }
+    [HideInInspector] public int maxCount { get; private set; }
+    [HideInInspector] public int roundCount;
+    [HideInInspector] public int matchCount;
 
 
     public Player activatedPlayer;
     //public Player playerInfo;
 
-    [SerializeField]
-    private List<Dice> dicesToRoll;
+    [SerializeField] private List<Dice> dicesToRoll;
 
     private List<Dice> previousDices;
 
-    [SerializeField]
-    private List<String> specialDiceNames;
-
+    [SerializeField] private List<String> specialDiceNames;
 
 
     // 폭탄 주사위를 굴렸을 때 1~6 사이의 숫자로 설정됨
     // 누군가가 이 숫자와 같은 숫자를 굴리면 그 사람이 탈락하고 bombDiceNum은 0으로 초기화됨 <~~ EndPlayerTurn에서 처리
     public int bombDiceNum = 0;
     public int corruptStack = 0;
-    
+
+    private bool pendingRoundEnd = false;
+
     public void UpdateCurCount(int amount)
     {
         if (corruptStack == 4)
@@ -58,7 +53,7 @@ public class PlayManager : MonoBehaviour
         else
             curCount += amount;
     }
-    
+
     public void ExtendMaxCount(int amount)
     {
         if (corruptStack == 4)
@@ -75,29 +70,33 @@ public class PlayManager : MonoBehaviour
 
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
-    public void Initiate() {
-
+    public void Initiate()
+    {
         matchCount = 0;
         winCount["Red"] = 0;
         winCount["Blue"] = 0;
         maxWinCount = 1;
-        for (int index = 0; index < players.Count; index++) {
+        for (int index = 0; index < players.Count; index++)
+        {
             if (index % 2 == 0)
-            { 
+            {
                 playerInfos[index].SetRedTeam();
             }
-            else 
+            else
             {
                 playerInfos[index].SetBlueTeam();
             }
         }
+
         ResetMatch();
         //TODO: 모든 플레이어의 특수 주사위 활성화
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
-    private void ResetRound() {
-        if (MatchOver()) {
+    private void ResetRound()
+    {
+        if (MatchOver())
+        {
             ResetMatch();
         }
         else
@@ -105,6 +104,8 @@ public class PlayManager : MonoBehaviour
             curCount = 0;
             maxCount = 31;
             bombDiceNum = 0;
+            pendingRoundEnd = false;
+            turnDirection = 1;
             roundCount++;
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
@@ -112,7 +113,8 @@ public class PlayManager : MonoBehaviour
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
-    private void ResetMatch() {
+    private void ResetMatch()
+    {
         if (GameOver())
         {
             GameManager.Inst.gsm.OperateGameOver();
@@ -120,20 +122,23 @@ public class PlayManager : MonoBehaviour
         }
         else
         {
-            index = 0;
+            index = -1;
             roundCount = 0;
             corruptStack = 0;
             matchCount++;
-            foreach (var player in playerInfos) {
+            foreach (var player in playerInfos)
+            {
                 player.Revive();
             }
+
             AssignDices();
             ResetRound();
         }
         //TODO: 이미 사용한 빨간색 특수 주사위 재활성화
     }
 
-    private bool MatchOver() {
+    private bool MatchOver()
+    {
         if (RedTeamDead())
         {
             winCount["Blue"]++;
@@ -148,7 +153,9 @@ public class PlayManager : MonoBehaviour
         }
         else return false;
     }
-    private bool GameOver() {
+
+    private bool GameOver()
+    {
         if (winCount["Red"] >= maxWinCount)
         {
             Debug.Log("Red Team Win!");
@@ -169,14 +176,17 @@ public class PlayManager : MonoBehaviour
      * 3. 주사위를 굴린 후 처리를 한다
      * 4. activatedPlayer를 다음 사람으로 넘긴다
     */
-    private void AssignDices() {
+    private void AssignDices()
+    {
         //모든 플레이어에게 할당된 주사위를 없애고, Normal Dice를 하나씩 새로 할당하는 과정
         GameObject[] dices = GameObject.FindGameObjectsWithTag("Dice");
-        foreach (var dice in dices) {
+        foreach (var dice in dices)
+        {
             Destroy(dice);
         }
 
-        foreach (var player in playerInfos) {
+        foreach (var player in playerInfos)
+        {
             player.normalDice = null;
             player.specialDice = null;
 
@@ -194,9 +204,10 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    public void StartPlayerTurn() {
+    public void StartPlayerTurn()
+    {
         Debug.Assert(GameManager.Inst.gsm.State == GameState.InPlayerTurn);
-        
+
         AdvancePlayer();
 
         if (activatedPlayer.dead)
@@ -205,12 +216,12 @@ public class PlayManager : MonoBehaviour
             Debug.Log($"{activatedPlayer.playerName} is already dead; skip");
             return;
         }
-        
+
         foreach (var dice in previousDices)
         {
             dice.EffectBeforeNextPlayerRoll();
         }
-        
+
         LoadDicesToRoll();
 
         if (CountExceeded())
@@ -220,40 +231,48 @@ public class PlayManager : MonoBehaviour
 
         GameManager.Inst.gsm.WaitForInput();
     }
-    
-    bool CountExceeded() {
+
+    bool CountExceeded()
+    {
         return curCount >= maxCount;
     }
 
     private void AdvancePlayer()
     {
+        UpdatePlayerIndex(1);
         activatedPlayer = playerInfos[index];
         Debug.Log($"{activatedPlayer.playerName}'s turn");
-        UpdatePlayerIndex(1);
     }
 
     private void LoadDicesToRoll()
     {
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
+        if (activatedPlayer.specialDice is CorruptedDice)
+            dicesToRoll.Add(activatedPlayer.specialDice);
     }
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
-    public void AddSpecialDiceCommand() {
+    public void AddSpecialDiceCommand()
+    {
         Assert.AreEqual(dicesToRoll.Count, 1, "dicesToRoll.Count should be 1");
         Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Add(activatedPlayer.specialDice);
     }
+
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
-    public void RemoveSpecialDiceCommand() { 
+    public void RemoveSpecialDiceCommand()
+    {
         Assert.AreEqual(dicesToRoll.Count, 2, "dicesToRoll.Count should be 2");
+        Assert.IsFalse(activatedPlayer.specialDice is CorruptedDice, "special dice should not be corrupted dice");
         Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Remove(activatedPlayer.specialDice);
     }
 
 
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
-    public void OnRollPlayerDice() {
+    public void OnRollPlayerDice()
+    {
         if (GameManager.Inst.gsm.State != GameState.WaitingForInput) return;
         GameManager.Inst.gsm.BeginRoll();
         StartCoroutine(RollPlayerDice());
@@ -266,7 +285,7 @@ public class PlayManager : MonoBehaviour
         {
             yield return coroutine;
         }
-        
+
         EndPlayerTurn();
     }
 
@@ -283,38 +302,46 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectAfterNextPlayerRoll();
         }
+
         previousDices.Clear();
         previousDices.AddRange(dicesToRoll);
-        
-        if (bombDiceNum == activatedPlayer.normalDice.value)
+
+        if (bombDiceNum != 0)
         {
-            Debug.Log($"Bomb ({bombDiceNum}) exploded");
-            CurrentPlayerDie();
+            if (bombDiceNum == activatedPlayer.normalDice.value)
+            {
+                Debug.Log($"Bomb ({bombDiceNum}) exploded");
+                CurrentPlayerDie();
+            }
+            else
+            {
+                Debug.Log($"Bomb ({bombDiceNum}) passed");
+            }
         }
-        else
-        {
-            Debug.Log($"Bomb ({bombDiceNum}) passed");
-        }
-        
+
         foreach (var dice in dicesToRoll)
         {
             dice.EffectAfterCurrentPlayerRoll();
         }
+
         Debug.Log($"Current Count is {curCount}");
-        
+
         if (CountExceeded())
         {
             CurrentPlayerDie();
-            return;
         }
 
-        if (GameManager.Inst.gsm.State != GameState.Gameover) 
+        if (pendingRoundEnd)
+            ResetRound();
+
+        if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
     }
 
-    private Player Convert(GameObject player) {
+    private Player Convert(GameObject player)
+    {
         return player.GetComponent<Player>();
     }
 
@@ -324,38 +351,46 @@ public class PlayManager : MonoBehaviour
         previousDices = new List<Dice>();
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
         playerInfos = players.ConvertAll(new Converter<GameObject, Player>(Convert)).ToList();
-        winCount = new Dictionary<String, int>() {
-            {"Red", 0 },
-            {"Blue", 0 }
+        winCount = new Dictionary<String, int>()
+        {
+            { "Red", 0 },
+            { "Blue", 0 }
         };
     }
+
     private void Start()
     {
         GameManager.Inst.gsm.PrepareGame();
     }
-    
-    public void PlayerDie(Player player) {
+
+    public void PlayerDie(Player player)
+    {
         if (player.dead)
         {
             Debug.Log($"{player.playerName} is already dead");
             return;
         }
+
         Debug.Log($"{player.playerName} is dead");
         player.Die();
-        ResetRound();
+        pendingRoundEnd = true;
     }
+
     public void CurrentPlayerDie()
     {
         PlayerDie(activatedPlayer);
     }
 
-    private bool RedTeamDead() {
+    private bool RedTeamDead()
+    {
         return (!playerInfos.Any(player => player.team == Team.Red && player.alive == true));
     }
 
-    private bool BlueTeamDead() {
+    private bool BlueTeamDead()
+    {
         return (!playerInfos.Any(player => player.team == Team.Blue && player.alive == true));
     }
+
     public void Update()
     {
         switch (GameManager.Inst.gsm.State)
