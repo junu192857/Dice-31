@@ -288,7 +288,12 @@ public class PlayManager : MonoBehaviour
         
         if (bombDiceNum == activatedPlayer.normalDice.value)
         {
+            Debug.Log($"Bomb ({bombDiceNum}) exploded");
             CurrentPlayerDie();
+        }
+        else
+        {
+            Debug.Log($"Bomb ({bombDiceNum}) passed");
         }
         
         foreach (var dice in dicesToRoll)
