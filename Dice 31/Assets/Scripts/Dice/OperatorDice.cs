@@ -5,17 +5,38 @@ using UnityEngine;
 
 public class OperatorDice : Dice
 {
+    private bool pass;
+    private int value;
     public override IEnumerator Roll()
-    {yield break;
+    {
+        return DiceUtil.Roll(diceName, i => DiceOperation(i));
     }
 
     public override void EffectBeforeNextPlayerRoll()
     {
-        throw new NotImplementedException();
+        if (pass) {
+            Debug.Log($"Former player rolled 2++ from {diceName}");
+            GameManager.Inst.pm.curCount += value;
+        }
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        throw new NotImplementedException();
+        if (!pass) {
+            Debug.Log($"You rolled --3 from {diceName}");
+            GameManager.Inst.pm.curCount += value;
+        }
+    }
+    private void DiceOperation(int input)
+    {
+        if (1 <= input && input <= 3)
+        {
+            pass = true;
+            value = 2;
+        }
+        else {
+            pass = false;
+            value = -3;
+        }
     }
 }

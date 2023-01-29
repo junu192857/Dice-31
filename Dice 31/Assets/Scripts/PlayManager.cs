@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 public class PlayManager : MonoBehaviour
 {
@@ -43,7 +44,8 @@ public class PlayManager : MonoBehaviour
     // 누군가가 이 숫자와 같은 숫자를 굴리면 그 사람이 탈락하고 bombDiceNum은 0으로 초기화됨 <~~ EndPlayerTurn에서 처리
     public int bombDiceNum = 0;
     public int corruptStack = 0;
-
+    public int onMyOwnDiceNum = 0;
+    
     private bool pendingRoundEnd = false;
 
     public void UpdateCurCount(int amount)
@@ -67,6 +69,7 @@ public class PlayManager : MonoBehaviour
         index += amount * turnDirection;
         index %= 8;
     }
+
 
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
@@ -346,6 +349,41 @@ public class PlayManager : MonoBehaviour
         return player.GetComponent<Player>();
     }
 
+    public void OperateRevivalDice(bool success) {
+        if (success)
+        {
+            if (!playerInfos.Any(player => player.team == activatedPlayer.team && player.dead))
+            {
+                Debug.Log("Sorry, but there is no dead player in your team");
+            }
+            else
+            {
+                List<Player> deadplayers = playerInfos.FindAll(player => player.team == activatedPlayer.team && player.dead);
+                Player playerToRevive = deadplayers[UnityEngine.Random.Range(0, deadplayers.Count)];
+                playerToRevive.Revive();
+            }
+        }
+        else {
+            Debug.Log("You failed to Revive your team, so you die");
+            CurrentPlayerDie();
+        }
+    }
+
+    public void SelectNumberOne() {
+        if (GameManager.Inst.gsm.State == GameState.WaitingForNumber)
+        {
+            onMyOwnDiceNum = 1;
+            GameManager.Inst.gsm.BeginRoll();
+        }
+    }
+
+    public void SelectNumberTwo() {
+        if (GameManager.Inst.gsm.State == GameState.WaitingForNumber)
+        {
+            onMyOwnDiceNum = 2;
+            GameManager.Inst.gsm.BeginRoll();
+        }
+    }
     private void Awake()
     {
         dicesToRoll = new List<Dice>();

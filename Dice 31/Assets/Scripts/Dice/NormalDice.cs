@@ -10,6 +10,7 @@ public class NormalDice : Dice
     public override IEnumerator Roll()
     {
         return DiceUtil.Roll(diceName, i => value = i);
+
     }
 
     public override void EffectBeforeNextPlayerRoll()

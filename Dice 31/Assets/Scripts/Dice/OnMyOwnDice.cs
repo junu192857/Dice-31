@@ -5,17 +5,19 @@ using UnityEngine;
 
 public class OnMyOwnDice : Dice
 {
+    private int value;
     public override IEnumerator Roll()
-    {yield break;
+    {
+        return DiceUtil.Roll(diceName, i => value = i);
     }
 
     public override void EffectBeforeNextPlayerRoll()
     {
-        throw new NotImplementedException();
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        throw new NotImplementedException();
+        Debug.Log($"You selected {value} from On My Own Dice");
+        GameManager.Inst.pm.curCount += value;
     }
 }
