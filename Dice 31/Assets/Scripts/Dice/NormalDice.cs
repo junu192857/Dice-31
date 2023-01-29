@@ -9,7 +9,11 @@ public class NormalDice : Dice
     public int value { get; private set; }
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => value = i);
+        return DiceUtil.Roll(diceName, i =>
+        {
+            value = i;
+            Debug.Log($"{diceName} : {value}");
+        });
 
     }
 
