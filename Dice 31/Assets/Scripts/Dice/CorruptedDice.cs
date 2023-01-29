@@ -21,9 +21,11 @@ public class CorruptedDice : Dice
             {
                 GameManager.Inst.gsm.OperateGameOver();
             }
+            Debug.Log($"corrupted: {GameManager.Inst.pm.corruptStack}");
         }
         else
         {
+            Debug.Log($"pass: {GameManager.Inst.pm.corruptStack}");
             owner = GameManager.Inst.pm.activatedPlayer;
         }
     }
