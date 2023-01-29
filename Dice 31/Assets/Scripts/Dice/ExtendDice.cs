@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class ExtendDice : Dice
 {
+    private int value;
     public override IEnumerator Roll()
     {
-        yield break;
-    }
-
-    public override void EffectBeforeNextPlayerRoll()
-    {
-        throw new System.NotImplementedException();
+        return DiceUtil.Roll(diceName, i => value = i == 6 ? 20 : i);
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        GameManager.Inst.pm.ExtendMaxCount(value);
     }
 
     private void Start()

@@ -5,19 +5,37 @@ using UnityEngine;
 
 public class CorruptedDice : Dice
 {
+    private bool corrupted;
+    private bool pass => !corrupted;
+    private Player owner;
     public override IEnumerator Roll()
     {
-        yield break;
-    }
-
-    public override void EffectBeforeNextPlayerRoll()
-    {
-        throw new NotImplementedException();
+        return DiceUtil.Roll(diceName, i => corrupted = i <= 2);
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        throw new NotImplementedException();
+        if (corrupted)
+        {
+            if (++GameManager.Inst.pm.corruptStack == 5)
+            {
+                GameManager.Inst.gsm.OperateGameOver();
+            }
+        }
+        else
+        {
+            owner = GameManager.Inst.pm.activatedPlayer;
+        }
+    }
+
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        if (pass)
+        {
+            Player current = GameManager.Inst.pm.activatedPlayer;
+            owner.specialDice = current.specialDice;
+            current.specialDice = this;
+        }
     }
 
     private void Start()

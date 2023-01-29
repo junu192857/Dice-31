@@ -7,19 +7,9 @@ public class BombDice : Dice
 {
     public override IEnumerator Roll()
     {
-        yield break;
+        return DiceUtil.Roll(diceName, i => GameManager.Inst.pm.bombDiceNum = i);
     }
-
-    public override void EffectBeforeNextPlayerRoll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void EffectAfterCurrentPlayerRoll()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     private void Start()
     {
         color = Color.Red;

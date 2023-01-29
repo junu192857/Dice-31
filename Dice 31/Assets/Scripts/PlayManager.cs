@@ -11,6 +11,7 @@ public class PlayManager : MonoBehaviour
     public List<Player> playerInfos;
 
     private int index;
+    public int turnDirection = 1;
 
     //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
     private Dictionary<String, int> winCount;
@@ -23,9 +24,9 @@ public class PlayManager : MonoBehaviour
      * Round가 시작될 때, Match가 시작될 때, 경기가 시작될 때 어떤 값들을 초기화시켜야 할 지 정해야 함
      */
     [HideInInspector]
-    public int curCount;
+    public int curCount { get; private set; }
     [HideInInspector]
-    public int maxCount;
+    public int maxCount { get; private set; }
     [HideInInspector]
     public int roundCount;
     [HideInInspector]
@@ -38,7 +39,7 @@ public class PlayManager : MonoBehaviour
     [SerializeField]
     private List<Dice> dicesToRoll;
 
-    private List<Func<bool>> dieCheckList;
+    private List<Dice> previousDices;
 
     [SerializeField]
     private List<String> specialDiceNames;
@@ -48,6 +49,29 @@ public class PlayManager : MonoBehaviour
     // 폭탄 주사위를 굴렸을 때 1~6 사이의 숫자로 설정됨
     // 누군가가 이 숫자와 같은 숫자를 굴리면 그 사람이 탈락하고 bombDiceNum은 0으로 초기화됨 <~~ EndPlayerTurn에서 처리
     public int bombDiceNum = 0;
+    public int corruptStack = 0;
+    
+    public void UpdateCurCount(int amount)
+    {
+        if (corruptStack == 4)
+            curCount += amount * 2;
+        else
+            curCount += amount;
+    }
+    
+    public void ExtendMaxCount(int amount)
+    {
+        if (corruptStack == 4)
+            maxCount += amount * 2;
+        else
+            maxCount += amount;
+    }
+
+    public void UpdatePlayerIndex(int amount)
+    {
+        index += amount * turnDirection;
+        index %= 8;
+    }
 
     //게임 플레이 화면에서 Game Start 버튼을 누르면 작동하는 Initiate 함수.
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
@@ -80,6 +104,7 @@ public class PlayManager : MonoBehaviour
         {
             curCount = 0;
             maxCount = 31;
+            bombDiceNum = 0;
             roundCount++;
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
@@ -97,6 +122,7 @@ public class PlayManager : MonoBehaviour
         {
             index = 0;
             roundCount = 0;
+            corruptStack = 0;
             matchCount++;
             foreach (var player in playerInfos) {
                 player.Revive();
@@ -155,7 +181,7 @@ public class PlayManager : MonoBehaviour
             player.specialDice = null;
 
             GameObject normalDice = Instantiate(Resources.Load("NormalDice")) as GameObject;
-            player.normalDice = normalDice.GetComponent<Dice>();
+            player.normalDice = normalDice.GetComponent<NormalDice>();
         }
 
         System.Random Rand = new System.Random();
@@ -180,18 +206,17 @@ public class PlayManager : MonoBehaviour
             return;
         }
         
-        foreach (var dice in dicesToRoll)
+        foreach (var dice in previousDices)
         {
             dice.EffectBeforeNextPlayerRoll();
         }
+        
+        LoadDicesToRoll();
 
         if (CountExceeded())
         {
             CurrentPlayerDie();
         }
-
-        LoadDicesToRoll();
-        UpdateDieCheckList();
 
         GameManager.Inst.gsm.WaitForInput();
     }
@@ -204,8 +229,7 @@ public class PlayManager : MonoBehaviour
     {
         activatedPlayer = playerInfos[index];
         Debug.Log($"{activatedPlayer.playerName}'s turn");
-        index++;
-        index %= 8;
+        UpdatePlayerIndex(1);
     }
 
     private void LoadDicesToRoll()
@@ -213,12 +237,6 @@ public class PlayManager : MonoBehaviour
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
     }
-
-    private void UpdateDieCheckList()
-    {
-        // TODO
-    }
-    
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand() {
@@ -261,14 +279,28 @@ public class PlayManager : MonoBehaviour
          * 3. 주사위의 특수 능력 발동으로 인한 플레이어 사망 처리(폭탄 주사위, 암살 주사위, 부활 주사위, 타락 주사위)
          * 4. 사망한 플레이어가 있다면 라운드를 초기화하고, 
          */
+        foreach (var dice in previousDices)
+        {
+            dice.EffectAfterNextPlayerRoll();
+        }
+        previousDices.Clear();
+        previousDices.AddRange(dicesToRoll);
+        
+        if (bombDiceNum == activatedPlayer.normalDice.value)
+        {
+            CurrentPlayerDie();
+        }
+        
         foreach (var dice in dicesToRoll)
         {
             dice.EffectAfterCurrentPlayerRoll();
         }
         Debug.Log($"Current Count is {curCount}");
-        if (dieCheckList.Exists(shouldDie => shouldDie()))
+        
+        if (CountExceeded())
         {
             CurrentPlayerDie();
+            return;
         }
 
         if (GameManager.Inst.gsm.State != GameState.Gameover) 
@@ -284,7 +316,7 @@ public class PlayManager : MonoBehaviour
     private void Awake()
     {
         dicesToRoll = new List<Dice>();
-        dieCheckList = new List<Func<bool>> { CountExceeded };
+        previousDices = new List<Dice>();
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
         playerInfos = players.ConvertAll(new Converter<GameObject, Player>(Convert)).ToList();
         winCount = new Dictionary<String, int>() {
@@ -296,11 +328,20 @@ public class PlayManager : MonoBehaviour
     {
         GameManager.Inst.gsm.PrepareGame();
     }
-    private void CurrentPlayerDie()
-    {
-        Debug.Log($"{activatedPlayer.playerName} is dead");
-        activatedPlayer.Die();
+    
+    public void PlayerDie(Player player) {
+        if (player.dead)
+        {
+            Debug.Log($"{player.playerName} is already dead");
+            return;
+        }
+        Debug.Log($"{player.playerName} is dead");
+        player.Die();
         ResetRound();
+    }
+    public void CurrentPlayerDie()
+    {
+        PlayerDie(activatedPlayer);
     }
 
     private bool RedTeamDead() {

@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
     public Team team { get; private set; }
 
-    public Dice normalDice;
+    public NormalDice normalDice;
     public Dice specialDice;
 
     public void Start()
