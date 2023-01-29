@@ -16,7 +16,7 @@ public class OperatorDice : Dice
     {
         if (pass) {
             Debug.Log($"Former player rolled 2++ from {diceName}");
-            GameManager.Inst.pm.curCount += value;
+            GameManager.Inst.pm.UpdateCurCount(value);
         }
     }
 
@@ -24,7 +24,7 @@ public class OperatorDice : Dice
     {
         if (!pass) {
             Debug.Log($"You rolled --3 from {diceName}");
-            GameManager.Inst.pm.curCount += value;
+            GameManager.Inst.pm.UpdateCurCount(value);
         }
     }
     private void DiceOperation(int input)

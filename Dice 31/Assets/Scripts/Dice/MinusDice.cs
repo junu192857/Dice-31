@@ -19,7 +19,7 @@ public class MinusDice : Dice
     public override void EffectAfterCurrentPlayerRoll()
     {
         Debug.Log($"You rolled {value} from {diceName}");
-        GameManager.Inst.pm.curCount += value;
+        GameManager.Inst.pm.UpdateCurCount(value);
     }
 
     private void DiceOperation(int input) {

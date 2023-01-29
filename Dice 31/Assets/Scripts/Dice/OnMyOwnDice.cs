@@ -18,6 +18,6 @@ public class OnMyOwnDice : Dice
     public override void EffectAfterCurrentPlayerRoll()
     {
         Debug.Log($"You selected {value} from On My Own Dice");
-        GameManager.Inst.pm.curCount += value;
+        GameManager.Inst.pm.UpdateCurCount(value);
     }
 }
