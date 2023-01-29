@@ -43,10 +43,4 @@ public class PlusDice : Dice
                 break;
         }
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "PlusDice";
-    }
 }

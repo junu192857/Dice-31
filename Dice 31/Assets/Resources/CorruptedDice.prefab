@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337868d8fcdd3b74f9d162fc79735478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 0
-  diceName: 
+  color: 3
+  diceName: Corrupted Dice

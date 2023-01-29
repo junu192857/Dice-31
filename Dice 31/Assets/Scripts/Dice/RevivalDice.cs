@@ -24,17 +24,12 @@ public class RevivalDice : Dice
         Debug.Log($"You rolled {_success} from {diceName}");
         GameManager.Inst.pm.OperateRevivalDice(success);
     }
-
+    
     private void DiceOperation(int input) {
         if (input == 1 || input == 2)
         {
             success = false;
         }
         else success = true;
-    }
-    private void Start()
-    {
-        color = Color.Red;
-        diceName = "RevivalDice";
     }
 }

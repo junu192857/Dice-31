@@ -27,7 +27,6 @@ public class OperatorDice : Dice
             GameManager.Inst.pm.curCount += value;
         }
     }
-
     private void DiceOperation(int input)
     {
         if (1 <= input && input <= 3)
@@ -39,10 +38,5 @@ public class OperatorDice : Dice
             pass = false;
             value = -3;
         }
-    }
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "OperatorDice";
     }
 }

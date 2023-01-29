@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e39dac09ed491a4c9895a77788da042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 0
-  diceName: 
+  color: 1
+  diceName: JQK Dice

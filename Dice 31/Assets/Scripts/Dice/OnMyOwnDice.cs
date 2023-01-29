@@ -20,10 +20,4 @@ public class OnMyOwnDice : Dice
         Debug.Log($"You selected {value} from On My Own Dice");
         GameManager.Inst.pm.curCount += value;
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "On My Own";
-    }
 }

@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class NormalDice : Dice
 {
-    private int value;
+    public int value { get; private set; }
     public override IEnumerator Roll()
     {
         return DiceUtil.Roll(diceName, i => value = i);
@@ -20,12 +20,6 @@ public class NormalDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        Debug.Log($"You rolled {value} from {diceName}");
-        GameManager.Inst.pm.curCount += value;
-    }
-
-    public void Start() {
-        color = Color.Yellow;
-        diceName = "NormalDice";
+        GameManager.Inst.pm.UpdateCurCount(value);
     }
 }

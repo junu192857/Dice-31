@@ -41,10 +41,4 @@ public class MinusDice : Dice
                 break;
         }
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "MinusDice";
-    }
 }
