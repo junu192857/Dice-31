@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4b3b9233a72ac40a7a74581b00d4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 0
-  diceName: 
+  color: 2
+  diceName: Revival Dice

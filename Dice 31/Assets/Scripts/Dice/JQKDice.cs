@@ -48,10 +48,4 @@ public class JQKDice : Dice
                 break;
         }
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "JQK";
-    }
 }

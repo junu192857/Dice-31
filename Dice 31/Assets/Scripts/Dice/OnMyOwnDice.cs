@@ -18,10 +18,4 @@ public class OnMyOwnDice : Dice
     {
         throw new NotImplementedException();
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "On My Own";
-    }
 }

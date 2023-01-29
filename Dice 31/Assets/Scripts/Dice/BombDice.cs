@@ -16,10 +16,4 @@ public class BombDice : Dice
         Debug.Log("bomb activated: " + value);
         GameManager.Inst.pm.bombDiceNum = value;
     }
-
-    private void Start()
-    {
-        color = Color.Red;
-        diceName = "Bomb";
-    }
 }

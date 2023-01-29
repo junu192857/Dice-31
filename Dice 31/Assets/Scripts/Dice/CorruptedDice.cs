@@ -39,10 +39,4 @@ public class CorruptedDice : Dice
             current.specialDice = this;
         }
     }
-
-    private void Start()
-    {
-        color = Color.Purple;
-        diceName = "Corrupted Dice";
-    }
 }

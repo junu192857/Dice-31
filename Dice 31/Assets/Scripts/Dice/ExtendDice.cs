@@ -14,10 +14,4 @@ public class ExtendDice : Dice
     {
         GameManager.Inst.pm.ExtendMaxCount(value);
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "Extend";
-    }
 }

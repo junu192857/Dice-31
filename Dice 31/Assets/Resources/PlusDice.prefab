@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1f8c89e358bc74c851c1f09a51dc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 0
-  diceName: 
+  color: 1
+  diceName: Plus Dice

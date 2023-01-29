@@ -18,10 +18,4 @@ public class MinusDice : Dice
     {
         throw new NotImplementedException();
     }
-
-    private void Start()
-    {
-        color = Color.Green;
-        diceName = "MinusDice";
-    }
 }

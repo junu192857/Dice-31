@@ -64,10 +64,4 @@ public class AssassinDice : Dice
             GameManager.Inst.pm.PlayerDie(diceOwner);
         }
     }
-
-    private void Start()
-    {
-        color = Color.Red;
-        diceName = "Assassin";
-    }
 }

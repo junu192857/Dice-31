@@ -21,9 +21,4 @@ public class NormalDice : Dice
     {
         GameManager.Inst.pm.UpdateCurCount(value);
     }
-
-    public NormalDice() {
-        color = Color.Yellow;
-        diceName = "Normal Dice";
-    }
 }

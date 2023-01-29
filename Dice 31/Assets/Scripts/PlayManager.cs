@@ -324,7 +324,6 @@ public class PlayManager : MonoBehaviour
             dice.EffectAfterCurrentPlayerRoll();
         }
 
-        Debug.Log($"Current Count is {curCount}");
 
         if (CountExceeded())
         {
@@ -333,6 +332,8 @@ public class PlayManager : MonoBehaviour
 
         if (pendingRoundEnd)
             ResetRound();
+        
+        Debug.Log($"Current Count is {curCount}");
 
         if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
