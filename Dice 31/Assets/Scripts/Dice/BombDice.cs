@@ -5,11 +5,18 @@ using UnityEngine;
 
 public class BombDice : Dice
 {
+    private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => GameManager.Inst.pm.bombDiceNum = i);
+        return DiceUtil.Roll(diceName, i => value = i);
     }
-    
+
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        Debug.Log("bomb activated: " + value);
+        GameManager.Inst.pm.bombDiceNum = value;
+    }
+
     private void Start()
     {
         color = Color.Red;
