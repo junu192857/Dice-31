@@ -10,6 +10,11 @@ public class BombDice : Dice
         yield break;
     }
 
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        throw new NotImplementedException();
+    }
+
     public override void EffectAfterCurrentPlayerRoll()
     {
         throw new NotImplementedException();
@@ -18,5 +23,6 @@ public class BombDice : Dice
     private void Start()
     {
         color = Color.Red;
+        diceName = "Bomb";
     }
 }

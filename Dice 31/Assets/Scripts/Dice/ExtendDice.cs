@@ -9,6 +9,11 @@ public class ExtendDice : Dice
         yield break;
     }
 
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void EffectAfterCurrentPlayerRoll()
     {
     }
@@ -16,5 +21,6 @@ public class ExtendDice : Dice
     private void Start()
     {
         color = Color.Green;
+        diceName = "Extend";
     }
 }

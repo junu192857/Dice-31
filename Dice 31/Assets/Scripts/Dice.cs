@@ -13,10 +13,7 @@ public abstract class Dice : MonoBehaviour
 {
     public abstract IEnumerator Roll();
 
-    public void EffectBeforeNextPlayerRoll()
-    {
-    }
-
+    public abstract void EffectBeforeNextPlayerRoll();
     public abstract void EffectAfterCurrentPlayerRoll();
     public Color color;
     public string diceName;

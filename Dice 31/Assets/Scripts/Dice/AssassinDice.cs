@@ -6,16 +6,24 @@ using UnityEngine;
 public class AssassinDice : Dice
 {
     public override IEnumerator Roll()
-    {yield break;
+    {
+        return DiceUtil.Roll(diceName, i =>
+        {
+        });
+    }
+
+    public override void EffectBeforeNextPlayerRoll()
+    {
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        throw new NotImplementedException();
+        // NOP
     }
 
     private void Start()
     {
         color = Color.Red;
+        diceName = "Assassin";
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PlayManager : MonoBehaviour
 {
@@ -221,10 +222,14 @@ public class PlayManager : MonoBehaviour
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand() {
+        Assert.AreEqual(dicesToRoll.Count, 1, "dicesToRoll.Count should be 1");
+        Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Add(activatedPlayer.specialDice);
     }
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand() { 
+        Assert.AreEqual(dicesToRoll.Count, 2, "dicesToRoll.Count should be 2");
+        Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Remove(activatedPlayer.specialDice);
     }
 

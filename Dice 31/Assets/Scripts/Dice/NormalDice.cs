@@ -9,10 +9,12 @@ public class NormalDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        Debug.Log("Rolling...");
-        yield return new WaitForSeconds(0.01f);
-        value = Random.Range(1, 7);
-        Debug.Log($"You rolled {value} from Normal Dice");
+        return DiceUtil.Roll(diceName, i => value = i);
+    }
+
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        // NOP
     }
 
     public override void EffectAfterCurrentPlayerRoll()
@@ -21,6 +23,7 @@ public class NormalDice : Dice
     }
 
     public NormalDice() {
-        this.color = Color.Yellow;
+        color = Color.Yellow;
+        diceName = "Normal Dice";
     }
 }

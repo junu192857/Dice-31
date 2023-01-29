@@ -9,6 +9,11 @@ public class PlusDice : Dice
     {yield break;
     }
 
+    public override void EffectBeforeNextPlayerRoll()
+    {
+        throw new NotImplementedException();
+    }
+
     public override void EffectAfterCurrentPlayerRoll()
     {
         throw new NotImplementedException();
@@ -17,5 +22,6 @@ public class PlusDice : Dice
     private void Start()
     {
         color = Color.Green;
+        diceName = "PlusDice";
     }
 }
