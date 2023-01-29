@@ -7,10 +7,17 @@ public static class DiceUtil
 {
     public static IEnumerator Roll(String diceName, Action<int> callback)
     {
+        int value;
         Debug.Log("Rolling " + diceName);
         yield return new WaitForSeconds(0.01f);
-        int value = Random.Range(1, 7);
-        Debug.Log($"You rolled {value} from Normal Dice");
+        if (diceName == "On My Own") {
+            GameManager.Inst.gsm.WaitForNumberSelect();
+            while (GameManager.Inst.gsm.State == GameState.WaitingForNumber) {
+                yield return null;
+            }
+            value = GameManager.Inst.pm.onMyOwnDiceNum;
+        }
+        else value = Random.Range(1, 7);
         callback(value);
     }
 }

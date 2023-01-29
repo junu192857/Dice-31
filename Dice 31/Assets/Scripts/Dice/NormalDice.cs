@@ -10,6 +10,7 @@ public class NormalDice : Dice
     public override IEnumerator Roll()
     {
         return DiceUtil.Roll(diceName, i => value = i);
+
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -19,11 +20,12 @@ public class NormalDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        Debug.Log($"You rolled {value} from {diceName}");
         GameManager.Inst.pm.curCount += value;
     }
 
-    public NormalDice() {
+    public void Start() {
         color = Color.Yellow;
-        diceName = "Normal Dice";
+        diceName = "NormalDice";
     }
 }
