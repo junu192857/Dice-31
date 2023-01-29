@@ -1,0 +1,22 @@
+Label {
+}
+
+.value-display {
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.value-display Label {
+    margin: 0;
+    margin-right: 10px;
+    padding: 0;
+}
+
+.value-display--value {
+    -unity-font-style: italic;
+}
+
+.value-display--label {
+    -unity-font-style: bold;
+}
