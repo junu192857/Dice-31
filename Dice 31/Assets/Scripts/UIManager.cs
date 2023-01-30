@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public Text MatchRoundCount;
     public Text NumberCount;
     public Text SpecialDiceInfos;
+    public Text TeamWinCount;
     public Text Player1Info;
     public Text Player2Info;
     public Text Player3Info;
@@ -38,6 +39,7 @@ public class UIManager : MonoBehaviour
         SpecialDiceInfos.text = $"Bomb Dice Number: {GameManager.Inst.pm.bombDiceNum}\n" +
                                 $"Assassin Dice Trigger: {GameManager.Inst.pm.assassinInfo}\n" +
                                 $"Corrupt Stack: {GameManager.Inst.pm.corruptStack}";
+        TeamWinCount.text = $"Red {GameManager.Inst.pm.winCount["Red"]} : {GameManager.Inst.pm.winCount["Blue"]} Blue";
         Player1Info.text = $"Player 1\n" +
                            $"{GameManager.Inst.pm.playerInfos[0].team} Team / {GameManager.Inst.pm.playerInfos[0].deadString}\n" +
                            $"Special Dice: {GameManager.Inst.pm.playerInfos[0].specialDice.diceName}\n" +

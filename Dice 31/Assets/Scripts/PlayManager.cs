@@ -15,7 +15,7 @@ public class PlayManager : MonoBehaviour
     public int turnDirection = 1;
 
     //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
-    private Dictionary<String, int> winCount;
+    public Dictionary<String, int> winCount;
     private int maxWinCount;
 
     /* curCount: 한 라운드 내에서 현재 숫자
@@ -79,12 +79,13 @@ public class PlayManager : MonoBehaviour
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate()
     {
-        if (GameManager.Inst.gsm.State == GameState.Waiting)
+        if (GameManager.Inst.gsm.State == GameState.Waiting || GameManager.Inst.gsm.State == GameState.Gameover)
         {
+            index = -1;
             matchCount = 0;
             winCount["Red"] = 0;
             winCount["Blue"] = 0;
-            maxWinCount = 1;
+            maxWinCount = 2;
             for (int index = 0; index < players.Count; index++)
             {
                 if (index % 2 == 0)
@@ -141,6 +142,9 @@ public class PlayManager : MonoBehaviour
             onMyOwnDiceNum = 0;
             corruptStack = 0;
             assassinInfo = "";
+            turnDirection = 1;
+            dicesToRoll.Clear();
+            previousDices.Clear();
             matchCount++;
             foreach (var player in playerInfos)
             {
@@ -155,16 +159,21 @@ public class PlayManager : MonoBehaviour
 
     private bool MatchOver()
     {
-        if (RedTeamDead())
+        if (RedTeamDead() && !BlueTeamDead())
         {
             winCount["Blue"]++;
             Debug.Log($"Blue Team won match {matchCount}");
             return true;
         }
-        else if (BlueTeamDead())
+        else if (BlueTeamDead() && !RedTeamDead())
         {
             winCount["Red"]++;
             Debug.Log($"Red Team won match {matchCount}");
+            return true;
+        }
+        else if (RedTeamDead() && BlueTeamDead())
+        {
+            Debug.Log($"match {matchCount}: Draw");
             return true;
         }
         else return false;
