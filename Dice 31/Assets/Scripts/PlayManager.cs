@@ -45,6 +45,7 @@ public class PlayManager : MonoBehaviour
     public int bombDiceNum = 0;
     public int corruptStack = 0;
     public int onMyOwnDiceNum = 0;
+    public string assassinInfo;
     
     private bool pendingRoundEnd = false;
 
@@ -67,6 +68,7 @@ public class PlayManager : MonoBehaviour
     public void UpdatePlayerIndex(int amount)
     {
         index += amount * turnDirection;
+        if (index < 0) index += 8;
         index %= 8;
     }
 
@@ -75,24 +77,26 @@ public class PlayManager : MonoBehaviour
     //게임 시작할 때 필요한 값들을 초깃값으로 세팅
     public void Initiate()
     {
-        matchCount = 0;
-        winCount["Red"] = 0;
-        winCount["Blue"] = 0;
-        maxWinCount = 1;
-        for (int index = 0; index < players.Count; index++)
+        if (GameManager.Inst.gsm.State == GameState.Waiting)
         {
-            if (index % 2 == 0)
+            matchCount = 0;
+            winCount["Red"] = 0;
+            winCount["Blue"] = 0;
+            maxWinCount = 1;
+            for (int index = 0; index < players.Count; index++)
             {
-                playerInfos[index].SetRedTeam();
+                if (index % 2 == 0)
+                {
+                    playerInfos[index].SetRedTeam();
+                }
+                else
+                {
+                    playerInfos[index].SetBlueTeam();
+                }
             }
-            else
-            {
-                playerInfos[index].SetBlueTeam();
-            }
-        }
 
-        ResetMatch();
-        //TODO: 모든 플레이어의 특수 주사위 활성화
+            ResetMatch();
+        }
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
@@ -106,13 +110,17 @@ public class PlayManager : MonoBehaviour
         {
             curCount = 0;
             maxCount = 31;
-            bombDiceNum = 0;
             pendingRoundEnd = false;
-            turnDirection = 1;
+            //turnDirection = 1; 라운드가 초기화되어도 진행 방향 초기화가 되지 않는 것이 원래 기획
             roundCount++;
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
-        //TODO: 이미 사용한 초록색 특수 주사위 재활성화
+        foreach (var player in playerInfos) {
+            if (player.specialDice.color == Color.Green)
+            {
+                player.specialDice.EnableDice();
+            }
+        }
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
@@ -127,7 +135,10 @@ public class PlayManager : MonoBehaviour
         {
             index = -1;
             roundCount = 0;
+            bombDiceNum = 0;
+            onMyOwnDiceNum = 0;
             corruptStack = 0;
+            assassinInfo = "";
             matchCount++;
             foreach (var player in playerInfos)
             {
@@ -204,6 +215,7 @@ public class PlayManager : MonoBehaviour
         {
             GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
             playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
+            playerInfos[i].specialDice.EnableDice();
         }
     }
 
@@ -232,6 +244,9 @@ public class PlayManager : MonoBehaviour
             CurrentPlayerDie();
         }
 
+        if (pendingRoundEnd) {
+            ResetRound();
+        }
         GameManager.Inst.gsm.WaitForInput();
     }
 
@@ -259,6 +274,7 @@ public class PlayManager : MonoBehaviour
     public void AddSpecialDiceCommand()
     {
         Assert.AreEqual(dicesToRoll.Count, 1, "dicesToRoll.Count should be 1");
+        Assert.IsTrue(activatedPlayer.specialDice.available, "This dice has been already used");
         Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Add(activatedPlayer.specialDice);
     }
@@ -315,6 +331,7 @@ public class PlayManager : MonoBehaviour
             {
                 Debug.Log($"Bomb ({bombDiceNum}) exploded");
                 CurrentPlayerDie();
+                bombDiceNum = 0;
             }
             else
             {
@@ -359,8 +376,9 @@ public class PlayManager : MonoBehaviour
             else
             {
                 List<Player> deadplayers = playerInfos.FindAll(player => player.team == activatedPlayer.team && player.dead);
-                Player playerToRevive = deadplayers[UnityEngine.Random.Range(0, deadplayers.Count)];
+                Player playerToRevive = deadplayers[Random.Range(0, deadplayers.Count)];
                 playerToRevive.Revive();
+                Debug.Log($"You Revived {playerToRevive.playerName}");
             }
         }
         else {

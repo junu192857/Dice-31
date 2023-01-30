@@ -22,6 +22,7 @@ public class OperatorDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
         if (!pass) {
             Debug.Log($"You rolled --3 from {diceName}");
             GameManager.Inst.pm.UpdateCurCount(value);

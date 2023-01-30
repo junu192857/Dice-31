@@ -20,4 +20,13 @@ public abstract class Dice : MonoBehaviour
 
     public Color color;
     public string diceName;
+    public bool available { get; private set; }
+
+    public void EnableDice() {
+        available = true;
+    }
+
+    public void DisableDice() {
+        available = false;
+    }
 }

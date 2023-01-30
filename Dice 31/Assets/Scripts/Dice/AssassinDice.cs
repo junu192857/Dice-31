@@ -10,6 +10,7 @@ public class AssassinDice : Dice
     private Player diceOwner;
     public override IEnumerator Roll()
     {
+        //GameManager.Inst.pm.assassinInfo는 테스트용 UI 작성을 위해 임시로 추가한 것
         return DiceUtil.Roll(diceName, i =>
         {
             value = i;
@@ -17,12 +18,15 @@ public class AssassinDice : Dice
         {
             case 1: case 2:
                 Debug.Log("next player die if x < 5");
+                GameManager.Inst.pm.assassinInfo = "x < 5";
                 break;
             case 3: case 4:
                 Debug.Log("next player die if x > 2");
+                GameManager.Inst.pm.assassinInfo = "x > 2";
                 break;
             case 5: case 6:
                 Debug.Log("next player die if x % 3 != 0");
+                GameManager.Inst.pm.assassinInfo = "x % 3 != 0";
                 break;
         }
         });
@@ -30,6 +34,7 @@ public class AssassinDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
         diceOwner = GameManager.Inst.pm.activatedPlayer;
     }
 
@@ -63,5 +68,7 @@ public class AssassinDice : Dice
             Debug.Log("assassin fail");
             GameManager.Inst.pm.PlayerDie(diceOwner);
         }
+
+        GameManager.Inst.pm.assassinInfo = "";
     }
 }

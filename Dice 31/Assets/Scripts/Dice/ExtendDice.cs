@@ -12,6 +12,8 @@ public class ExtendDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
+        Debug.Log($"You rolled {value} from Extend Dice");
         GameManager.Inst.pm.ExtendMaxCount(value);
     }
 }

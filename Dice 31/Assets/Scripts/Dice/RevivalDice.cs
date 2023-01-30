@@ -21,7 +21,9 @@ public class RevivalDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
         Debug.Log($"You rolled {_success} from {diceName}");
+        
         GameManager.Inst.pm.OperateRevivalDice(success);
     }
     

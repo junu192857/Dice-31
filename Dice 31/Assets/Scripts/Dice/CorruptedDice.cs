@@ -19,7 +19,7 @@ public class CorruptedDice : Dice
         {
             if (++GameManager.Inst.pm.corruptStack == 5)
             {
-                GameManager.Inst.gsm.OperateGameOver();
+                GameManager.Inst.pm.CurrentPlayerDie();
             }
             Debug.Log($"corrupted: {GameManager.Inst.pm.corruptStack}");
         }

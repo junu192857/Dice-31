@@ -13,11 +13,12 @@ public class PlusDice : Dice
 
     public override void EffectBeforeNextPlayerRoll()
     {
-        throw new NotImplementedException();
+        
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
         Debug.Log($"You rolled {value} from {diceName}");
         GameManager.Inst.pm.UpdateCurCount(value);
     }

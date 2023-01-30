@@ -32,6 +32,7 @@ public class JQKDice : Dice
 
     public override void EffectAfterCurrentPlayerRoll()
     {
+        DisableDice();
         switch (value)
         {
             case 1:

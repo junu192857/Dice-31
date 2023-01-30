@@ -10,7 +10,7 @@ public static class DiceUtil
         int value;
         Debug.Log("Rolling " + diceName);
         yield return new WaitForSeconds(0.01f);
-        if (diceName == "On My Own") {
+        if (diceName == "On My Own Dice") {
             GameManager.Inst.gsm.WaitForNumberSelect();
             while (GameManager.Inst.gsm.State == GameState.WaitingForNumber) {
                 yield return null;
