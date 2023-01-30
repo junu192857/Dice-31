@@ -275,8 +275,14 @@ public class PlayManager : MonoBehaviour
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand()
     {
-        Assert.AreEqual(dicesToRoll.Count, 1, "dicesToRoll.Count should be 1");
-        Assert.IsTrue(activatedPlayer.specialDice.available, "This dice has been already used");
+        if (dicesToRoll.Count != 1) {
+            Debug.LogWarning("dicesToRoll.Count should be 1");
+            return;
+        }
+        if (!(activatedPlayer.specialDice.available)) {
+            Debug.LogWarning("This dice has been already used");
+            return;
+        }
         Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Add(activatedPlayer.specialDice);
     }
@@ -284,8 +290,14 @@ public class PlayManager : MonoBehaviour
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand()
     {
-        Assert.AreEqual(dicesToRoll.Count, 2, "dicesToRoll.Count should be 2");
-        Assert.IsFalse(activatedPlayer.specialDice is CorruptedDice, "special dice should not be corrupted dice");
+        if (dicesToRoll.Count != 2) {
+            Debug.LogWarning("dicesToRoll.Count should be 2");
+            return;
+        }
+        if (activatedPlayer.specialDice is CorruptedDice) {
+            Debug.LogWarning("special dice should not be corrupted dice");
+            return;
+        }
         Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
         dicesToRoll.Remove(activatedPlayer.specialDice);
     }
