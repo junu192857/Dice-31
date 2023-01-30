@@ -34,6 +34,8 @@ public class PlayManager : MonoBehaviour
     //public Player playerInfo;
 
     [SerializeField] private List<Dice> dicesToRoll;
+    //테스트용 UI에서 임시로 사용할 bool 변수
+    public bool specialDiceActivated { get => dicesToRoll.Count == 2; }
 
     private List<Dice> previousDices;
 

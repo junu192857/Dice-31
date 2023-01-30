@@ -40,30 +40,53 @@ public class UIManager : MonoBehaviour
                                 $"Corrupt Stack: {GameManager.Inst.pm.corruptStack}";
         Player1Info.text = $"Player 1\n" +
                            $"{GameManager.Inst.pm.playerInfos[0].team} Team / {GameManager.Inst.pm.playerInfos[0].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[0].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[0].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[0])}";
         Player2Info.text = $"Player 2\n" +
                            $"{GameManager.Inst.pm.playerInfos[1].team} Team / {GameManager.Inst.pm.playerInfos[1].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[1].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[1].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[1])}";
         Player3Info.text = $"Player 3\n" +
                            $"{GameManager.Inst.pm.playerInfos[2].team} Team / {GameManager.Inst.pm.playerInfos[2].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[2].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[2].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[2])}";
         Player4Info.text = $"Player 4\n" +
                            $"{GameManager.Inst.pm.playerInfos[3].team} Team / {GameManager.Inst.pm.playerInfos[3].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[3].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[3].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[3])}";
         Player5Info.text = $"Player 5\n" +
                            $"{GameManager.Inst.pm.playerInfos[4].team} Team / {GameManager.Inst.pm.playerInfos[4].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[4].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[4].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[4])}";
         Player6Info.text = $"Player 6\n" +
                            $"{GameManager.Inst.pm.playerInfos[5].team} Team / {GameManager.Inst.pm.playerInfos[5].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[5].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[5].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[5])}";
         Player7Info.text = $"Player 7\n" +
                            $"{GameManager.Inst.pm.playerInfos[6].team} Team / {GameManager.Inst.pm.playerInfos[6].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[6].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[6].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[6])}";
         Player8Info.text = $"Player 8\n" +
                            $"{GameManager.Inst.pm.playerInfos[7].team} Team / {GameManager.Inst.pm.playerInfos[7].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[7].specialDice.diceName}";
+                           $"Special Dice: {GameManager.Inst.pm.playerInfos[7].specialDice.diceName}\n" +
+                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[7])}";
     }
 
+    private string SpecialDiceInfo(Player player) {
+        if (player != GameManager.Inst.pm.activatedPlayer) return "";
+        else
+        {
+            if (!player.specialDice.available)
+            {
+                return "Disabled";
+            }
+            else if (GameManager.Inst.pm.specialDiceActivated)
+            {
+                return "Activated";
+            }
+            else return "Deactivated";
+        }
+    }
     void Start()
     {
         
