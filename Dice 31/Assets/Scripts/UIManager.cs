@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Inst.gsm.State == GameState.WaitingForInput)
+        if (!(GameManager.Inst.gsm.State == GameState.Waiting))
         UpdateUI();
     }
 
