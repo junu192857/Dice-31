@@ -51,6 +51,7 @@ public class PlayManager : MonoBehaviour
     
     private bool pendingRoundEnd = false;
 
+
     public void UpdateCurCount(int amount)
     {
         if (corruptStack == 4)

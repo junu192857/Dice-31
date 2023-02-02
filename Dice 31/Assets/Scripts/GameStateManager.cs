@@ -9,6 +9,7 @@ public enum GameState {
     WaitingForInput,
     WaitingForNumber,
     DiceRolling,
+    AnimationRunning,
     Gameover
 }
 

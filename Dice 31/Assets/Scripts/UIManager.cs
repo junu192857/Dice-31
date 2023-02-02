@@ -9,6 +9,29 @@ public class UIManager : MonoBehaviour
     public Image NumberGauge;
     public Text NumberText;
 
+    private int formerCurCount;
+    private int updatedCurCount;
+    private int formerMaxCount;
+    private int updatedMaxCount;
+
+    //게이지 바를 서서히 움직이는 애니메이션
+    //TODO: Normal Dice, Plus Dice, Minus Dice의 숫자가 이동하면 그때 틀어야 함./
+    public IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
+
+        var runTime = 0.0f;
+
+        RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+
+        Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
+        Vector2 targetWidth = new Vector2(480 * curCount / maxCount, 60);
+
+        while (runTime < duration) {
+            runTime += Time.deltaTime;
+            rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / duration);
+            yield return null;
+        }
+    }
+
 
 
 
@@ -75,7 +98,7 @@ public class UIManager : MonoBehaviour
                            $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[7])}";
         */
 
-        UpdateNumber(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
+        UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
     }
 
     private string SpecialDiceInfo(Player player) {
@@ -94,9 +117,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateNumber(int curCount, int maxCount) { 
-        RectTransform rect = NumberGauge.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
+    public void UpdateNumberText(int curCount, int maxCount) { 
+        //RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+        //rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
+        NumberText.text = $"{curCount} / {maxCount}";
     }
     void Start()
     {
@@ -106,7 +130,17 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (!(GameManager.Inst.gsm.State == GameState.Waiting))
-        UpdateUI();
+        {
+            updatedCurCount = GameManager.Inst.pm.curCount;
+            updatedMaxCount = GameManager.Inst.pm.maxCount;
+            UpdateUI();
+
+            if (formerCurCount != updatedCurCount || formerMaxCount != updatedMaxCount) {
+                StartCoroutine(UpdateGaugeBar(updatedCurCount, updatedMaxCount, 0.5f));
+                formerCurCount = updatedCurCount;
+                formerMaxCount = updatedMaxCount;
+            }
+        }
     }
 
 
