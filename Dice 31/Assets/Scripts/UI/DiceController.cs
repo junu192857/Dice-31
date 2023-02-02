@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,37 +22,6 @@ public class DiceController : MonoBehaviour
         boundZ = extents.z - 0.1f;
     }
 
-    private Vector3 GetMousePosition()
-    {
-        return Camera.main.WorldToScreenPoint(transform.position);
-    }
-
-    private void OnMouseDown()
-    {
-        var rigidBody = GetComponent<Rigidbody>();
-        rigidBody.useGravity = false;
-        defaultDrag = rigidBody.drag;
-        rigidBody.drag = 2;
-        updateTorqueCoroutine = StartCoroutine(UpdateTorque());
-    }
-
-    private IEnumerator UpdateTorque()
-    {
-        while (true)
-        {
-            torque = Random.insideUnitSphere * 3.0f;
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    private void OnMouseUp()
-    {
-        var rigidBody = GetComponent<Rigidbody>();
-        rigidBody.useGravity = true;
-        rigidBody.drag = defaultDrag;
-        StopCoroutine(updateTorqueCoroutine);
-    }
-
     private void OnMouseDrag()
     {
         float planeY = 0.8f;
@@ -66,13 +36,8 @@ public class DiceController : MonoBehaviour
         point.z = Mathf.Clamp(point.z, -boundZ, boundZ);
         
         var diff = point - transform.position;
-        if (diff.magnitude > 0.1f)
-        {
-            var force = diff.normalized * Mathf.Clamp(diff.magnitude, 0, 3f);
-            GetComponent<Rigidbody>().AddForce(force);
-        }
-
-        // GetComponent<Rigidbody>().AddTorque(torque);
+        var velocity = diff * 10;
+        GetComponent<Rigidbody>().velocity = velocity;
     }
 
     // only if dice collision.transform.tag == "plate" is true can roll dice
