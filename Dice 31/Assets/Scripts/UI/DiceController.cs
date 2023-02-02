@@ -73,7 +73,6 @@ public class DiceController : MonoBehaviour
             GetComponent<Rigidbody>().angularVelocity.magnitude < 0.001f)
         {
             State = DiceState.Idle;
-            transform.position = DefaultPos;
             var maxFace = checkNum.GetResultNum();
             Debug.Log($"dice face: {maxFace}");
             onDiceSettle.Invoke(maxFace);
