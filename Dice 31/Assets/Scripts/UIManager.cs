@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-
+    public Image NumberGauge;
+    public Text NumberText;
 
 
 
@@ -34,7 +35,7 @@ public class UIManager : MonoBehaviour
     public Text Player7Info;
     public Text Player8Info;
     public void UpdateUI() {
-        MatchRoundCount.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
+        /*MatchRoundCount.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
         NumberCount.text = $"Number: {GameManager.Inst.pm.curCount} / {GameManager.Inst.pm.maxCount}";
         SpecialDiceInfos.text = $"Bomb Dice Number: {GameManager.Inst.pm.bombDiceNum}\n" +
                                 $"Assassin Dice Trigger: {GameManager.Inst.pm.assassinInfo}\n" +
@@ -72,6 +73,9 @@ public class UIManager : MonoBehaviour
                            $"{GameManager.Inst.pm.playerInfos[7].team} Team / {GameManager.Inst.pm.playerInfos[7].deadString}\n" +
                            $"Special Dice: {GameManager.Inst.pm.playerInfos[7].specialDice.diceName}\n" +
                            $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[7])}";
+        */
+
+        UpdateNumber(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
     }
 
     private string SpecialDiceInfo(Player player) {
@@ -88,6 +92,11 @@ public class UIManager : MonoBehaviour
             }
             else return "Deactivated";
         }
+    }
+
+    public void UpdateNumber(int curCount, int maxCount) { 
+        RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+        rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
     }
     void Start()
     {

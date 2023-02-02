@@ -33,6 +33,8 @@ public class DiceController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
+        
+        //transform.position = new Vector3(transform.position.x, 0.5f, transform.position.y);
 
     }
 

@@ -284,31 +284,41 @@ public class PlayManager : MonoBehaviour
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand()
     {
-        if (dicesToRoll.Count != 1) {
-            Debug.LogWarning("dicesToRoll.Count should be 1");
-            return;
+        if (GameManager.Inst.gsm.State == GameState.WaitingForInput)
+        {
+            if (dicesToRoll.Count != 1)
+            {
+                Debug.LogWarning("dicesToRoll.Count should be 1");
+                return;
+            }
+            if (!(activatedPlayer.specialDice.available))
+            {
+                Debug.LogWarning("This dice has been already used");
+                return;
+            }
+            Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
+            dicesToRoll.Add(activatedPlayer.specialDice);
         }
-        if (!(activatedPlayer.specialDice.available)) {
-            Debug.LogWarning("This dice has been already used");
-            return;
-        }
-        Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
-        dicesToRoll.Add(activatedPlayer.specialDice);
     }
 
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand()
     {
-        if (dicesToRoll.Count != 2) {
-            Debug.LogWarning("dicesToRoll.Count should be 2");
-            return;
+        if (GameManager.Inst.gsm.State == GameState.WaitingForInput)
+        {
+            if (dicesToRoll.Count != 2)
+            {
+                Debug.LogWarning("dicesToRoll.Count should be 2");
+                return;
+            }
+            if (activatedPlayer.specialDice is CorruptedDice)
+            {
+                Debug.LogWarning("special dice should not be corrupted dice");
+                return;
+            }
+            Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
+            dicesToRoll.Remove(activatedPlayer.specialDice);
         }
-        if (activatedPlayer.specialDice is CorruptedDice) {
-            Debug.LogWarning("special dice should not be corrupted dice");
-            return;
-        }
-        Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
-        dicesToRoll.Remove(activatedPlayer.specialDice);
     }
 
 
