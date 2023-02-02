@@ -48,6 +48,7 @@ public class PlayManager : MonoBehaviour
     public int corruptStack = 0;
     public int onMyOwnDiceNum = 0;
     public string assassinInfo;
+    private Player playerToRevive;
     
     private bool pendingRoundEnd = false;
 
@@ -377,11 +378,16 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectAfterCurrentPlayerRoll();
         }
-
-
+        
         if (CountExceeded())
         {
             CurrentPlayerDie();
+        }
+
+        if (playerToRevive != null)
+        {
+            playerToRevive.Revive();
+            playerToRevive = null;
         }
 
         if (pendingRoundEnd)
@@ -403,15 +409,15 @@ public class PlayManager : MonoBehaviour
     public void OperateRevivalDice(bool success) {
         if (success)
         {
-            if (!playerInfos.Any(player => player.team == activatedPlayer.team && player.dead))
+            List<Player> availablePlayers = playerInfos.FindAll(player =>
+                (player.team == activatedPlayer.team && player.dead) || player == activatedPlayer);
+            if (availablePlayers.Count == 0)
             {
-                Debug.Log("Sorry, but there is no dead player in your team");
+                Debug.Log("Sorry, but there is no player to revive in your team");
             }
             else
             {
-                List<Player> deadplayers = playerInfos.FindAll(player => player.team == activatedPlayer.team && player.dead);
-                Player playerToRevive = deadplayers[Random.Range(0, deadplayers.Count)];
-                playerToRevive.Revive();
+                playerToRevive = availablePlayers[Random.Range(0, availablePlayers.Count)];
                 Debug.Log($"You Revived {playerToRevive.playerName}");
             }
         }
