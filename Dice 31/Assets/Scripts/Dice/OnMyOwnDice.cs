@@ -8,7 +8,7 @@ public class OnMyOwnDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => value = i);
+        return DiceUtil.Roll(this, diceName, i => value = i);
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -20,5 +20,11 @@ public class OnMyOwnDice : Dice
         DisableDice();
         Debug.Log($"You selected {value} from On My Own Dice");
         GameManager.Inst.pm.UpdateCurCount(value);
+    }
+
+    private void Awake()
+    {
+        diceName = "On My Own Dice";
+        color = DiceColor.Green;
     }
 }

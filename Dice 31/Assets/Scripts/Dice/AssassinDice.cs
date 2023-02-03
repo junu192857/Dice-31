@@ -11,20 +11,20 @@ public class AssassinDice : Dice
     public override IEnumerator Roll()
     {
         //GameManager.Inst.pm.assassinInfo는 테스트용 UI 작성을 위해 임시로 추가한 것
-        return DiceUtil.Roll(diceName, i =>
+        return DiceUtil.Roll(this, diceName, i =>
         {
             value = i;
         switch (value)
         {
-            case 1: case 2:
+            case 1:
                 Debug.Log("next player die if x < 5");
                 GameManager.Inst.pm.assassinInfo = "x < 5";
                 break;
-            case 3: case 4:
+            case 2:
                 Debug.Log("next player die if x > 2");
                 GameManager.Inst.pm.assassinInfo = "x > 2";
                 break;
-            case 5: case 6:
+            case 3:
                 Debug.Log("next player die if x % 3 != 0");
                 GameManager.Inst.pm.assassinInfo = "x % 3 != 0";
                 break;
@@ -44,13 +44,13 @@ public class AssassinDice : Dice
         bool assassinResult = false;
         switch (value)
         {
-            case 1: case 2:
+            case 1:
                 assassinResult = x < 5;
                 break;
-            case 3: case 4:
+            case 2:
                 assassinResult = x > 2;
                 break;
-            case 5: case 6:
+            case 3:
                 assassinResult = x % 3 != 0;
                 break;
             default:
@@ -70,5 +70,11 @@ public class AssassinDice : Dice
         }
 
         GameManager.Inst.pm.assassinInfo = "";
+    }
+
+    private void Awake()
+    {
+        diceName = "Assassin Dice";
+        color = DiceColor.Red;
     }
 }

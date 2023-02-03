@@ -10,7 +10,7 @@ public class CorruptedDice : Dice
     private Player owner;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => corrupted = i <= 2);
+        return DiceUtil.Roll(this, diceName, i => corrupted = i == 1);
     }
 
     public override void EffectAfterCurrentPlayerRoll()
@@ -38,5 +38,11 @@ public class CorruptedDice : Dice
             owner.specialDice = current.specialDice;
             current.specialDice = this;
         }
+    }
+
+    private void Awake()
+    {
+        diceName = "Corrupted Dice";
+        color = DiceColor.Purple;
     }
 }

@@ -8,7 +8,7 @@ public class BombDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => value = i);
+        return DiceUtil.Roll(this, diceName, i => value = i);
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -20,5 +20,11 @@ public class BombDice : Dice
     public override void EffectAfterCurrentPlayerRoll()
     {
         DisableDice();
+    }
+
+    private void Awake()
+    {
+        diceName = "Bomb Dice";
+        color = DiceColor.Red;
     }
 }

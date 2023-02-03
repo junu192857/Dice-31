@@ -12,7 +12,7 @@ public class RevivalDice : Dice
     
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => DiceOperation(i));
+        return DiceUtil.Roll(this, diceName, i => DiceOperation(i));
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -28,10 +28,17 @@ public class RevivalDice : Dice
     }
     
     private void DiceOperation(int input) {
-        if (input == 1 || input == 2)
-        {
+        if (input == 1) {
+            success = true;
+        }
+        else {
             success = false;
         }
-        else success = true;
+    }
+
+    private void Awake()
+    {
+        diceName = "Revival Dice";
+        color = DiceColor.Green;
     }
 }

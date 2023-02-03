@@ -7,12 +7,14 @@ using Random = UnityEngine.Random;
 public class NormalDice : Dice
 {
     public int value { get; private set; }
+
+    private CheckNum cn;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i =>
+        return DiceUtil.Roll(this, diceName, i =>
         {
             value = i;
-            Debug.Log($"{diceName} : {value}");
+            Debug.Log($"You rolled {value} from {diceName}");
         });
 
     }
@@ -25,5 +27,11 @@ public class NormalDice : Dice
     public override void EffectAfterCurrentPlayerRoll()
     {
         GameManager.Inst.pm.UpdateCurCount(value);
+    }
+
+    private void Awake()
+    {
+        diceName = "Normal Dice";
+        color = DiceColor.Yellow;
     }
 }

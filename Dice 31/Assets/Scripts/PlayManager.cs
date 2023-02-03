@@ -8,6 +8,10 @@ using Random = UnityEngine.Random;
 
 public class PlayManager : MonoBehaviour
 {
+    [SerializeField] private Vector3 StoragePosition;
+    [SerializeField] private Vector3 NormalDicePosition;
+    [SerializeField] private Vector3 SpecialDicePosition;
+
     public List<GameObject> players;
     public List<Player> playerInfos;
 
@@ -252,6 +256,10 @@ public class PlayManager : MonoBehaviour
 
         LoadDicesToRoll();
 
+        activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
+        activatedPlayer.specialDice.GetComponent<DiceController>().ResetDice();
+        GameManager.Inst.um.UpdateDiceSelectPanel();
+
         if (CountExceeded())
         {
             CurrentPlayerDie();
@@ -260,6 +268,7 @@ public class PlayManager : MonoBehaviour
         if (pendingRoundEnd) {
             ResetRound();
         }
+
         GameManager.Inst.gsm.WaitForInput();
     }
 
@@ -279,8 +288,14 @@ public class PlayManager : MonoBehaviour
     {
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
+        activatedPlayer.normalDice.transform.position = NormalDicePosition;
+        activatedPlayer.normalDice.transform.rotation = Quaternion.identity;
         if (activatedPlayer.specialDice is CorruptedDice)
+        {
             dicesToRoll.Add(activatedPlayer.specialDice);
+            activatedPlayer.specialDice.transform.position = SpecialDicePosition;
+            activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
+        }
     }
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
@@ -300,6 +315,8 @@ public class PlayManager : MonoBehaviour
             }
             Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
             dicesToRoll.Add(activatedPlayer.specialDice);
+            activatedPlayer.specialDice.transform.position = SpecialDicePosition;
+            activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
         }
     }
 
@@ -320,9 +337,20 @@ public class PlayManager : MonoBehaviour
             }
             Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
             dicesToRoll.Remove(activatedPlayer.specialDice);
+            activatedPlayer.specialDice.transform.position = StoragePosition;
         }
     }
 
+    public void OnClickToggleButton(bool isOn) {
+            if (isOn)
+            {
+                AddSpecialDiceCommand();
+            }
+            else
+            {
+                RemoveSpecialDiceCommand();
+            }
+    }
 
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
     public void OnRollPlayerDice()
@@ -346,12 +374,9 @@ public class PlayManager : MonoBehaviour
     //주사위 굴리기 이후 처리
     private void EndPlayerTurn()
     {
-        /* (0. 주사위 숫자로 인한 카운트 증가는 주사위들의 Roll 메소드에서 처리했음. 단 예외로 연산자 주사위의 2++을 처리해야 함)
-         * 1. curCount >= maxCount일 때 현재 플레이어 사망 처리
-         * 2. 주사위의 특수 능력 발동 (대부분의 특수 주사위)
-         * 3. 주사위의 특수 능력 발동으로 인한 플레이어 사망 처리(폭탄 주사위, 암살 주사위, 부활 주사위, 타락 주사위)
-         * 4. 사망한 플레이어가 있다면 라운드를 초기화하고, 
-         */
+        activatedPlayer.normalDice.transform.position = StoragePosition;
+        activatedPlayer.specialDice.transform.position = StoragePosition;
+
         foreach (var dice in previousDices)
         {
             dice.EffectAfterNextPlayerRoll();

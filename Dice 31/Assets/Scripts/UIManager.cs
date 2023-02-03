@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
     private int formerMaxCount;
     private int updatedMaxCount;
 
+    public Toggle NormalDiceToggle;
+    public Toggle SpecialDiceToggle;
+
     //게이지 바를 서서히 움직이는 애니메이션
     //TODO: Normal Dice, Plus Dice, Minus Dice의 숫자가 이동하면 그때 틀어야 함./
     public IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
@@ -44,7 +47,25 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    //Run whenever new player starts his turn
+    public void UpdateDiceSelectPanel() {
+        //TODO: 토글 버튼 위의 이미지를 플레이어의 특수 주사위에 맞게 변경
 
+        NormalDiceToggle.interactable = false;
+        NormalDiceToggle.isOn = true;
+        SpecialDiceToggle.interactable = true;
+        SpecialDiceToggle.isOn = false;
+        if (GameManager.Inst.pm.activatedPlayer.specialDice is CorruptedDice)
+        {
+            SpecialDiceToggle.isOn = true;
+            SpecialDiceToggle.interactable = false;
+        }
+        else if (!GameManager.Inst.pm.activatedPlayer.specialDice.available) {
+            SpecialDiceToggle.interactable = false;
+        }
+
+        Debug.Log($"{GameManager.Inst.pm.activatedPlayer.specialDice.available}");
+    }
 
 
 
@@ -113,21 +134,6 @@ public class UIManager : MonoBehaviour
         UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
     }
 
-    private string SpecialDiceInfo(Player player) {
-        if (player != GameManager.Inst.pm.activatedPlayer) return "";
-        else
-        {
-            if (!player.specialDice.available)
-            {
-                return "Disabled";
-            }
-            else if (GameManager.Inst.pm.specialDiceActivated)
-            {
-                return "Activated";
-            }
-            else return "Deactivated";
-        }
-    }
 
     public void UpdateNumberText(int curCount, int maxCount) { 
         //RectTransform rect = NumberGauge.GetComponent<RectTransform>();

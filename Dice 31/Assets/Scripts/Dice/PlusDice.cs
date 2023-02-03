@@ -8,7 +8,7 @@ public class PlusDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(diceName, i => DiceOperation(i));
+        return DiceUtil.Roll(this, diceName, i => value = i);
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -23,25 +23,9 @@ public class PlusDice : Dice
         GameManager.Inst.pm.UpdateCurCount(value);
     }
 
-    private void DiceOperation(int input)
+    private void Awake()
     {
-        switch (input)
-        {
-            case 1:
-            case 2:
-                value = 1;
-                break;
-            case 3:
-            case 4:
-                value = 2;
-                break;
-            case 5:
-            case 6:
-                value = 3;
-                break;
-            default:
-                Debug.Log($"Unexpected Input {input}");
-                break;
-        }
+        diceName = "Plus Dice";
+        color = DiceColor.Green;
     }
 }

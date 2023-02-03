@@ -5,11 +5,12 @@ using Random = UnityEngine.Random;
 
 public static class DiceUtil
 {
-    public static IEnumerator Roll(String diceName, Action<int> callback)
+    public static IEnumerator Roll(Dice dice, String diceName, Action<int> callback)
     {
+        DiceController controller = dice.GetComponent<DiceController>();
         int value;
         Debug.Log("Rolling " + diceName);
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitUntil(() => controller.maxFace != 0);
         if (diceName == "On My Own Dice") {
             GameManager.Inst.gsm.WaitForNumberSelect();
             while (GameManager.Inst.gsm.State == GameState.WaitingForNumber) {
@@ -17,7 +18,7 @@ public static class DiceUtil
             }
             value = GameManager.Inst.pm.onMyOwnDiceNum;
         }
-        else value = Random.Range(1, 7);
+        else value = controller.maxFace;
         callback(value);
     }
 }
