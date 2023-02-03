@@ -39,6 +39,6 @@ public class RevivalDice : Dice
     private void Awake()
     {
         diceName = "Revival Dice";
-        color = DiceColor.Green;
+        color = DiceColor.Red;
     }
 }
