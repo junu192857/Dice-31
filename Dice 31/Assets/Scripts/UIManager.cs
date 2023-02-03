@@ -21,10 +21,22 @@ public class UIManager : MonoBehaviour
         var runTime = 0.0f;
 
         RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+        Image image = NumberGauge.GetComponent<Image>();
 
         Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
         Vector2 targetWidth = new Vector2(480 * curCount / maxCount, 60);
 
+        if (targetWidth.x < 240)
+        {
+            image.color = Color.green;
+        }
+        else if (targetWidth.x >= 240 && targetWidth.x < 360)
+        {
+            image.color = Color.yellow;
+        }
+        else {
+            image.color = Color.red;
+        }
         while (runTime < duration) {
             runTime += Time.deltaTime;
             rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / duration);

@@ -121,7 +121,7 @@ public class PlayManager : MonoBehaviour
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
         foreach (var player in playerInfos) {
-            if (player.specialDice.color == Color.Green)
+            if (player.specialDice.color == DiceColor.Green)
             {
                 player.specialDice.EnableDice();
             }
