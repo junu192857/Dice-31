@@ -71,7 +71,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ee401229c922ca94498c78d945194ed3, type: 2}
+  - {fileID: 2100000, guid: b1bf13bbadd0c3941b3586053090c18b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -135,6 +135,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultPos: {x: 0, y: 0, z: 0}
+  plate: {fileID: 0}
+  onDiceSettle:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &9073554583100854300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +159,6 @@ MonoBehaviour:
   - {fileID: 9073554583076847567}
   - {fileID: 9073554583112677966}
   DiceNumList: 020000000500000005000000050000000200000002000000
-  ResultNum: 0
 --- !u!1 &9073554581895610510
 GameObject:
   m_ObjectHideFlags: 0
