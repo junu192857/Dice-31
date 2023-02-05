@@ -3209,7 +3209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add3689f91107b144ab7f30ea736e4ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.562
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: add3689f91107b144ab7f30ea736e4ec, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3593,10 +3593,10 @@ PrefabInstance:
     - target: {fileID: 7604799740589544516, guid: 11d09588db422dc4b910e1841a2227d4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ac67c98aa8f0e234d8050ea6e8bb147d, type: 2}
+      objectReference: {fileID: 2100000, guid: ba7136fe13ee8cc40922e116f1831500, type: 2}
     - target: {fileID: 8253217274614068625, guid: 11d09588db422dc4b910e1841a2227d4, type: 3}
       propertyPath: m_Name
-      value: OperatorDice
+      value: JQKDice
       objectReference: {fileID: 0}
     - target: {fileID: 8773717749488512811, guid: 11d09588db422dc4b910e1841a2227d4, type: 3}
       propertyPath: m_RootOrder
@@ -4908,6 +4908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NumberGauge: {fileID: 735190173}
   NumberText: {fileID: 1889877222}
+  NormalDiceToggle: {fileID: 0}
+  SpecialDiceToggle: {fileID: 0}
   MatchRoundCount: {fileID: 0}
   NumberCount: {fileID: 0}
   SpecialDiceInfos: {fileID: 0}
@@ -4920,6 +4922,25 @@ MonoBehaviour:
   Player6Info: {fileID: 0}
   Player7Info: {fileID: 0}
   Player8Info: {fileID: 0}
+  alivePlayers:
+  - {fileID: 3704754}
+  - {fileID: 109607405}
+  - {fileID: 1670920610}
+  - {fileID: 1794793190}
+  - {fileID: 552917060}
+  - {fileID: 217919747}
+  - {fileID: 400806172}
+  - {fileID: 1945581184}
+  playerPanels:
+  - {fileID: 189758995}
+  - {fileID: 1460868471}
+  - {fileID: 583435942}
+  - {fileID: 952271707}
+  - {fileID: 424387441}
+  - {fileID: 1056653285}
+  - {fileID: 165258056}
+  - {fileID: 884960404}
+  currentPlayerPanel: {fileID: 238519895}
 --- !u!1 &1945581182
 GameObject:
   m_ObjectHideFlags: 0
@@ -5171,6 +5192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2128e8f26f6154fb7504c0d08f9d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StoragePosition: {x: 0, y: 0, z: 0}
+  NormalDicePosition: {x: 0, y: 0, z: 0}
+  SpecialDicePosition: {x: 0, y: 0, z: 0}
   players: []
   playerInfos: []
   turnDirection: 1

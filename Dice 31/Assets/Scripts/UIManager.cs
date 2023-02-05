@@ -132,6 +132,8 @@ public class UIManager : MonoBehaviour
         */
 
         UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
+        UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
+        
     }
 
 
@@ -140,6 +142,30 @@ public class UIManager : MonoBehaviour
         //rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
         NumberText.text = $"{curCount} / {maxCount}";
     }
+
+    public List<Player> alivePlayers;
+    public List<GameObject> playerPanels;
+    public GameObject currentPlayerPanel;
+    public void UpdatePlayerPanel(Player activatedPlayer)
+    {
+        int i;
+        for(i=0; i < 8; i++)
+        {
+            if (!alivePlayers[i].alive || alivePlayers[i]==null)
+            {
+                playerPanels[i].SetActive(true);
+                alivePlayers.Remove(alivePlayers[i]);
+            }
+            if (alivePlayers[i].Equals(activatedPlayer))
+            {
+                currentPlayerPanel.transform.position = playerPanels[i].transform.position;
+            }
+        }
+
+        // 현재플레이어 표시를 변경 - 죽지 않은 수에서만 돌아감
+
+    }
+
     void Start()
     {
         
