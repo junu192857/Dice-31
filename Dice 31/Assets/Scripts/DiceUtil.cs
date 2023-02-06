@@ -19,6 +19,7 @@ public static class DiceUtil
             value = GameManager.Inst.pm.onMyOwnDiceNum;
         }
         else value = controller.maxFace;
+        yield return new WaitForSeconds(0.5f);
         callback(value);
     }
 }
