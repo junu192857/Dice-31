@@ -633,6 +633,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultPos: {x: 0, y: 0, z: 0}
+  plate: {fileID: 0}
+  maxFace: 0
+  onDiceSettle:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3678062557188347969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,5 +657,4 @@ MonoBehaviour:
   - {fileID: 3678062557017372245}
   - {fileID: 3678062557195794322}
   - {fileID: 3678062556967350803}
-  DiceNumList: 000000000100000000000000010000000000000001000000
-  ResultNum: 0
+  DiceNumList: 000000000100000000000000000000000000000001000000

@@ -162,8 +162,6 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // 현재플레이어 표시를 변경 - 죽지 않은 수에서만 돌아감
-
     }
 
     void Start()
