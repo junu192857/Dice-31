@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         }
         else {
             image.color = Color.red;
-        }
+        }  
         while (runTime < duration) {
             runTime += Time.deltaTime;
             rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / duration);
