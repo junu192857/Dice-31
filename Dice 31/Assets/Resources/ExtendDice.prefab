@@ -634,7 +634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultPos: {x: 0, y: 0, z: 0}
-  plate: {fileID: 0}
+  plate: {fileID: 919132149155446097, guid: ac78c29a66b81bb49b745b6f5427151d, type: 3}
   maxFace: 0
   onDiceSettle:
     m_PersistentCalls:
