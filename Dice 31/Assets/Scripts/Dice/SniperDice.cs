@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnMyOwnDice : Dice
+public class SniperDice : Dice
 {
     public override IEnumerator Roll()
     {yield break;
@@ -16,6 +16,6 @@ public class OnMyOwnDice : Dice
 
     private void Start()
     {
-        color = Color.Green;
+        color = Color.Red;
     }
 }

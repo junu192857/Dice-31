@@ -6,32 +6,22 @@ using Random = UnityEngine.Random;
 
 public class NormalDice : Dice
 {
-    public int value { get; private set; }
-
-    private CheckNum cn;
+    private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i =>
-        {
-            value = i;
-            Debug.Log($"You rolled {value} from {diceName}");
-        });
-
-    }
-
-    public override void EffectBeforeNextPlayerRoll()
-    {
-        // NOP
+        Debug.Log("Rolling...");
+        yield return new WaitForSeconds(1);
+        value = Random.Range(1, 7);
+        Debug.Log($"You rolled {value} from Normal Dice");
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        GameManager.Inst.pm.UpdateCurCount(value);
+        GameManager.Inst.pm.curCount += value;
     }
 
-    private void Awake()
+    private void Start()
     {
-        diceName = "Normal Dice";
-        color = DiceColor.Yellow;
+        color = Color.Yellow;
     }
 }

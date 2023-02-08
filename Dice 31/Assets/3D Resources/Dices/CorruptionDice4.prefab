@@ -9762,7 +9762,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultPos: {x: 0, y: 0, z: 0}
   plate: {fileID: 0}
-  maxFace: 0
   onDiceSettle:
     m_PersistentCalls:
       m_Calls: []
@@ -9785,7 +9784,7 @@ MonoBehaviour:
   - {fileID: 7588491773462582380}
   - {fileID: 7588491773052753323}
   - {fileID: 7588491773545893930}
-  DiceNumList: 000000000100000000000000000000000000000001000000
+  DiceNumList: 000000000100000000000000010000000000000001000000
 --- !u!1 &7588491771600866870
 GameObject:
   m_ObjectHideFlags: 0

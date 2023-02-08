@@ -8,27 +8,30 @@ public class CheckNum : MonoBehaviour
     public int[] DiceNumList;
 
     private int listCount;
+    private GameObject diceTemp;
+    private float highTemp;
+    public int ResultNum;
 
     private void Start()
     {
         listCount = DiceFaceList.Length;
     }
 
-    public int GetResultNum()
+    private int GetResultNum()
     {
-        int resultNum = 0;
-        float highTemp = 0;
+        ResultNum = 0;
+        highTemp = 0;
         int i;
 
-        for(i = 0; i < listCount; i++)
+        for(i=0; i < listCount; i++)
         {
-            var y = DiceFaceList[i].transform.position.y; 
-            if (y > highTemp)
+            diceTemp = DiceFaceList[i];
+            if (diceTemp.transform.position.y > highTemp)
             {
-                highTemp = y;
-                resultNum = i;
+                highTemp = diceTemp.transform.position.y;
+                ResultNum = i;
             }
         }
-        return DiceNumList[resultNum];
+        return DiceNumList[i];
     }
 }

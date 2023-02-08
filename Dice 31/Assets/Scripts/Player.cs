@@ -14,12 +14,9 @@ public class Player : MonoBehaviour
     public bool alive { get; private set; }
     public bool dead { get => !alive; }
 
-    public string deadString { get => dead ? "Dead" : "Alive"; }
-
-    public bool specialDiceUsed { get; private set; }
     public Team team { get; private set; }
 
-    public NormalDice normalDice;
+    public Dice normalDice;
     public Dice specialDice;
 
     public void Start()
@@ -53,17 +50,5 @@ public class Player : MonoBehaviour
     public void SetBlueTeam()
     { 
         team = Team.Blue;
-    }
-
-    public void EnableSpecialDice() {
-        if (specialDiceUsed) {
-            specialDiceUsed = false;
-        }
-    }
-
-    public void DisableSpecialDice() {
-        if (!specialDiceUsed) {
-            specialDiceUsed = true;
-        }
     }
 }

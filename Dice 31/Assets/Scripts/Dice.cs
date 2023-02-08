@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DiceColor {
+public enum Color {
     Yellow,
     Green,
     Red,
@@ -13,20 +13,10 @@ public abstract class Dice : MonoBehaviour
 {
     public abstract IEnumerator Roll();
 
-
-    public virtual void EffectAfterCurrentPlayerRoll() { }
-    public virtual void EffectBeforeNextPlayerRoll() { }
-    public virtual void EffectAfterNextPlayerRoll() { }
-
-    public DiceColor color;
-    public string diceName;
-    public bool available { get; private set; }
-
-    public void EnableDice() {
-        available = true;
+    public void EffectBeforeNextPlayerRoll()
+    {
     }
 
-    public void DisableDice() {
-        available = false;
-    }
+    public abstract void EffectAfterCurrentPlayerRoll();
+    public Color color;
 }

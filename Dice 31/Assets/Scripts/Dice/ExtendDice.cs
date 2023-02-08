@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class ExtendDice : Dice
 {
-    private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => value = i == 6 ? 20 : i);
+        yield break;
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        DisableDice();
-        Debug.Log($"You rolled {value} from Extend Dice");
-        GameManager.Inst.pm.ExtendMaxCount(value);
     }
 
-    private void Awake()
+    private void Start()
     {
-        diceName = "Extend Dice";
-        color = DiceColor.Green;
+        color = Color.Green;
     }
 }

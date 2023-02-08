@@ -5,27 +5,17 @@ using UnityEngine;
 
 public class PlusDice : Dice
 {
-    private int value;
     public override IEnumerator Roll()
-    {
-        return DiceUtil.Roll(this, diceName, i => value = i);
-    }
-
-    public override void EffectBeforeNextPlayerRoll()
-    {
-        
+    {yield break;
     }
 
     public override void EffectAfterCurrentPlayerRoll()
     {
-        DisableDice();
-        Debug.Log($"You rolled {value} from {diceName}");
-        GameManager.Inst.pm.UpdateCurCount(value);
+        throw new NotImplementedException();
     }
 
-    private void Awake()
+    private void Start()
     {
-        diceName = "Plus Dice";
-        color = DiceColor.Green;
+        color = Color.Green;
     }
 }
