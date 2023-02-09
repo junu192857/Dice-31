@@ -132,7 +132,7 @@ public class UIManager : MonoBehaviour
         */
 
         UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
-        UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
+        //UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
         
     }
 
@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
         NumberText.text = $"{curCount} / {maxCount}";
     }
 
-    public List<Player> alivePlayers;
+    /* public List<Player> alivePlayers;
     public List<GameObject> playerPanels;
     public GameObject currentPlayerPanel;
     public void UpdatePlayerPanel(Player activatedPlayer)
@@ -162,7 +162,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-    }
+    } */
 
     void Start()
     {

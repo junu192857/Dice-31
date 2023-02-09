@@ -3186,7 +3186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &891077804
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3239,14 +3239,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.1254902}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: dde007ac6bdd9f24d94931f51bb0751a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5126,7 +5126,7 @@ RectTransform:
   m_GameObject: {fileID: 1593426601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 891077804}
@@ -5135,7 +5135,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 550, y: 270}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1593426603
 MonoBehaviour:
@@ -5986,25 +5986,6 @@ MonoBehaviour:
   Player6Info: {fileID: 0}
   Player7Info: {fileID: 0}
   Player8Info: {fileID: 0}
-  alivePlayers:
-  - {fileID: 3704754}
-  - {fileID: 109607405}
-  - {fileID: 1670920610}
-  - {fileID: 1794793190}
-  - {fileID: 552917060}
-  - {fileID: 217919747}
-  - {fileID: 400806172}
-  - {fileID: 1945581184}
-  playerPanels:
-  - {fileID: 189758995}
-  - {fileID: 1460868471}
-  - {fileID: 583435942}
-  - {fileID: 952271707}
-  - {fileID: 424387441}
-  - {fileID: 1056653285}
-  - {fileID: 165258056}
-  - {fileID: 884960404}
-  currentPlayerPanel: {fileID: 238519895}
 --- !u!1 &1945581182
 GameObject:
   m_ObjectHideFlags: 0
