@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: PWChalk SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 957096731
   material: {fileID: 120353767417335455}
-  materialHashCode: 0
+  materialHashCode: 1871280091
   m_Version: 1.1.0
   m_SourceFontFileGUID: cc17fcdaeb173b3478535244a462fbcd
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: cc17fcdaeb173b3478535244a462fbcd, type: 3}
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_SubscriptSize: 0.5
     m_UnderlineOffset: -12
     m_UnderlineThickness: 4
-    m_StrikethroughOffset: 0
+    m_StrikethroughOffset: 24.4
     m_StrikethroughThickness: 4
     m_TabWidth: 24
   m_GlyphTable:
@@ -2049,9 +2049,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.8
+    - _ScaleRatioB: 0.65
+    - _ScaleRatioC: 0.65
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
