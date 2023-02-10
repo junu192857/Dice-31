@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public List<Image> PlayerImages;
+
     public Image NumberGauge;
+    public List<Sprite> PlayerStates;
     public Text NumberText;
 
     private int formerCurCount;
@@ -133,10 +136,54 @@ public class UIManager : MonoBehaviour
 
         UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
         //UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
+
+
         
     }
 
+    public void ResetPlayerImage() {
+        for (int i = 0; i < 7; i += 2)
+        {
+            PlayerImages[i].GetComponent<Image>().sprite = PlayerStates[0];
+            PlayerImages[i + 1].GetComponent<Image>().sprite = PlayerStates[10];
+        }
+    }
+    public void PlayerDeactivate(int playerIndex) {
+        if (playerIndex % 2 == 0)
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[0];
+        }
+        else
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[10];
+        }
+    }
+    public void PlayerActivate(int playerIndex) {
+        if (playerIndex % 2 == 0)
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[1];
+        }
+        else {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[11];
+        }
+    }
 
+    public void PlayerDie(int playerIndex) {
+        //TODO: 죽은 이유에 따라 다른 이미지 띄우기
+        Debug.Log("Hello from PlayerDie in UIManager");
+        if (playerIndex % 2 == 0)
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[2];
+            Debug.Log("Red Team Member dead");
+        }
+        else
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[12];
+            Debug.Log("Blue Team Member Dead");
+        }
+    }
+
+    
     public void UpdateNumberText(int curCount, int maxCount) { 
         //RectTransform rect = NumberGauge.GetComponent<RectTransform>();
         //rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
@@ -163,10 +210,9 @@ public class UIManager : MonoBehaviour
         }
 
     } */
-
     void Start()
     {
-        
+        ResetPlayerImage();
     }
 
     void Update()

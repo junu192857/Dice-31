@@ -16,7 +16,7 @@ public class DiceController : MonoBehaviour
     private DiceState state = DiceState.Idle;
     private CheckNum checkNum;
     public int maxFace;
-    private bool alreadyRolled;
+    public bool alreadyRolled;
     DiceState State
     {
         get => state;
@@ -88,6 +88,12 @@ public class DiceController : MonoBehaviour
         }
     }
 
+    public void ChangeStateToRolling() {
+        State = DiceState.Rolling;
+    }
+    public bool CheckDiceState() {
+        return State == DiceState.Idle;
+    }
     private void Update()
     {
         if (State != DiceState.Rolling) return;

@@ -254,6 +254,8 @@ public class PlayManager : MonoBehaviour
             dice.EffectBeforeNextPlayerRoll();
         }
 
+        GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
+
         LoadDicesToRoll();
 
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
@@ -360,6 +362,21 @@ public class PlayManager : MonoBehaviour
         StartCoroutine(RollPlayerDice());
     }
 
+    //주사위 바로 굴리기 버튼을 눌렀을 때 작동할 함수
+    public void InstantlyRollPlayerDice() {
+        OnRollPlayerDice();
+        foreach (Dice dice in dicesToRoll) {
+            DiceController controller = dice.GetComponent<DiceController>();
+            Rigidbody rigidbody = controller.GetComponent<Rigidbody>();
+            if (controller.CheckDiceState() && !controller.alreadyRolled)
+            {
+                rigidbody.velocity = new Vector3(Random.Range(-5f, 5f), Random.Range(5f, 7f), Random.Range(-5f, 5f));
+                rigidbody.rotation = Random.rotation;
+                controller.ChangeStateToRolling();
+            }
+        }
+    }
+
     private IEnumerator RollPlayerDice()
     {
         var coroutines = dicesToRoll.ConvertAll(dice => StartCoroutine(dice.Roll()));
@@ -403,7 +420,9 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectAfterCurrentPlayerRoll();
         }
-        
+
+        GameManager.Inst.um.PlayerDeactivate(playerInfos.IndexOf(activatedPlayer));
+
         if (CountExceeded())
         {
             CurrentPlayerDie();
@@ -495,6 +514,8 @@ public class PlayManager : MonoBehaviour
 
         Debug.Log($"{player.playerName} is dead");
         player.Die();
+        Debug.Log(playerInfos.IndexOf(player));
+        GameManager.Inst.um.PlayerDie(playerInfos.IndexOf(player));
         pendingRoundEnd = true;
     }
 
