@@ -47,4 +47,8 @@ public class GameStateManager : MonoBehaviour
     public void WaitForNumberSelect() {
         State = GameState.WaitingForNumber;
     }
+
+    public void OperateAnimation() {
+        State = GameState.AnimationRunning;
+    }
 }

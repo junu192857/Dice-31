@@ -15,6 +15,7 @@ public class NormalDice : Dice
         {
             value = i;
             Debug.Log($"You rolled {value} from {diceName}");
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
         });
 
     }
@@ -32,6 +33,8 @@ public class NormalDice : Dice
     private void Awake()
     {
         diceName = "Normal Dice";
+        koreanDiceName = "일반 주사위";
+        diceInformation = "1부터 6까지의 숫자가 있는 평범한 주사위";
         color = DiceColor.Yellow;
     }
 }

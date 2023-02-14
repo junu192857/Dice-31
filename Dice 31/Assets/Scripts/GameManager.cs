@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameStateManager gsm { get; private set; }
     public UIManager um { get; private set; }
     public PlayManager pm { get; private set; }
+   
     private void Awake()
     {
         if (Inst != null && Inst != this)

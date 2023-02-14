@@ -20,6 +20,9 @@ public abstract class Dice : MonoBehaviour
 
     public DiceColor color;
     public string diceName;
+    //밑의 두 개는 툴팁에서 사용하는 변수
+    public string koreanDiceName;
+    public string diceInformation;
     public bool available { get; private set; }
 
     public void EnableDice() {

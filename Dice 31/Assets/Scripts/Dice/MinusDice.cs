@@ -8,7 +8,10 @@ public class MinusDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => DiceOperation(i));
+        return DiceUtil.Roll(this, diceName, i => { 
+            DiceOperation(i);
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
+        });
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -43,6 +46,8 @@ public class MinusDice : Dice
     private void Awake()
     {
         diceName = "Minus Dice";
+        koreanDiceName = "마이너스 주사위";
+        diceInformation = "0보다 작은 숫자를 가진 주사위";
         color = DiceColor.Green;
     }
 }

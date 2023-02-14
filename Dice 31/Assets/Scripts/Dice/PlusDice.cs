@@ -8,7 +8,10 @@ public class PlusDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => value = i);
+        return DiceUtil.Roll(this, diceName, i => {
+            value = i;
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
+        });
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -26,6 +29,8 @@ public class PlusDice : Dice
     private void Awake()
     {
         diceName = "Plus Dice";
+        koreanDiceName = "플러스 주사위";
+        diceInformation = "1부터 3까지의 숫자를 추가로 굴릴 수 있는 주사위";
         color = DiceColor.Green;
     }
 }
