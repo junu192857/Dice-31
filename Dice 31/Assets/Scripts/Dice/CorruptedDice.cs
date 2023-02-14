@@ -10,7 +10,11 @@ public class CorruptedDice : Dice
     private Player owner;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => corrupted = i == 1);
+        return DiceUtil.Roll(this, diceName, i => { 
+            corrupted = i == 1;
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, i);
+        });
+
     }
 
     public override void EffectAfterCurrentPlayerRoll()
@@ -19,7 +23,7 @@ public class CorruptedDice : Dice
         {
             if (++GameManager.Inst.pm.corruptStack == 5)
             {
-                GameManager.Inst.pm.CurrentPlayerDie();
+                GameManager.Inst.pm.CurrentPlayerDie(DeadCause.Corrupted);
             }
             Debug.Log($"corrupted: {GameManager.Inst.pm.corruptStack}");
         }
@@ -43,6 +47,8 @@ public class CorruptedDice : Dice
     private void Awake()
     {
         diceName = "Corrupted Dice";
+        koreanDiceName = "타락 주사위";
+        diceInformation = "타락의 기운을 담고 있는 주사위";
         color = DiceColor.Purple;
     }
 }

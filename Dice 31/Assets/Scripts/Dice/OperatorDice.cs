@@ -9,7 +9,10 @@ public class OperatorDice : Dice
     private int value;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => DiceOperation(i));
+        return DiceUtil.Roll(this, diceName, i => { 
+            DiceOperation(i);
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
+        });
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -45,6 +48,8 @@ public class OperatorDice : Dice
     private void Awake()
     {
         diceName = "Operator Dice";
+        koreanDiceName = "딜레이 주사위";
+        diceInformation = "내가 뽑은 숫자를 다음 사람에게 적용시킬 수 있는 주사위";
         color = DiceColor.Green;
     }
 }

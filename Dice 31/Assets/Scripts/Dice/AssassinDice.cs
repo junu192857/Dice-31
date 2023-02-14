@@ -3,30 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-
+public enum AssassinInfo
+{
+    Bow,
+    Sword,
+    Gun,
+    None
+}
 public class AssassinDice : Dice
 {
     private int value;
     private Player diceOwner;
     public override IEnumerator Roll()
     {
-        //GameManager.Inst.pm.assassinInfo는 테스트용 UI 작성을 위해 임시로 추가한 것
         return DiceUtil.Roll(this, diceName, i =>
         {
             value = i;
-        switch (value)
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
+            switch (value)
         {
             case 1:
                 Debug.Log("next player die if x < 5");
-                GameManager.Inst.pm.assassinInfo = "x < 5";
+                GameManager.Inst.pm.assassinInfo = AssassinInfo.Bow;
                 break;
             case 2:
                 Debug.Log("next player die if x > 2");
-                GameManager.Inst.pm.assassinInfo = "x > 2";
+                GameManager.Inst.pm.assassinInfo = AssassinInfo.Sword;
                 break;
             case 3:
                 Debug.Log("next player die if x % 3 != 0");
-                GameManager.Inst.pm.assassinInfo = "x % 3 != 0";
+                GameManager.Inst.pm.assassinInfo = AssassinInfo.Gun;
                 break;
         }
         });
@@ -38,6 +44,19 @@ public class AssassinDice : Dice
         diceOwner = GameManager.Inst.pm.activatedPlayer;
     }
 
+    public override void EffectBeforeNextPlayerRoll() {
+        switch (value) {
+            case 1:
+                GameManager.Inst.um.ActivateBow();
+                break;
+            case 2:
+                GameManager.Inst.um.ActivateSword();
+                break;
+            case 3:
+                GameManager.Inst.um.ActivateGun();
+                break;
+        }
+    }
     public override void EffectAfterNextPlayerRoll()
     {
         int x = GameManager.Inst.pm.activatedPlayer.normalDice.value;
@@ -61,20 +80,23 @@ public class AssassinDice : Dice
         if (assassinResult)
         {
             Debug.Log("assassin success");
-            GameManager.Inst.pm.CurrentPlayerDie();
+            GameManager.Inst.pm.CurrentPlayerDie(DeadCause.Assassin);
         }
         else
         {
             Debug.Log("assassin fail");
-            GameManager.Inst.pm.PlayerDie(diceOwner);
+            GameManager.Inst.pm.PlayerDie(diceOwner, DeadCause.AssassinFail);
         }
 
-        GameManager.Inst.pm.assassinInfo = "";
+        GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
+        GameManager.Inst.um.AssassinFinish();
     }
 
     private void Awake()
     {
         diceName = "Assassin Dice";
+        koreanDiceName = "암살 주사위";
+        diceInformation = "다음 사람을 암살할 수 있는 강력한 주사위";
         color = DiceColor.Red;
     }
 }

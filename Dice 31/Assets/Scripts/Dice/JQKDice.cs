@@ -24,6 +24,7 @@ public class JQKDice : Dice
                     Debug.Log("K: roll again");
                     break;
             }
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
         });
     }
 
@@ -47,6 +48,8 @@ public class JQKDice : Dice
     private void Awake()
     {
         diceName = "JQK Dice";
+        koreanDiceName = "JQK 주사위";
+        diceInformation = "점프, 방향 전환, 다시 한 번의 3가지 기능을 가진 주사위";
         color = DiceColor.Green;
     }
 }

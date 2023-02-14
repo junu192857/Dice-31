@@ -636,6 +636,7 @@ MonoBehaviour:
   DefaultPos: {x: 0, y: 0, z: 0}
   plate: {fileID: 919132149155446097, guid: ac78c29a66b81bb49b745b6f5427151d, type: 3}
   maxFace: 0
+  alreadyRolled: 0
   onDiceSettle:
     m_PersistentCalls:
       m_Calls: []
@@ -654,11 +655,11 @@ MonoBehaviour:
   DiceFaceList:
   - {fileID: 3512315092904948922}
   - {fileID: 3512315093582566272}
-  - {fileID: 3512315093365395558}
   - {fileID: 3512315092620226272}
+  - {fileID: 3512315093365395558}
   - {fileID: 3512315092188376871}
   - {fileID: 3512315092702358182}
-  DiceNumList: 010000000100000002000000020000000300000003000000
+  DiceNumList: 010000000200000003000000030000000100000002000000
 --- !u!114 &-1551039265037227106
 MonoBehaviour:
   m_ObjectHideFlags: 0

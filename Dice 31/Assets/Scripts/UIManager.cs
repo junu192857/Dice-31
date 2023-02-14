@@ -8,9 +8,24 @@ public class UIManager : MonoBehaviour
 {
     public List<Image> PlayerImages;
 
+    public List<Sprite> Dice2D;
+
+    public Image NormalDiceImage;
+    public Image SpecialDiceImage;
+
+    public Text MatchRoundInfo;
+    public Text BombNumberText;
+    public Text CorruptedCountText;
     public Image NumberGauge;
-    public List<Sprite> PlayerStates;
     public Text NumberText;
+    public Image BombHolder;
+    public Image BowImage;
+    public Image SwordImage;
+    public Image GunImage;
+    public Image CorruptedImage;
+
+
+    public List<Sprite> PlayerStates;
 
     private int formerCurCount;
     private int updatedCurCount;
@@ -20,6 +35,130 @@ public class UIManager : MonoBehaviour
     public Toggle NormalDiceToggle;
     public Toggle SpecialDiceToggle;
 
+    public Button SelectOneButton;
+    public Button SelectTwoButton;
+
+    [SerializeField]
+    private List<GameObject> Numbers;
+
+    private float scaleDuration = 0.25f;
+    private float moveDuration = 0.5f;
+
+    private Color ActivatedColor = new Color(1f, 1f, 1f);
+    private Color DeactivatedColor = new Color(100 / 255f, 100 / 255f, 100 / 255f);
+    public void ShowNumberAnimate(GameObject dice, int number)
+    {
+        StartCoroutine(ShowNumber(dice, number));
+    }
+    private IEnumerator ShowNumber(GameObject dice, int number)
+    {
+        string dicename = dice.GetComponent<Dice>().diceName;
+        bool isNormal;
+        if (dicename == "Normal Dice")
+        {
+            isNormal = true;
+        }
+        else { 
+            isNormal = false;
+        }
+
+        //GameManager.Inst.gsm.OperateAnimation();
+
+        int numberIndex = CalculateIndex(dicename, number);
+
+        Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
+        Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
+        GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(50f, 0f, 0f));
+
+        float runtime = 0f;
+        while (runtime < scaleDuration)
+        {
+            runtime += Time.deltaTime;
+            numberSprite.transform.localScale = Vector3.Lerp(Vector3.zero, 0.1f * Vector3.one, runtime / scaleDuration);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
+
+        if (dicename == "Normal Dice") DiceUtil.rollingNormal = false;
+        else DiceUtil.rollingSpecial = false;
+
+        yield return new WaitUntil(() => !DiceUtil.rollingNormal && !DiceUtil.rollingSpecial);
+        StartCoroutine(MoveNumber(isNormal, numberSprite));
+    }
+
+    private int CalculateIndex(string diceName, int number) {
+        bool corrupted = GameManager.Inst.pm.corruptStack == 4;
+        switch (diceName) {
+            case "Normal Dice":
+                return corrupted ? number + 20 : number - 1;
+            case "Plus Dice":
+            case "On My Own Dice":
+                return corrupted ? number + 20 : number + 8;
+            case "Minus Dice":
+                return corrupted ? number * -1 + 17 : number * -1 + 5;
+            case "Extend Dice":
+                if (number == 20) return corrupted ? 27 : 14;
+                else return corrupted ? number + 20 : number + 8;
+            case "Operator Dice":
+                if (number == -3) return corrupted ? 20 : 8;
+                else return corrupted ? 22 : 10;
+            case "JQK Dice":
+                if (number == 1) return 15;
+                else if (number == 2) return 17;
+                else return 16;
+            case "Bomb Dice":
+                return number + 27;
+            case "Assassin Dice":
+                return number + 33;
+            case "Corrupted Dice":
+                return number + 36;
+            case "Revival Dice":
+                return number + 38;
+            default:
+                return 0;
+            
+        }
+    }
+    private IEnumerator MoveNumber(bool isNormal, GameObject Number) {
+
+        float runtime = 0f;
+        Vector3 target;
+        switch (Number.tag) {
+            case "RealNumber":
+                target = Camera.main.ScreenToWorldPoint(new Vector3(720 + 960, 480 + 540, 5));
+                break;
+            case "Alphabet":
+                target = Number.transform.position;
+                break;
+            case "Corrupted":
+                target = Camera.main.ScreenToWorldPoint(new Vector3(-174 + 960, 367 + 540, 5));
+                break;
+            case "Assassin":
+                target = Camera.main.ScreenToWorldPoint(new Vector3(167 + 960, 420 + 540, 5));
+                break;
+            case "Bomb":
+                target = Camera.main.ScreenToWorldPoint(new Vector3(-174 + 960, 420 + 540, 5));
+                break;
+            case "Revival":
+                //TODO
+            default:
+                target = Number.transform.position;
+                break;
+                
+        }
+        Vector3 currentPosition = Number.transform.position;
+        Vector3 currentScale = Number.transform.localScale;
+        while (runtime < moveDuration) {
+            runtime += Time.deltaTime;
+            Number.transform.position = Vector3.Lerp(currentPosition, target, runtime / moveDuration);
+            Number.transform.localScale = Vector3.Lerp(currentScale, 0.05f * Vector3.one, runtime / moveDuration);
+            yield return null;
+        }
+        if (isNormal) DiceUtil.normalDone = true;
+        else DiceUtil.specialDone = true;
+        Destroy(Number);
+    }
+    
     //게이지 바를 서서히 움직이는 애니메이션
     //TODO: Normal Dice, Plus Dice, Minus Dice의 숫자가 이동하면 그때 틀어야 함./
     public IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
@@ -52,7 +191,6 @@ public class UIManager : MonoBehaviour
 
     //Run whenever new player starts his turn
     public void UpdateDiceSelectPanel() {
-        //TODO: 토글 버튼 위의 이미지를 플레이어의 특수 주사위에 맞게 변경
 
         NormalDiceToggle.interactable = false;
         NormalDiceToggle.isOn = true;
@@ -80,65 +218,14 @@ public class UIManager : MonoBehaviour
 
 
 
-    //테스트 및 프로토타입 배포용 UI를 만들기 위해 임시로 작성한 부분
-    public Text MatchRoundCount;
-    public Text NumberCount;
-    public Text SpecialDiceInfos;
-    public Text TeamWinCount;
-    public Text Player1Info;
-    public Text Player2Info;
-    public Text Player3Info;
-    public Text Player4Info;
-    public Text Player5Info;
-    public Text Player6Info;
-    public Text Player7Info;
-    public Text Player8Info;
     public void UpdateUI() {
-        /*MatchRoundCount.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
-        NumberCount.text = $"Number: {GameManager.Inst.pm.curCount} / {GameManager.Inst.pm.maxCount}";
-        SpecialDiceInfos.text = $"Bomb Dice Number: {GameManager.Inst.pm.bombDiceNum}\n" +
-                                $"Assassin Dice Trigger: {GameManager.Inst.pm.assassinInfo}\n" +
-                                $"Corrupt Stack: {GameManager.Inst.pm.corruptStack}";
-        TeamWinCount.text = $"Red {GameManager.Inst.pm.winCount["Red"]} : {GameManager.Inst.pm.winCount["Blue"]} Blue";
-        Player1Info.text = $"Player 1\n" +
-                           $"{GameManager.Inst.pm.playerInfos[0].team} Team / {GameManager.Inst.pm.playerInfos[0].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[0].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[0])}";
-        Player2Info.text = $"Player 2\n" +
-                           $"{GameManager.Inst.pm.playerInfos[1].team} Team / {GameManager.Inst.pm.playerInfos[1].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[1].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[1])}";
-        Player3Info.text = $"Player 3\n" +
-                           $"{GameManager.Inst.pm.playerInfos[2].team} Team / {GameManager.Inst.pm.playerInfos[2].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[2].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[2])}";
-        Player4Info.text = $"Player 4\n" +
-                           $"{GameManager.Inst.pm.playerInfos[3].team} Team / {GameManager.Inst.pm.playerInfos[3].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[3].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[3])}";
-        Player5Info.text = $"Player 5\n" +
-                           $"{GameManager.Inst.pm.playerInfos[4].team} Team / {GameManager.Inst.pm.playerInfos[4].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[4].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[4])}";
-        Player6Info.text = $"Player 6\n" +
-                           $"{GameManager.Inst.pm.playerInfos[5].team} Team / {GameManager.Inst.pm.playerInfos[5].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[5].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[5])}";
-        Player7Info.text = $"Player 7\n" +
-                           $"{GameManager.Inst.pm.playerInfos[6].team} Team / {GameManager.Inst.pm.playerInfos[6].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[6].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[6])}";
-        Player8Info.text = $"Player 8\n" +
-                           $"{GameManager.Inst.pm.playerInfos[7].team} Team / {GameManager.Inst.pm.playerInfos[7].deadString}\n" +
-                           $"Special Dice: {GameManager.Inst.pm.playerInfos[7].specialDice.diceName}\n" +
-                           $"{SpecialDiceInfo(GameManager.Inst.pm.playerInfos[7])}";
-        */
 
         UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
+        MatchRoundInfo.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
+        BombNumberText.text = GameManager.Inst.pm.bombDiceNum == 0 ? "" : $"{GameManager.Inst.pm.bombDiceNum}";
+        CorruptedCountText.text = $"{GameManager.Inst.pm.corruptStack}";
+
         //UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
-
-
-        
     }
 
     public void ResetPlayerImage() {
@@ -170,7 +257,6 @@ public class UIManager : MonoBehaviour
 
     public void PlayerDie(int playerIndex) {
         //TODO: 죽은 이유에 따라 다른 이미지 띄우기
-        Debug.Log("Hello from PlayerDie in UIManager");
         if (playerIndex % 2 == 0)
         {
             PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[2];
@@ -183,6 +269,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void PlayerRevive(int playerIndex) {
+        if (playerIndex % 2 == 0)
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[0];
+            Debug.Log("Red Team Member Revived");
+        }
+        else
+        {
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[10];
+            Debug.Log("Blue Team Member Revived");
+        }
+    }
     
     public void UpdateNumberText(int curCount, int maxCount) { 
         //RectTransform rect = NumberGauge.GetComponent<RectTransform>();
@@ -210,9 +308,48 @@ public class UIManager : MonoBehaviour
         }
 
     } */
+    public void ShowOMOButton() {
+        SelectOneButton.gameObject.SetActive(true);
+        SelectTwoButton.gameObject.SetActive(true);
+    }
+    public void HideOMOButton() {
+        SelectOneButton.gameObject.SetActive(false);
+        SelectTwoButton.gameObject.SetActive(false);
+    }
+    public void ActivateBow() {
+        BowImage.color = ActivatedColor;
+    }
+    public void ActivateSword() {
+        SwordImage.color = ActivatedColor;
+    }
+    public void ActivateGun() {
+        GunImage.color = ActivatedColor;
+    }
+    public void AssassinFinish() {
+        BowImage.color = DeactivatedColor;
+        SwordImage.color = DeactivatedColor;
+        GunImage.color = DeactivatedColor;
+    }
+    public void ActivateBomb(int bombNumber) {
+        BombHolder.color = ActivatedColor;
+        BombNumberText.text = $"{GameManager.Inst.pm.bombDiceNum}";
+    }
+    public void DeactivateBomb() {
+        BombHolder.color = DeactivatedColor;
+        BombNumberText.text = "";
+    }
+    public void ResetUI() {
+        //TODO: 경기 시작 및 매치 초기화 때 모든 UI 초기화.
+        ResetPlayerImage();
+        BombHolder.color = DeactivatedColor;
+        BowImage.color = DeactivatedColor;
+        SwordImage.color = DeactivatedColor;
+        GunImage.color = DeactivatedColor;
+        CorruptedImage.color = ActivatedColor;
+    }
     void Start()
     {
-        ResetPlayerImage();
+        ResetUI();
     }
 
     void Update()

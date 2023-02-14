@@ -6,6 +6,15 @@ TagManager:
   tags:
   - StartButton
   - Dice
+  - RealNumber
+  - Alphabet
+  - Corrupted
+  - Assassin
+  - Revival
+  - Bomb
+  - PlayerImage
+  - NormalDiceImage
+  - SpecialDiceImage
   layers:
   - Default
   - TransparentFX
@@ -13,7 +22,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Hello?
   - 
   - 
   - 

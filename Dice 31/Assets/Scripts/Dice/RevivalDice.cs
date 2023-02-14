@@ -12,7 +12,10 @@ public class RevivalDice : Dice
     
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => DiceOperation(i));
+        return DiceUtil.Roll(this, diceName, i => { 
+            DiceOperation(i);
+            GameManager.Inst.um.ShowNumberAnimate(gameObject, i);
+        });
     }
 
     public override void EffectBeforeNextPlayerRoll()
@@ -39,6 +42,8 @@ public class RevivalDice : Dice
     private void Awake()
     {
         diceName = "Revival Dice";
+        koreanDiceName = "부활 주사위";
+        diceInformation = "팀원을 부활시키는 능력을 가진 주사위";
         color = DiceColor.Red;
     }
 }

@@ -51,7 +51,7 @@ public class PlayManager : MonoBehaviour
     public int bombDiceNum = 0;
     public int corruptStack = 0;
     public int onMyOwnDiceNum = 0;
-    public string assassinInfo;
+    public AssassinInfo assassinInfo;
     private Player playerToRevive;
     
     private bool pendingRoundEnd = false;
@@ -146,8 +146,8 @@ public class PlayManager : MonoBehaviour
             roundCount = 0;
             bombDiceNum = 0;
             onMyOwnDiceNum = 0;
+            assassinInfo = AssassinInfo.None;
             corruptStack = 0;
-            assassinInfo = "";
             turnDirection = 1;
             dicesToRoll.Clear();
             previousDices.Clear();
@@ -156,7 +156,7 @@ public class PlayManager : MonoBehaviour
             {
                 player.Revive();
             }
-
+            GameManager.Inst.um.ResetUI();
             AssignDices();
             ResetRound();
         }
@@ -231,6 +231,7 @@ public class PlayManager : MonoBehaviour
         for (int i = 0; i < playerInfos.Count; i++)
         {
             GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
+            //GameObject specialDice = Instantiate(Resources.Load("OnMyOwnDice")) as GameObject;
             playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
             playerInfos[i].specialDice.EnableDice();
         }
@@ -253,8 +254,10 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectBeforeNextPlayerRoll();
         }
-
-        GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
+        if (activatedPlayer.alive)
+        {
+            GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
+        }
 
         LoadDicesToRoll();
 
@@ -264,7 +267,7 @@ public class PlayManager : MonoBehaviour
 
         if (CountExceeded())
         {
-            CurrentPlayerDie();
+            CurrentPlayerDie(DeadCause.Number);
         }
 
         if (pendingRoundEnd) {
@@ -292,11 +295,13 @@ public class PlayManager : MonoBehaviour
         dicesToRoll.Add(activatedPlayer.normalDice);
         activatedPlayer.normalDice.transform.position = NormalDicePosition;
         activatedPlayer.normalDice.transform.rotation = Quaternion.identity;
+        activatedPlayer.normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         if (activatedPlayer.specialDice is CorruptedDice)
         {
             dicesToRoll.Add(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = SpecialDicePosition;
             activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
+            activatedPlayer.specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 
@@ -404,11 +409,15 @@ public class PlayManager : MonoBehaviour
 
         if (bombDiceNum != 0)
         {
-            if (bombDiceNum == activatedPlayer.normalDice.value)
+            if (
+                bombDiceNum == activatedPlayer.normalDice.value || 
+                (bombDiceNum == activatedPlayer.normalDice.value * 2 && corruptStack == 4)
+               )
             {
                 Debug.Log($"Bomb ({bombDiceNum}) exploded");
-                CurrentPlayerDie();
+                CurrentPlayerDie(DeadCause.Bomb);
                 bombDiceNum = 0;
+                GameManager.Inst.um.DeactivateBomb();
             }
             else
             {
@@ -421,11 +430,14 @@ public class PlayManager : MonoBehaviour
             dice.EffectAfterCurrentPlayerRoll();
         }
 
-        GameManager.Inst.um.PlayerDeactivate(playerInfos.IndexOf(activatedPlayer));
+        if (activatedPlayer.alive)
+        {
+            GameManager.Inst.um.PlayerDeactivate(playerInfos.IndexOf(activatedPlayer));
+        }
 
         if (CountExceeded())
         {
-            CurrentPlayerDie();
+            CurrentPlayerDie(DeadCause.Number);
         }
 
         if (playerToRevive != null)
@@ -454,7 +466,7 @@ public class PlayManager : MonoBehaviour
         if (success)
         {
             List<Player> availablePlayers = playerInfos.FindAll(player =>
-                (player.team == activatedPlayer.team && player.dead) || player == activatedPlayer);
+                player.team == activatedPlayer.team && player.dead);
             if (availablePlayers.Count == 0)
             {
                 Debug.Log("Sorry, but there is no player to revive in your team");
@@ -463,27 +475,30 @@ public class PlayManager : MonoBehaviour
             {
                 playerToRevive = availablePlayers[Random.Range(0, availablePlayers.Count)];
                 Debug.Log($"You Revived {playerToRevive.playerName}");
+                GameManager.Inst.um.PlayerRevive(playerInfos.IndexOf(playerToRevive));
             }
         }
         else {
             Debug.Log("You failed to Revive your team, so you die");
-            CurrentPlayerDie();
+            CurrentPlayerDie(DeadCause.RevivalFail);
         }
     }
 
     public void SelectNumberOne() {
-        if (GameManager.Inst.gsm.State == GameState.WaitingForNumber)
+        if (DiceUtil.WaitingOMO)
         {
             onMyOwnDiceNum = 1;
-            GameManager.Inst.gsm.BeginRoll();
+            GameManager.Inst.um.HideOMOButton();
+            DiceUtil.WaitingOMO = false;
         }
     }
 
     public void SelectNumberTwo() {
-        if (GameManager.Inst.gsm.State == GameState.WaitingForNumber)
+        if (DiceUtil.WaitingOMO)
         {
             onMyOwnDiceNum = 2;
-            GameManager.Inst.gsm.BeginRoll();
+            GameManager.Inst.um.HideOMOButton();
+            DiceUtil.WaitingOMO = false;
         }
     }
     private void Awake()
@@ -504,7 +519,7 @@ public class PlayManager : MonoBehaviour
         GameManager.Inst.gsm.PrepareGame();
     }
 
-    public void PlayerDie(Player player)
+    public void PlayerDie(Player player, DeadCause deadCause)
     {
         if (player.dead)
         {
@@ -514,14 +529,15 @@ public class PlayManager : MonoBehaviour
 
         Debug.Log($"{player.playerName} is dead");
         player.Die();
-        Debug.Log(playerInfos.IndexOf(player));
+        player.deadCause = deadCause;
+        player.deadRound = roundCount;
         GameManager.Inst.um.PlayerDie(playerInfos.IndexOf(player));
         pendingRoundEnd = true;
     }
 
-    public void CurrentPlayerDie()
+    public void CurrentPlayerDie(DeadCause deadCause)
     {
-        PlayerDie(activatedPlayer);
+        PlayerDie(activatedPlayer, deadCause);
     }
 
     private bool RedTeamDead()
