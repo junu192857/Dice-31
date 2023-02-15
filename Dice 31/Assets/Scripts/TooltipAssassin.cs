@@ -22,7 +22,7 @@ public class TooltipAssassin : MonoBehaviour, IPointerEnterHandler, IPointerExit
                     commonInfo.text = "<color=#FF0000>암살\n칼: 3, 4, 5, 6 -> 암살 성공</color>";
                     break;
                 case AssassinInfo.Gun:
-                    commonInfo.text = "<color=#FF0000>암살\n활: 1, 2, 4, 5 -> 암살 성공</color>";
+                    commonInfo.text = "<color=#FF0000>암살\n총: 1, 2, 4, 5 -> 암살 성공</color>";
                     break;
             }
         }

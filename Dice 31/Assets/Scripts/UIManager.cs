@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
 
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
         Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
-        GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(50f, 0f, 0f));
+        GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
 
         float runtime = 0f;
         while (runtime < scaleDuration)
