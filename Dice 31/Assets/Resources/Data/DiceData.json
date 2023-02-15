@@ -1,0 +1,356 @@
+{
+  "data": [
+    {
+      "prefab": "NormalDice",
+      "image": "Data/CorruptedDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "NormalDice",
+      "image": "NormalDice.png",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "Data/NormalDice 1.png",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    }
+  ]
+}
