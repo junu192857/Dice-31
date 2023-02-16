@@ -17,6 +17,7 @@ public class DiceController : MonoBehaviour
     private CheckNum checkNum;
     public int maxFace;
     public bool alreadyRolled;
+
     DiceState State
     {
         get => state;
@@ -26,27 +27,28 @@ public class DiceController : MonoBehaviour
             state = value;
         }
     }
+
     public UnityEvent<int> onDiceSettle;
 
-    public void ResetDice() {
-        
+    public void ResetDice()
+    {
         maxFace = 0;
         alreadyRolled = false;
     }
+
     public void Start()
     {
         //plate 할당하는거 나중에 바꾸든가 해야지..
         plate = GameObject.Find("plate");
         DefaultPos = transform.position;
         var extents = plate.GetComponent<Renderer>().bounds.extents;
-        boundX = extents.x - 0.1f;
-        boundZ = extents.z - 0.1f;
+        boundX = extents.x - 0.3f;
+        boundZ = extents.z - 0.2f;
         checkNum = GetComponent<CheckNum>();
         ResetDice();
     }
 
 
-    //TODO: 같은 턴에서 한번 굴린 주사위는 다시 못 굴리게 하기
     private void OnMouseDown()
     {
         if (GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled)
@@ -55,13 +57,16 @@ public class DiceController : MonoBehaviour
             State = DiceState.Dragging;
         }
     }
-    
+
     private void OnMouseUp()
     {
         if (GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled)
         {
             if (State != DiceState.Dragging) return;
-            transform.rotation = Random.rotation;
+            var rigidbody = GetComponent<Rigidbody>();
+            rigidbody.velocity += Vector3.up * 6;
+            rigidbody.angularVelocity += Random.onUnitSphere * 15;
+            // transform.rotation = Random.rotation;
             State = DiceState.Rolling;
         }
     }
@@ -79,25 +84,42 @@ public class DiceController : MonoBehaviour
 
             if (!plane.Raycast(ray, out var distance)) return;
             var point = ray.GetPoint(distance); // distance along the ray
-            point.x = Mathf.Clamp(point.x, -boundX, boundX);
-            point.z = Mathf.Clamp(point.z, -boundZ, boundZ);
+            var position = plate.transform.position;
+            point.x = Mathf.Clamp(point.x, position.x - boundX, position.x + boundX);
+            point.z = Mathf.Clamp(point.z, position.z - boundZ, position.z + boundZ);
 
             var diff = point - transform.position;
             var velocity = diff * 10;
-            GetComponent<Rigidbody>().velocity = velocity;
+            var rigidbody = GetComponent<Rigidbody>();
+            var oldVelocity = rigidbody.velocity;
+            rigidbody.velocity = velocity;
+            var targetAngularVelocity = Vector3.Cross(
+                velocity - oldVelocity,
+                velocity
+            ) * 15;
+            var angularVelocity = rigidbody.angularVelocity;
+            rigidbody.angularVelocity = Vector3.Lerp(
+                angularVelocity,
+                targetAngularVelocity,
+                0.1f
+            );
         }
     }
 
-    public void ChangeStateToRolling() {
+    public void ChangeStateToRolling()
+    {
         State = DiceState.Rolling;
     }
-    public bool CheckDiceState() {
+
+    public bool CheckDiceState()
+    {
         return State == DiceState.Idle;
     }
+
     private void Update()
     {
         if (State != DiceState.Rolling) return;
-        if (GetComponent<Rigidbody>().velocity.magnitude < 0.001f && 
+        if (GetComponent<Rigidbody>().velocity.magnitude < 0.001f &&
             GetComponent<Rigidbody>().angularVelocity.magnitude < 0.001f)
         {
             State = DiceState.Idle;

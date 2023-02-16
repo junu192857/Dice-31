@@ -38,8 +38,12 @@ public class PlayManager : MonoBehaviour
     //public Player playerInfo;
 
     [SerializeField] private List<Dice> dicesToRoll;
+
     //테스트용 UI에서 임시로 사용할 bool 변수
-    public bool specialDiceActivated { get => dicesToRoll.Count == 2; }
+    public bool specialDiceActivated
+    {
+        get => dicesToRoll.Count == 2;
+    }
 
     private List<Dice> previousDices;
 
@@ -53,7 +57,7 @@ public class PlayManager : MonoBehaviour
     public int onMyOwnDiceNum = 0;
     public AssassinInfo assassinInfo;
     private Player playerToRevive;
-    
+
     private bool pendingRoundEnd = false;
 
 
@@ -124,7 +128,9 @@ public class PlayManager : MonoBehaviour
             roundCount++;
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
-        foreach (var player in playerInfos) {
+
+        foreach (var player in playerInfos)
+        {
             if (player.specialDice.color == DiceColor.Green)
             {
                 player.specialDice.EnableDice();
@@ -156,6 +162,7 @@ public class PlayManager : MonoBehaviour
             {
                 player.Revive();
             }
+
             GameManager.Inst.um.ResetUI();
             AssignDices();
             ResetRound();
@@ -254,6 +261,7 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectBeforeNextPlayerRoll();
         }
+
         if (activatedPlayer.alive)
         {
             GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
@@ -270,7 +278,8 @@ public class PlayManager : MonoBehaviour
             CurrentPlayerDie(DeadCause.Number);
         }
 
-        if (pendingRoundEnd) {
+        if (pendingRoundEnd)
+        {
             ResetRound();
         }
 
@@ -294,13 +303,21 @@ public class PlayManager : MonoBehaviour
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
         activatedPlayer.normalDice.transform.position = NormalDicePosition;
-        activatedPlayer.normalDice.transform.rotation = Quaternion.identity;
+        activatedPlayer.normalDice.transform.rotation = Quaternion.Euler(
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f
+        );
         activatedPlayer.normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         if (activatedPlayer.specialDice is CorruptedDice)
         {
             dicesToRoll.Add(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = SpecialDicePosition;
-            activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
+            activatedPlayer.specialDice.transform.rotation = Quaternion.Euler(
+                Random.Range(0, 4) * 90f,
+                Random.Range(0, 4) * 90f,
+                Random.Range(0, 4) * 90f
+            );
             activatedPlayer.specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
@@ -315,11 +332,13 @@ public class PlayManager : MonoBehaviour
                 Debug.LogWarning("dicesToRoll.Count should be 1");
                 return;
             }
+
             if (!(activatedPlayer.specialDice.available))
             {
                 Debug.LogWarning("This dice has been already used");
                 return;
             }
+
             Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
             dicesToRoll.Add(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = SpecialDicePosition;
@@ -337,26 +356,29 @@ public class PlayManager : MonoBehaviour
                 Debug.LogWarning("dicesToRoll.Count should be 2");
                 return;
             }
+
             if (activatedPlayer.specialDice is CorruptedDice)
             {
                 Debug.LogWarning("special dice should not be corrupted dice");
                 return;
             }
+
             Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
             dicesToRoll.Remove(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = StoragePosition;
         }
     }
 
-    public void OnClickToggleButton(bool isOn) {
-            if (isOn)
-            {
-                AddSpecialDiceCommand();
-            }
-            else
-            {
-                RemoveSpecialDiceCommand();
-            }
+    public void OnClickToggleButton(bool isOn)
+    {
+        if (isOn)
+        {
+            AddSpecialDiceCommand();
+        }
+        else
+        {
+            RemoveSpecialDiceCommand();
+        }
     }
 
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
@@ -368,15 +390,18 @@ public class PlayManager : MonoBehaviour
     }
 
     //주사위 바로 굴리기 버튼을 눌렀을 때 작동할 함수
-    public void InstantlyRollPlayerDice() {
+    public void InstantlyRollPlayerDice()
+    {
         OnRollPlayerDice();
-        foreach (Dice dice in dicesToRoll) {
+        foreach (Dice dice in dicesToRoll)
+        {
             DiceController controller = dice.GetComponent<DiceController>();
             Rigidbody rigidbody = controller.GetComponent<Rigidbody>();
             if (controller.CheckDiceState() && !controller.alreadyRolled)
             {
-                rigidbody.velocity = new Vector3(Random.Range(-5f, 5f), Random.Range(5f, 7f), Random.Range(-5f, 5f));
-                rigidbody.rotation = Random.rotation;
+                var circle = 5f * Random.insideUnitCircle;
+                rigidbody.velocity = new Vector3(circle.x, Random.Range(6f, 8f), circle.y);
+                rigidbody.angularVelocity = Random.onUnitSphere * 15f;
                 controller.ChangeStateToRolling();
             }
         }
@@ -410,9 +435,9 @@ public class PlayManager : MonoBehaviour
         if (bombDiceNum != 0)
         {
             if (
-                bombDiceNum == activatedPlayer.normalDice.value || 
+                bombDiceNum == activatedPlayer.normalDice.value ||
                 (bombDiceNum == activatedPlayer.normalDice.value * 2 && corruptStack == 4)
-               )
+            )
             {
                 Debug.Log($"Bomb ({bombDiceNum}) exploded");
                 CurrentPlayerDie(DeadCause.Bomb);
@@ -448,7 +473,7 @@ public class PlayManager : MonoBehaviour
 
         if (pendingRoundEnd)
             ResetRound();
-        
+
         Debug.Log($"Current Count is {curCount}");
 
         if (GameManager.Inst.gsm.State != GameState.Gameover)
@@ -462,7 +487,8 @@ public class PlayManager : MonoBehaviour
         return player.GetComponent<Player>();
     }
 
-    public void OperateRevivalDice(bool success) {
+    public void OperateRevivalDice(bool success)
+    {
         if (success)
         {
             List<Player> availablePlayers = playerInfos.FindAll(player =>
@@ -478,13 +504,15 @@ public class PlayManager : MonoBehaviour
                 GameManager.Inst.um.PlayerRevive(playerInfos.IndexOf(playerToRevive));
             }
         }
-        else {
+        else
+        {
             Debug.Log("You failed to Revive your team, so you die");
             CurrentPlayerDie(DeadCause.RevivalFail);
         }
     }
 
-    public void SelectNumberOne() {
+    public void SelectNumberOne()
+    {
         if (DiceUtil.WaitingOMO)
         {
             onMyOwnDiceNum = 1;
@@ -493,7 +521,8 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    public void SelectNumberTwo() {
+    public void SelectNumberTwo()
+    {
         if (DiceUtil.WaitingOMO)
         {
             onMyOwnDiceNum = 2;
@@ -501,6 +530,7 @@ public class PlayManager : MonoBehaviour
             DiceUtil.WaitingOMO = false;
         }
     }
+
     private void Awake()
     {
         dicesToRoll = new List<Dice>();
