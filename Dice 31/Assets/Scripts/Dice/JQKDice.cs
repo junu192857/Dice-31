@@ -51,5 +51,6 @@ public class JQKDice : Dice
         koreanDiceName = "JQK 주사위";
         diceInformation = "점프, 방향 전환, 다시 한 번의 3가지 기능을 가진 주사위";
         color = DiceColor.Green;
+        diceIndex = 4;
     }
 }

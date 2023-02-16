@@ -98,5 +98,6 @@ public class AssassinDice : Dice
         koreanDiceName = "암살 주사위";
         diceInformation = "다음 사람을 암살할 수 있는 강력한 주사위";
         color = DiceColor.Red;
+        diceIndex = 7;
     }
 }

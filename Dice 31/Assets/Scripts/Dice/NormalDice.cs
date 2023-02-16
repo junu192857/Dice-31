@@ -36,5 +36,6 @@ public class NormalDice : Dice
         koreanDiceName = "일반 주사위";
         diceInformation = "1부터 6까지의 숫자가 있는 평범한 주사위";
         color = DiceColor.Yellow;
+        diceIndex = 0;
     }
 }

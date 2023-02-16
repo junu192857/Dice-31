@@ -570,7 +570,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e3d820ef0b0f7947ba90848e950164c, type: 2}
+  - {fileID: 2100000, guid: 1e7195c78d8939542acc11093073663c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -636,6 +636,7 @@ MonoBehaviour:
   DefaultPos: {x: 0, y: 0, z: 0}
   plate: {fileID: 919132149155446097, guid: ac78c29a66b81bb49b745b6f5427151d, type: 3}
   maxFace: 0
+  alreadyRolled: 0
   onDiceSettle:
     m_PersistentCalls:
       m_Calls: []
@@ -673,3 +674,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: 0
   diceName: 
+  koreanDiceName: 
+  diceInformation: 

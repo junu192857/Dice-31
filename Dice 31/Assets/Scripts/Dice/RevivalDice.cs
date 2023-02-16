@@ -45,5 +45,6 @@ public class RevivalDice : Dice
         koreanDiceName = "부활 주사위";
         diceInformation = "팀원을 부활시키는 능력을 가진 주사위";
         color = DiceColor.Red;
+        diceIndex = 9;
     }
 }

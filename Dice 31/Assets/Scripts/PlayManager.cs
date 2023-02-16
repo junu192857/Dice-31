@@ -531,7 +531,7 @@ public class PlayManager : MonoBehaviour
         player.Die();
         player.deadCause = deadCause;
         player.deadRound = roundCount;
-        GameManager.Inst.um.PlayerDie(playerInfos.IndexOf(player));
+        GameManager.Inst.um.PlayerDie(playerInfos.IndexOf(player), deadCause);
         pendingRoundEnd = true;
     }
 

@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
     public List<Image> PlayerImages;
 
     public List<Sprite> Dice2D;
-
     public Image NormalDiceImage;
     public Image SpecialDiceImage;
 
@@ -194,8 +193,12 @@ public class UIManager : MonoBehaviour
 
         NormalDiceToggle.interactable = false;
         NormalDiceToggle.isOn = true;
+        NormalDiceImage.sprite = Dice2D[0];
+
         SpecialDiceToggle.interactable = true;
         SpecialDiceToggle.isOn = false;
+        SpecialDiceImage.sprite = Dice2D[GameManager.Inst.pm.activatedPlayer.specialDice.diceIndex];
+
         if (GameManager.Inst.pm.activatedPlayer.specialDice is CorruptedDice)
         {
             SpecialDiceToggle.isOn = true;
@@ -255,18 +258,41 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void PlayerDie(int playerIndex) {
-        //TODO: 죽은 이유에 따라 다른 이미지 띄우기
-        if (playerIndex % 2 == 0)
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[2];
-            Debug.Log("Red Team Member dead");
+    public void PlayerDie(int playerIndex, DeadCause deadCause) {
+        int deadIndex = 0;
+        switch (deadCause) {
+            case DeadCause.Number:
+                deadIndex += 2;
+                break;
+            case DeadCause.Bomb:
+                deadIndex += 3;
+                break;
+            case DeadCause.Assassin:
+            case DeadCause.AssassinFail:
+                switch (GameManager.Inst.pm.assassinInfo) {
+                    case AssassinInfo.Bow:
+                        deadIndex += 4;
+                        break;
+                    case AssassinInfo.Sword:
+                        deadIndex += 5;
+                        break;
+                    case AssassinInfo.Gun:
+                        deadIndex += 6;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case DeadCause.RevivalFail:
+                deadIndex += 7;
+                break;
+            case DeadCause.Corrupted:
+                deadIndex += 8;
+                break;
         }
-        else
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[12];
-            Debug.Log("Blue Team Member Dead");
-        }
+        if (playerIndex % 2 == 1) deadIndex += 10;
+
+        PlayerImages[playerIndex].sprite = PlayerStates[deadIndex];
     }
 
     public void PlayerRevive(int playerIndex) {

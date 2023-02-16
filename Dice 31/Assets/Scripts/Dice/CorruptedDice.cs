@@ -50,5 +50,6 @@ public class CorruptedDice : Dice
         koreanDiceName = "타락 주사위";
         diceInformation = "타락의 기운을 담고 있는 주사위";
         color = DiceColor.Purple;
+        diceIndex = 10;
     }
 }
