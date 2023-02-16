@@ -7,36 +7,66 @@ using UnityEngine.UI;
 
 public class TutorialSceneManager : MonoBehaviour
 {
-    private GameObject diceObject;
     [SerializeField] private Image[] diceFaceImages;
     [SerializeField] private Text diceNameText;
     [SerializeField] private Text diceSummaryText;
     [SerializeField] private Text[] diceFaceDescriptionTexts;
     [SerializeField] private string mainSceneName;
     [SerializeField] private string diceDataPath;
-    [SerializeField] private GameObject selectButtons;
-
+    [SerializeField] private GameObject diceParent;
+    [SerializeField] private GameObject buttonsParent;
+    [SerializeField] private float rotationSpeed = 30f;
+    
     private DiceInfoData diceInfoData;
 
-    public void Start()
+    private void Start()
     {
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
         var error = diceInfoData.GetError();
         Debug.Assert(error.Length == 0, error);
-        Debug.Assert(selectButtons.transform.childCount == diceInfoData.data.Length);
-        for (var i = 0; i < selectButtons.transform.childCount; i++)
+        for (var i = 0; i < diceInfoData.data.Length; i++)
         {
-            var button = selectButtons.transform.GetChild(i).GetComponent<Button>();
-            button.GetComponent<Image>().sprite = Resources.Load<Sprite>(diceInfoData.data[i].image);
+            var button = buttonsParent.transform.GetChild(i).GetComponent<Button>();
+            var index = i;
+            button.onClick.AddListener(() => HandleSelectDiceClick(index));
+            var image = Resources.Load<Sprite>(diceInfoData.data[i].image);
+            var imageComp = button.transform.GetChild(0).GetComponent<Image>();
+            Debug.Log(diceInfoData.data[i].name + " " + image.name + " " + imageComp.name);
+            imageComp.sprite = image;
         }
         HandleSelectDiceClick(0);
     }
 
-    public void HandleSelectDiceClick(int i)
+    private void Update()
+    {
+        diceParent.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+    }
+
+    private void HandleSelectDiceClick(int i)
     {
         Debug.Assert(i < diceInfoData.data.Length);
         if (i >= diceInfoData.data.Length)
             return;
+        
+        var diceInfo = diceInfoData.data[i];
+        diceNameText.text = diceInfo.name;
+        diceSummaryText.text = diceInfo.summary;
+        for (var j = 0; j < diceFaceDescriptionTexts.Length; j++)
+        {
+            diceFaceDescriptionTexts[j].text = diceInfo.faces[j].description;
+        }
+        for (var j = 0; j < diceFaceImages.Length; j++)
+        {
+            diceFaceImages[j].sprite = Resources.Load<Sprite>(diceInfo.faces[j].image);
+        }
+        var oldDice = diceParent.transform.GetChild(0);
+        var rotation = oldDice.localRotation;
+        Destroy(oldDice.gameObject);
+        var prefab = Resources.Load<GameObject>(diceInfo.prefab);
+        var dice = Instantiate(prefab, diceParent.transform);
+        dice.transform.localPosition = Vector3.zero;
+        dice.transform.localRotation = rotation;
+        dice.transform.localScale = Vector3.one * 0.15f;
     }
 
     public void HandleBackClick()
