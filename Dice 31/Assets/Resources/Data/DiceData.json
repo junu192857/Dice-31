@@ -2,6 +2,7 @@
   "data": [
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "Data/CorruptedDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -33,6 +34,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -64,6 +66,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -95,6 +98,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -126,6 +130,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -157,6 +162,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -188,6 +194,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -219,6 +226,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -250,6 +258,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -281,6 +290,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -312,6 +322,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
+      "image": "NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
