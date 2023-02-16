@@ -7,15 +7,14 @@ using UnityEngine.UI;
 
 public class TutorialSceneManager : MonoBehaviour
 {
-    private GameObject diceObject;
     [SerializeField] private Image[] diceFaceImages;
     [SerializeField] private Text diceNameText;
     [SerializeField] private Text diceSummaryText;
     [SerializeField] private Text[] diceFaceDescriptionTexts;
     [SerializeField] private string mainSceneName;
     [SerializeField] private string diceDataPath;
-    [SerializeField] private GameObject selectButtons;
-
+    [SerializeField] private GameObject diceParent;
+    
     private DiceInfoData diceInfoData;
 
     public void Start()
@@ -23,12 +22,6 @@ public class TutorialSceneManager : MonoBehaviour
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
         var error = diceInfoData.GetError();
         Debug.Assert(error.Length == 0, error);
-        Debug.Assert(selectButtons.transform.childCount == diceInfoData.data.Length);
-        for (var i = 0; i < selectButtons.transform.childCount; i++)
-        {
-            var button = selectButtons.transform.GetChild(i).GetComponent<Button>();
-            button.GetComponent<Image>().sprite = Resources.Load<Sprite>(diceInfoData.data[i].image);
-        }
         HandleSelectDiceClick(0);
     }
 
@@ -37,6 +30,21 @@ public class TutorialSceneManager : MonoBehaviour
         Debug.Assert(i < diceInfoData.data.Length);
         if (i >= diceInfoData.data.Length)
             return;
+        
+        var diceInfo = diceInfoData.data[i];
+        diceNameText.text = diceInfo.name;
+        diceSummaryText.text = diceInfo.summary;
+        for (var j = 0; j < diceFaceDescriptionTexts.Length; j++)
+        {
+            diceFaceDescriptionTexts[j].text = diceInfo.faces[j].description;
+        }
+        for (var j = 0; j < diceFaceImages.Length; j++)
+        {
+            diceFaceImages[j].sprite = Resources.Load<Sprite>(diceInfo.faces[j].image);
+        }
+        Destroy(diceParent.transform.GetChild(0).gameObject);
+        var prefab = Resources.Load<GameObject>(diceInfo.prefab);
+        Instantiate(prefab, diceParent.transform);
     }
 
     public void HandleBackClick()
@@ -70,7 +78,6 @@ class DiceInfoData
 class DiceInfo
 {
     public string prefab = "";
-    public string image = "";
     public string name = "";
     public string summary = "";
     public FaceInfo[] faces;
@@ -79,8 +86,6 @@ class DiceInfo
     {
         if (prefab.Length == 0)
             return "prefab is empty";
-        if (image.Length == 0)
-            return "image is empty";
         if (name.Length == 0)
             return "name is empty";
         if (summary.Length == 0)
