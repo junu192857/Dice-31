@@ -109,7 +109,7 @@ public class PlayManager : MonoBehaviour
     }
 
     //라운드가 바뀔 때마다 초기화시킬 것들
-    private void ResetRound()
+    public void ResetRound()
     {
         if (MatchOver())
         {
@@ -230,8 +230,8 @@ public class PlayManager : MonoBehaviour
 
         for (int i = 0; i < playerInfos.Count; i++)
         {
-            GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
-            //GameObject specialDice = Instantiate(Resources.Load("OnMyOwnDice")) as GameObject;
+            //GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
+            GameObject specialDice = Instantiate(Resources.Load("OperatorDice")) as GameObject;
             playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
             playerInfos[i].specialDice.EnableDice();
         }
@@ -258,6 +258,9 @@ public class PlayManager : MonoBehaviour
         {
             GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
         }
+        
+
+
 
         LoadDicesToRoll();
 
@@ -271,10 +274,13 @@ public class PlayManager : MonoBehaviour
         }
 
         if (pendingRoundEnd) {
-            ResetRound();
+            OperateDieAnimation();
         }
 
-        GameManager.Inst.gsm.WaitForInput();
+        else if (GameManager.Inst.gsm.State != GameState.Gameover)
+        {
+            GameManager.Inst.gsm.WaitForInput();
+        }
     }
 
     bool CountExceeded()
@@ -429,6 +435,8 @@ public class PlayManager : MonoBehaviour
         {
             dice.EffectAfterCurrentPlayerRoll();
         }
+        GameManager.Inst.um.GaugeBarCoroutine(curCount, maxCount);
+
 
         if (activatedPlayer.alive)
         {
@@ -447,16 +455,18 @@ public class PlayManager : MonoBehaviour
         }
 
         if (pendingRoundEnd)
-            ResetRound();
-        
-        Debug.Log($"Current Count is {curCount}");
-
-        if (GameManager.Inst.gsm.State != GameState.Gameover)
+        {
+            OperateDieAnimation();
+        }
+        else if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
     }
 
+    private void OperateDieAnimation() {
+        GameManager.Inst.um.PlayerDieAnimation(DeadCause.Number);
+    }
     private Player Convert(GameObject player)
     {
         return player.GetComponent<Player>();
@@ -500,6 +510,14 @@ public class PlayManager : MonoBehaviour
             GameManager.Inst.um.HideOMOButton();
             DiceUtil.WaitingOMO = false;
         }
+    }
+    public void OperatorDiceResult() {
+        StartCoroutine(OperatorDiceAnimation()); 
+    }
+    private IEnumerator OperatorDiceAnimation() {
+        yield return new WaitUntil(() => GameManager.Inst.um.formerMoveDone);
+        GameObject Number = GameObject.FindGameObjectWithTag("RealNumber");
+        GameManager.Inst.um.DirectlyMoveNumber(false, Number);
     }
     private void Awake()
     {

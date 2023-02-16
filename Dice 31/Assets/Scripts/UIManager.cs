@@ -15,8 +15,11 @@ public class UIManager : MonoBehaviour
     public Text MatchRoundInfo;
     public Text BombNumberText;
     public Text CorruptedCountText;
+
     public Image NumberGauge;
     public Text NumberText;
+    public bool formerMoveDone;
+
     public Image BombHolder;
     public Image BowImage;
     public Image SwordImage;
@@ -25,11 +28,6 @@ public class UIManager : MonoBehaviour
 
 
     public List<Sprite> PlayerStates;
-
-    private int formerCurCount;
-    private int updatedCurCount;
-    private int formerMaxCount;
-    private int updatedMaxCount;
 
     public Toggle NormalDiceToggle;
     public Toggle SpecialDiceToggle;
@@ -82,7 +80,11 @@ public class UIManager : MonoBehaviour
         else DiceUtil.rollingSpecial = false;
 
         yield return new WaitUntil(() => !DiceUtil.rollingNormal && !DiceUtil.rollingSpecial);
-        StartCoroutine(MoveNumber(isNormal, numberSprite));
+        if (dice.GetComponent<Dice>() is not OperatorDice || !dice.GetComponent<OperatorDice>().delayed)
+        {
+            StartCoroutine(MoveNumber(isNormal, numberSprite));
+        }
+        else DiceUtil.specialDone = true;
     }
 
     private int CalculateIndex(string diceName, int number) {
@@ -118,8 +120,32 @@ public class UIManager : MonoBehaviour
             
         }
     }
+    private IEnumerator MoveNumberLater(bool isNormal, GameObject Number) {
+        DiceUtil.specialDone = true;
+        yield return new WaitUntil(() => formerMoveDone);
+        Debug.Log("Hello from delayed move");
+        float runtime = 0f;
+        Vector3 target;
+        target = Camera.main.ScreenToWorldPoint(new Vector3(720 + 960, 480 + 540, 5));
+        
+        Vector3 currentPosition = Number.transform.position;
+        Vector3 currentScale = Number.transform.localScale;
+        while (runtime < moveDuration)
+        {
+            runtime += Time.deltaTime;
+            Number.transform.position = Vector3.Lerp(currentPosition, target, runtime / moveDuration);
+            Number.transform.localScale = Vector3.Lerp(currentScale, 0.05f * Vector3.one, runtime / moveDuration);
+            yield return null;
+        }
+        Destroy(Number);
+        GaugeBarCoroutine(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
+    }
+    public void DirectlyMoveNumber(bool isNormal, GameObject Number) {
+        StartCoroutine(MoveNumberLater(isNormal, Number));
+    }
     private IEnumerator MoveNumber(bool isNormal, GameObject Number) {
-
+        formerMoveDone = false;
+        Debug.Log("Hello from MoveNumber");
         float runtime = 0f;
         Vector3 target;
         switch (Number.tag) {
@@ -157,10 +183,15 @@ public class UIManager : MonoBehaviour
         else DiceUtil.specialDone = true;
         Destroy(Number);
     }
-    
+
+
+
+    public void GaugeBarCoroutine(int curCount, int maxCount) {
+        StartCoroutine(UpdateGaugeBar(curCount, maxCount, 0.5f));
+        UpdateNumberText(curCount, maxCount);
+    }
     //게이지 바를 서서히 움직이는 애니메이션
-    //TODO: Normal Dice, Plus Dice, Minus Dice의 숫자가 이동하면 그때 틀어야 함./
-    public IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
+    private IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
 
         var runTime = 0.0f;
 
@@ -186,6 +217,8 @@ public class UIManager : MonoBehaviour
             rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / duration);
             yield return null;
         }
+        yield return new WaitForSeconds(0.5f);
+        formerMoveDone = true;
     }
 
     //Run whenever new player starts his turn
@@ -211,19 +244,7 @@ public class UIManager : MonoBehaviour
         Debug.Log($"{GameManager.Inst.pm.activatedPlayer.specialDice.available}");
     }
 
-
-
-
-
-
-
-
-
-
-
     public void UpdateUI() {
-
-        UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
         MatchRoundInfo.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
         BombNumberText.text = GameManager.Inst.pm.bombDiceNum == 0 ? "" : $"{GameManager.Inst.pm.bombDiceNum}";
         CorruptedCountText.text = $"{GameManager.Inst.pm.corruptStack}";
@@ -295,6 +316,16 @@ public class UIManager : MonoBehaviour
         PlayerImages[playerIndex].sprite = PlayerStates[deadIndex];
     }
 
+    public void PlayerDieAnimation(DeadCause deadCause) {
+        StartCoroutine(DieAnimate(deadCause));
+    }
+
+    private IEnumerator DieAnimate(DeadCause deadCause) {
+        Debug.Log("Player Died!");
+        yield return new WaitForSeconds(1);
+
+        GameManager.Inst.pm.ResetRound();
+    }
     public void PlayerRevive(int playerIndex) {
         if (playerIndex % 2 == 0)
         {
@@ -308,10 +339,14 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    public void UpdateNumberText(int curCount, int maxCount) { 
+    public void UpdateNumberText(int curCount, int maxCount) {
         //RectTransform rect = NumberGauge.GetComponent<RectTransform>();
         //rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
-        NumberText.text = $"{curCount} / {maxCount}";
+        if (curCount <= maxCount)
+        {
+            NumberText.text = $"{curCount} / {maxCount}";
+        }
+        else NumberText.text = $"{maxCount} / {maxCount}";
     }
 
     /* public List<Player> alivePlayers;
@@ -372,6 +407,7 @@ public class UIManager : MonoBehaviour
         SwordImage.color = DeactivatedColor;
         GunImage.color = DeactivatedColor;
         CorruptedImage.color = ActivatedColor;
+        formerMoveDone = true;
     }
     void Start()
     {
@@ -380,18 +416,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (!(GameManager.Inst.gsm.State == GameState.Waiting))
-        {
-            updatedCurCount = GameManager.Inst.pm.curCount;
-            updatedMaxCount = GameManager.Inst.pm.maxCount;
-            UpdateUI();
-
-            if (formerCurCount != updatedCurCount || formerMaxCount != updatedMaxCount) {
-                StartCoroutine(UpdateGaugeBar(updatedCurCount, updatedMaxCount, 0.5f));
-                formerCurCount = updatedCurCount;
-                formerMaxCount = updatedMaxCount;
-            }
-        }
+        UpdateUI();
     }
 
 

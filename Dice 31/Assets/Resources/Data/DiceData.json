@@ -3,352 +3,352 @@
     {
       "prefab": "EmptyDice/NormalDice",
       "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
+      "name": "일반 주사위",
+      "summary": "1부터 6까지의 숫자가 있는 평범한 주사위",
       "faces": [
         {
-          "image": "DiceFaces/Normal 1",
+          "image": "DiceFaces/Normal1",
           "description": "진행도를 1 증가시킨다"
         },
         {
-          "image": "DiceFaces/Normal 1",
+          "image": "DiceFaces/Normal2",
+          "description": "진행도를 2 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal3",
+          "description": "진행도를 3 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal4",
+          "description": "진행도를 4 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal5",
+          "description": "진행도를 5 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal6",
+          "description": "진행도를 6 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/PlusDice",
+      "image": "DiceThumbnails/PlusDice",
+      "name": "플러스 주사위",
+      "summary": "1~3의 숫자를 추가로 굴릴 수 있는 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Plus1",
           "description": "진행도를 1 증가시킨다"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Plus2",
+          "description": "진행도를 2 증가시킨다"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Plus3",
+          "description": "진행도를 3 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/MinusDice",
+      "image": "DiceThumbnails/MinusDice",
+      "name": "마이너스 주사위",
+      "summary": "0보다 작은 숫자를 굴릴 수 있는 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Minus-1",
+          "description": "진행도를 1 감소시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Minus-2",
+          "description": "진행도를 2 감소시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Minus-3",
+          "description": "진행도를 3 감소시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/ExtendDice",
+      "image": "DiceThumbnails/ExtendDice",
+      "name": "연장 주사위",
+      "summary": "최대 카운트를 늘릴 수 있는 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Extend1",
+          "description": "최대 카운트를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Extend2",
+          "description": "최대 카운트를 2 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Extend3",
+          "description": "최대 카운트를 3 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Extend4",
+          "description": "최대 카운트를 4 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Extend5",
+          "description": "최대 카운트를 5 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Extend20",
+          "description": "최대 카운트를 20 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/JQKDice",
+      "image": "DiceThumbnails/JQKDice",
+      "name": "JQK 주사위",
+      "summary": "3가지의 특수 기능을 가진 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/JQKJ",
+          "description": "다음 사람의 턴을 스킵한다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/JQKQ",
+          "description": "주사위 굴리는 순서를 반대로 바꾼다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/JQKK",
+          "description": "주사위를 다시 한 번 굴린다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/OperatorDice",
+      "image": "DiceThumbnails/OperatorDice",
+      "name": "딜레이 주사위",
+      "summary": "자신의 숫자를 남에게 떠넘길 수 있는 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Operator2",
+          "description": "다음 사람의 턴이 시작할 때 진행도를 2 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Operator-3",
+          "description": "자신의 턴에서 진행도를 3 감소시킨다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/OnMyOwnDice",
+      "image": "DiceThumbnails/OnMyOwnDice",
+      "name": "내 맘대로 주사위",
+      "summary": "1과 2 중 원하는 숫자를 선택할 수 있는 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/OnMyOwn",
+          "description": "1과 2 중 원하는 숫자를 선택한다"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
         }
       ]
     },
     {
       "prefab": "EmptyDice/AssassinDice",
-      "image": "DiceThumbnails/AssassinDice2D",
+      "image": "DiceThumbnails/AssassinDice",
       "name": "암살 주사위",
-      "summary": "단지 썸네일이 있어서 하나 추가해본 주사위",
+      "summary": "다음 사람을 암살할 수 있는 주사위",
       "faces": [
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/AssassinBow",
+          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 1, 2, 3, 4를 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/AssassinSword",
+          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 3, 4, 5, 6을 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/AssassinGun",
+          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 1, 2, 4, 5를 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         }
       ]
     },
     {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
+      "prefab": "EmptyDice/BombDice",
+      "image": "DiceThumbnails/BombDice",
+      "name": "폭탄 주사위",
+      "summary": "조건을 만족하면 터지는 폭탄을 가진 주사위",
       "faces": [
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb1",
+          "description": "다음 사람부터, 일반 주사위에서 1이 나오면 폭탄이 터져 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb2",
+          "description": "다음 사람부터, 일반 주사위에서 2가 나오면 폭탄이 터져 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb3",
+          "description": "다음 사람부터, 일반 주사위에서 3이 나오면 폭탄이 터져 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb4",
+          "description": "다음 사람부터, 일반 주사위에서 4가 나오면 폭탄이 터져 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb5",
+          "description": "다음 사람부터, 일반 주사위에서 5가 나오면 폭탄이 터져 사망"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Bomb6",
+          "description": "다음 사람부터, 일반 주사위에서 6이 나오면 폭탄이 터져 사망"
         }
       ]
     },
     {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
+      "prefab": "EmptyDice/RevivalDice",
+      "image": "DiceThumbnails/RevivalDice",
+      "name": "부활 주사위",
+      "summary": "팀원을 부활시킬 수 있는 힘을 지닌 주사위",
       "faces": [
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/RevivalSuccess",
+          "description": "죽은 팀원 중 한 명을 부활시킨다"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/RevivalFail",
+          "description": "부활 실패로 자신이 사망한다"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         }
       ]
     },
     {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
+      "prefab": "EmptyDice/CorruptedDice",
+      "image": "DiceThumbnails/CorruptedDice",
+      "name": "타락 주사위",
+      "summary": "타락의 기운을 지닌 주사위",
       "faces": [
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/CorruptedPass",
+          "description": "다음 사람의 특수 주사위와 타락 주사위를 교환한다"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Corrupted",
+          "description": "타락 단계가 1 증가한다\n<color=#9370DB>타락 4단계: 모든 숫자 2배로 적용, 타락 5단계: 플레이어 사망</color>"
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         },
         {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "DiceThumbnails/NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
+          "image": "DiceFaces/Empty",
+          "description": ""
         }
       ]
     }
