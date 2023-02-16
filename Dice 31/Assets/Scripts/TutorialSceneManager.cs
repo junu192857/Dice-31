@@ -15,10 +15,11 @@ public class TutorialSceneManager : MonoBehaviour
     [SerializeField] private string diceDataPath;
     [SerializeField] private GameObject diceParent;
     [SerializeField] private GameObject buttonsParent;
+    [SerializeField] private float rotationSpeed = 30f;
     
     private DiceInfoData diceInfoData;
 
-    public void Start()
+    private void Start()
     {
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
         var error = diceInfoData.GetError();
@@ -36,7 +37,12 @@ public class TutorialSceneManager : MonoBehaviour
         HandleSelectDiceClick(0);
     }
 
-    public void HandleSelectDiceClick(int i)
+    private void Update()
+    {
+        diceParent.transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+    }
+
+    private void HandleSelectDiceClick(int i)
     {
         Debug.Assert(i < diceInfoData.data.Length);
         if (i >= diceInfoData.data.Length)
@@ -53,11 +59,13 @@ public class TutorialSceneManager : MonoBehaviour
         {
             diceFaceImages[j].sprite = Resources.Load<Sprite>(diceInfo.faces[j].image);
         }
-        Destroy(diceParent.transform.GetChild(0).gameObject);
+        var oldDice = diceParent.transform.GetChild(0);
+        var rotation = oldDice.localRotation;
+        Destroy(oldDice.gameObject);
         var prefab = Resources.Load<GameObject>(diceInfo.prefab);
         var dice = Instantiate(prefab, diceParent.transform);
         dice.transform.localPosition = Vector3.zero;
-        dice.transform.localRotation = Quaternion.identity;
+        dice.transform.localRotation = rotation;
         dice.transform.localScale = Vector3.one * 0.15f;
     }
 
