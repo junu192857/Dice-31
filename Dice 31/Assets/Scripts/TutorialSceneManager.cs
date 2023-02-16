@@ -14,6 +14,7 @@ public class TutorialSceneManager : MonoBehaviour
     [SerializeField] private string mainSceneName;
     [SerializeField] private string diceDataPath;
     [SerializeField] private GameObject diceParent;
+    [SerializeField] private GameObject buttonsParent;
     
     private DiceInfoData diceInfoData;
 
@@ -22,6 +23,16 @@ public class TutorialSceneManager : MonoBehaviour
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
         var error = diceInfoData.GetError();
         Debug.Assert(error.Length == 0, error);
+        for (var i = 0; i < diceInfoData.data.Length; i++)
+        {
+            var button = buttonsParent.transform.GetChild(i).GetComponent<Button>();
+            var index = i;
+            button.onClick.AddListener(() => HandleSelectDiceClick(index));
+            var image = Resources.Load<Sprite>(diceInfoData.data[i].image);
+            var imageComp = button.transform.GetChild(0).GetComponent<Image>();
+            Debug.Log(diceInfoData.data[i].name + " " + image.name + " " + imageComp.name);
+            imageComp.sprite = image;
+        }
         HandleSelectDiceClick(0);
     }
 
@@ -44,7 +55,10 @@ public class TutorialSceneManager : MonoBehaviour
         }
         Destroy(diceParent.transform.GetChild(0).gameObject);
         var prefab = Resources.Load<GameObject>(diceInfo.prefab);
-        Instantiate(prefab, diceParent.transform);
+        var dice = Instantiate(prefab, diceParent.transform);
+        dice.transform.localPosition = Vector3.zero;
+        dice.transform.localRotation = Quaternion.identity;
+        dice.transform.localScale = Vector3.one * 0.15f;
     }
 
     public void HandleBackClick()
@@ -78,6 +92,7 @@ class DiceInfoData
 class DiceInfo
 {
     public string prefab = "";
+    public string image = "";
     public string name = "";
     public string summary = "";
     public FaceInfo[] faces;
@@ -86,6 +101,8 @@ class DiceInfo
     {
         if (prefab.Length == 0)
             return "prefab is empty";
+        if (image.Length == 0)
+            return "image is empty";
         if (name.Length == 0)
             return "name is empty";
         if (summary.Length == 0)

@@ -2,7 +2,71 @@
   "data": [
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "Data/CorruptedDice",
+      "image": "DiceThumbnails/NormalDice",
+      "name": "평범한 주사위",
+      "summary": "누구에게나 주어지는 평범한 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/AssassinDice",
+      "image": "DiceThumbnails/AssassinDice2D",
+      "name": "암살 주사위",
+      "summary": "단지 썸네일이 있어서 하나 추가해본 주사위",
+      "faces": [
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        },
+        {
+          "image": "DiceFaces/Normal 1",
+          "description": "진행도를 1 증가시킨다"
+        }
+      ]
+    },
+    {
+      "prefab": "EmptyDice/NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -34,7 +98,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -66,7 +130,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -98,7 +162,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -130,7 +194,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -162,7 +226,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -194,7 +258,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -226,7 +290,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
@@ -258,71 +322,7 @@
     },
     {
       "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
-      "name": "평범한 주사위",
-      "summary": "누구에게나 주어지는 평범한 주사위",
-      "faces": [
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        },
-        {
-          "image": "DiceFaces/Normal 1",
-          "description": "진행도를 1 증가시킨다"
-        }
-      ]
-    },
-    {
-      "prefab": "EmptyDice/NormalDice",
-      "image": "NormalDice",
+      "image": "DiceThumbnails/NormalDice",
       "name": "평범한 주사위",
       "summary": "누구에게나 주어지는 평범한 주사위",
       "faces": [
