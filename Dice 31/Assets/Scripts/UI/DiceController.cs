@@ -64,8 +64,8 @@ public class DiceController : MonoBehaviour
         {
             if (State != DiceState.Dragging) return;
             var rigidbody = GetComponent<Rigidbody>();
-            rigidbody.velocity += Vector3.up * 4;
-            rigidbody.angularVelocity += Random.onUnitSphere * 10;
+            rigidbody.velocity += Vector3.up * 6;
+            rigidbody.angularVelocity += Random.onUnitSphere * 15;
             // transform.rotation = Random.rotation;
             State = DiceState.Rolling;
         }
@@ -96,7 +96,7 @@ public class DiceController : MonoBehaviour
             var targetAngularVelocity = Vector3.Cross(
                 velocity - oldVelocity,
                 velocity
-            ) * 10;
+            ) * 15;
             var angularVelocity = rigidbody.angularVelocity;
             rigidbody.angularVelocity = Vector3.Lerp(
                 angularVelocity,
