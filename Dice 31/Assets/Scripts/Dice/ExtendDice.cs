@@ -27,5 +27,6 @@ public class ExtendDice : Dice
         koreanDiceName = "연장 주사위";
         diceInformation = "이번 라운드의 최대 숫자를 증가시키는 주사위";
         color = DiceColor.Green;
+        diceIndex = 3;
     }
 }

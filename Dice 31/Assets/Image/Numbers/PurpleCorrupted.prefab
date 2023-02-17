@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 261274776182047669}
   - component: {fileID: 5814724920585209382}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: PurpleCorrupted
   m_TagString: Corrupted
   m_Icon: {fileID: 0}

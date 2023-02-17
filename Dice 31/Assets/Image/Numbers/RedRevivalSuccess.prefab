@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6302068255543595370}
   - component: {fileID: 6513891721886095800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RedRevivalSuccess
   m_TagString: Revival
   m_Icon: {fileID: 0}

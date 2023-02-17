@@ -33,5 +33,6 @@ public class BombDice : Dice
         koreanDiceName = "폭탄 주사위";
         diceInformation = "특정 숫자가 나오면 터지는 폭탄을 담은 주사위";
         color = DiceColor.Red;
+        diceIndex = 8;
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7210843004615472835}
   - component: {fileID: 4971321466063977180}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GreenJ
   m_TagString: Alphabet
   m_Icon: {fileID: 0}

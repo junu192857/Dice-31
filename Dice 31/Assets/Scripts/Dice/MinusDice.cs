@@ -49,5 +49,6 @@ public class MinusDice : Dice
         koreanDiceName = "마이너스 주사위";
         diceInformation = "0보다 작은 숫자를 가진 주사위";
         color = DiceColor.Green;
+        diceIndex = 2;
     }
 }

@@ -31,7 +31,6 @@ public class TutorialSceneManager : MonoBehaviour
             button.onClick.AddListener(() => HandleSelectDiceClick(index));
             var image = Resources.Load<Sprite>(diceInfoData.data[i].image);
             var imageComp = button.transform.GetChild(0).GetComponent<Image>();
-            Debug.Log(diceInfoData.data[i].name + " " + image.name + " " + imageComp.name);
             imageComp.sprite = image;
         }
         HandleSelectDiceClick(0);

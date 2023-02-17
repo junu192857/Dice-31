@@ -7,6 +7,7 @@ public class OperatorDice : Dice
 {
     private bool pass;
     private int value;
+    public bool delayed;
     public override IEnumerator Roll()
     {
         return DiceUtil.Roll(this, diceName, i => { 
@@ -20,6 +21,7 @@ public class OperatorDice : Dice
         if (pass) {
             Debug.Log($"Former player rolled 2++ from {diceName}");
             GameManager.Inst.pm.UpdateCurCount(value);
+            GameManager.Inst.pm.OperatorDiceResult();
         }
     }
 
@@ -37,10 +39,12 @@ public class OperatorDice : Dice
             case 1:
                 pass = false;
                 value = -3;
+                delayed = false;
                 break;
             case 2:
                 pass = true;
                 value = 2;
+                delayed = true;
                 break;
         }
     }
@@ -51,5 +55,6 @@ public class OperatorDice : Dice
         koreanDiceName = "딜레이 주사위";
         diceInformation = "내가 뽑은 숫자를 다음 사람에게 적용시킬 수 있는 주사위";
         color = DiceColor.Green;
+        diceIndex = 5;
     }
 }

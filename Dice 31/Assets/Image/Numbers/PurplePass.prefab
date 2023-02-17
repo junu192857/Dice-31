@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3015146840205594126}
   - component: {fileID: 4306182981856480205}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: PurplePass
   m_TagString: Corrupted
   m_Icon: {fileID: 0}

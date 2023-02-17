@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4380094405986859388}
   - component: {fileID: 4225745842277660131}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Green3
   m_TagString: RealNumber
   m_Icon: {fileID: 0}

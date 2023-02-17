@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5447538281305125221}
   - component: {fileID: 7295884696572389101}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: RedSword
   m_TagString: Assassin
   m_Icon: {fileID: 0}

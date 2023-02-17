@@ -31,5 +31,6 @@ public class OnMyOwnDice : Dice
         koreanDiceName = "내 맘대로 주사위";
         diceInformation = "1과 2 중 원하는 숫자를 마음대로 고를 수 있는 주사위";
         color = DiceColor.Green;
+        diceIndex = 6;
     }
 }

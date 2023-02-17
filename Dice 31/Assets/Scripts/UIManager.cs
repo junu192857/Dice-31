@@ -9,34 +9,45 @@ public class UIManager : MonoBehaviour
     public List<Image> PlayerImages;
 
     public List<Sprite> Dice2D;
-
     public Image NormalDiceImage;
     public Image SpecialDiceImage;
 
     public Text MatchRoundInfo;
     public Text BombNumberText;
     public Text CorruptedCountText;
+
     public Image NumberGauge;
     public Text NumberText;
+    public bool formerMoveDone;
+
+
     public Image BombHolder;
     public Image BowImage;
     public Image SwordImage;
     public Image GunImage;
     public Image CorruptedImage;
 
+    private bool gaugeBarMoving;
+    public GameObject laserSpherePrefab;
+    public GameObject laserBeamPrefab;
+    public List<float> laserBeamRotations;
+    public List<Vector3> laserBeamTarget;
+    public List<Vector2> bombMovingPlot;
+    public GameObject explosionPrefab;
+    public GameObject bombPrefab;
+    public GameObject bowPrefab;
+    public bool arrowShootDone = false;
+    public Vector3 arrowTarget;
 
     public List<Sprite> PlayerStates;
-
-    private int formerCurCount;
-    private int updatedCurCount;
-    private int formerMaxCount;
-    private int updatedMaxCount;
 
     public Toggle NormalDiceToggle;
     public Toggle SpecialDiceToggle;
 
     public Button SelectOneButton;
     public Button SelectTwoButton;
+
+    public bool operatorDiceDone = true;
 
     [SerializeField]
     private List<GameObject> Numbers;
@@ -83,7 +94,11 @@ public class UIManager : MonoBehaviour
         else DiceUtil.rollingSpecial = false;
 
         yield return new WaitUntil(() => !DiceUtil.rollingNormal && !DiceUtil.rollingSpecial);
-        StartCoroutine(MoveNumber(isNormal, numberSprite));
+        if (dice.GetComponent<Dice>() is not OperatorDice || !dice.GetComponent<OperatorDice>().delayed)
+        {
+            StartCoroutine(MoveNumber(isNormal, numberSprite));
+        }
+        else DiceUtil.specialDone = true;
     }
 
     private int CalculateIndex(string diceName, int number) {
@@ -119,8 +134,33 @@ public class UIManager : MonoBehaviour
             
         }
     }
+    private IEnumerator MoveNumberLater(bool isNormal, GameObject Number) {
+        DiceUtil.specialDone = true;
+        operatorDiceDone = false;
+        Debug.Log(formerMoveDone);
+        //yield return new WaitUntil(() => formerMoveDone);
+        Debug.Log("Hello from delayed move");
+        float runtime = 0f;
+        Vector3 target;
+        target = Camera.main.ScreenToWorldPoint(new Vector3(720 + 960, 480 + 540, 5));
+        
+        Vector3 currentPosition = Number.transform.position;
+        Vector3 currentScale = Number.transform.localScale;
+        while (runtime < moveDuration)
+        {
+            runtime += Time.deltaTime;
+            Number.transform.position = Vector3.Lerp(currentPosition, target, runtime / moveDuration);
+            Number.transform.localScale = Vector3.Lerp(currentScale, 0.05f * Vector3.one, runtime / moveDuration);
+            yield return null;
+        }
+        Destroy(Number);
+        GaugeBarCoroutine(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
+    }
+    public void DirectlyMoveNumber(bool isNormal, GameObject Number) {
+        StartCoroutine(MoveNumberLater(isNormal, Number));
+    }
     private IEnumerator MoveNumber(bool isNormal, GameObject Number) {
-
+        formerMoveDone = false;
         float runtime = 0f;
         Vector3 target;
         switch (Number.tag) {
@@ -158,18 +198,23 @@ public class UIManager : MonoBehaviour
         else DiceUtil.specialDone = true;
         Destroy(Number);
     }
-    
-    //게이지 바를 서서히 움직이는 애니메이션
-    //TODO: Normal Dice, Plus Dice, Minus Dice의 숫자가 이동하면 그때 틀어야 함./
-    public IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
 
+
+
+    public void GaugeBarCoroutine(int curCount, int maxCount) {
+        StartCoroutine(UpdateGaugeBar(curCount, maxCount, 0.5f));
+        UpdateNumberText(curCount, maxCount);
+    }
+    //게이지 바를 서서히 움직이는 애니메이션
+    private IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
+        gaugeBarMoving = true;
         var runTime = 0.0f;
 
         RectTransform rect = NumberGauge.GetComponent<RectTransform>();
         Image image = NumberGauge.GetComponent<Image>();
 
         Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
-        Vector2 targetWidth = new Vector2(480 * curCount / maxCount, 60);
+        Vector2 targetWidth = curCount <= maxCount ? new Vector2(480 * curCount / maxCount, 60) : new Vector2(480, 60);
 
         if (targetWidth.x < 240)
         {
@@ -187,6 +232,10 @@ public class UIManager : MonoBehaviour
             rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / duration);
             yield return null;
         }
+        yield return new WaitForSeconds(0.5f);
+        gaugeBarMoving = false;
+        formerMoveDone = true;
+        operatorDiceDone = true;
     }
 
     //Run whenever new player starts his turn
@@ -194,8 +243,12 @@ public class UIManager : MonoBehaviour
 
         NormalDiceToggle.interactable = false;
         NormalDiceToggle.isOn = true;
+        NormalDiceImage.sprite = Dice2D[0];
+
         SpecialDiceToggle.interactable = true;
         SpecialDiceToggle.isOn = false;
+        SpecialDiceImage.sprite = Dice2D[GameManager.Inst.pm.activatedPlayer.specialDice.diceIndex];
+
         if (GameManager.Inst.pm.activatedPlayer.specialDice is CorruptedDice)
         {
             SpecialDiceToggle.isOn = true;
@@ -204,23 +257,9 @@ public class UIManager : MonoBehaviour
         else if (!GameManager.Inst.pm.activatedPlayer.specialDice.available) {
             SpecialDiceToggle.interactable = false;
         }
-
-        Debug.Log($"{GameManager.Inst.pm.activatedPlayer.specialDice.available}");
     }
 
-
-
-
-
-
-
-
-
-
-
     public void UpdateUI() {
-
-        UpdateNumberText(GameManager.Inst.pm.curCount, GameManager.Inst.pm.maxCount);
         MatchRoundInfo.text = $"Match {GameManager.Inst.pm.matchCount} Round {GameManager.Inst.pm.roundCount}";
         BombNumberText.text = GameManager.Inst.pm.bombDiceNum == 0 ? "" : $"{GameManager.Inst.pm.bombDiceNum}";
         CorruptedCountText.text = $"{GameManager.Inst.pm.corruptStack}";
@@ -255,19 +294,144 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void PlayerDie(int playerIndex) {
-        //TODO: 죽은 이유에 따라 다른 이미지 띄우기
-        if (playerIndex % 2 == 0)
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[2];
-            Debug.Log("Red Team Member dead");
+    public void PlayerDie(int playerIndex, DeadCause deadCause) {
+        int deadIndex = 0;
+        switch (deadCause) {
+            case DeadCause.Number:
+                deadIndex += 2;
+                break;
+            case DeadCause.Bomb:
+                deadIndex += 3;
+                break;
+            case DeadCause.Assassin:
+            case DeadCause.AssassinFail:
+                switch (GameManager.Inst.pm.assassinInfo) {
+                    case AssassinInfo.Bow:
+                        deadIndex += 4;
+                        break;
+                    case AssassinInfo.Sword:
+                        deadIndex += 5;
+                        break;
+                    case AssassinInfo.Gun:
+                        deadIndex += 6;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case DeadCause.RevivalFail:
+                deadIndex += 7;
+                break;
+            case DeadCause.Corrupted:
+                deadIndex += 8;
+                break;
         }
-        else
+        if (playerIndex % 2 == 1) deadIndex += 10;
+
+        PlayerImages[playerIndex].sprite = PlayerStates[deadIndex];
+    }
+
+    public IEnumerator PlayerDieAnimation(int playerIndex, DeadCause deadCause) {
+        yield return StartCoroutine(DieAnimate(playerIndex, deadCause));
+    }
+
+    private IEnumerator DieAnimate(int playerIndex, DeadCause deadCause) {
+        yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
+        float runTime = 0f;
+        Debug.Log("Player Died!");
+        switch (deadCause)
         {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[12];
-            Debug.Log("Blue Team Member Dead");
+            case DeadCause.Number:
+                Debug.Log("Hello from Number");
+
+                RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+                Image image = NumberGauge.GetComponent<Image>();
+
+                Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
+                Vector2 targetWidth = new Vector2(0, 60);
+
+                GameObject laserSphere = Instantiate(laserSpherePrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.identity);
+                while (runTime < 1f)
+                {
+                    runTime += Time.deltaTime;
+                    laserSphere.transform.localScale = Vector3.Lerp(new Vector3(0f, 0.0001f, 0f), new Vector3(0.1f, 0.0001f, 0.1f), runTime / 1f);
+                    rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / 1f);
+                    yield return null;
+                }
+                runTime = 0f;
+                Destroy(laserSphere);
+
+                yield return new WaitForSeconds(0.3f);
+                GameObject laserBeam = Instantiate(laserBeamPrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.Euler(90f, 0f, laserBeamRotations[playerIndex]));
+                laserBeam.transform.localScale = new Vector3(0.05f, -0.005f, 0.05f);
+                Vector3 startPos = laserBeam.transform.position;
+                while (runTime < 0.3f)
+                {
+                    runTime += Time.deltaTime;
+                    laserBeam.transform.position = (startPos * (0.3f - runTime) + (laserBeamTarget[playerIndex] * runTime)) / 0.3f;
+                    yield return null;
+                }
+                Destroy(laserBeam);
+                PlayerDie(playerIndex, deadCause);
+                break;
+            case DeadCause.Assassin:
+            case DeadCause.AssassinFail:
+                Debug.Log("Hello from Assassin");
+                switch (GameManager.Inst.pm.assassinInfo) {
+                    case AssassinInfo.Bow:
+                        /*BowImage.transform.GetChild(0).gameObject.SetActive(false);
+                        GameObject bow = Instantiate(bowPrefab, new Vector3(0.5f, 1f, 1.14f), Quaternion.identity);
+                        bow.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        bow.GetComponent<Animator>().Play("ArrowAnimation");
+                        BowImage.transform.GetChild(0).gameObject.SetActive(false);
+                        arrowTarget = new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7));
+                        yield return new WaitUntil(() => arrowShootDone);*/
+                    case AssassinInfo.Sword:
+                    case AssassinInfo.Gun:
+                        PlayerDie(playerIndex, deadCause);
+                        break;
+                }
+                GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
+                AssassinFinish();
+                break;
+            
+            case DeadCause.Bomb:
+                Debug.Log("Hello from Bomb");
+                runTime = 0f;
+
+                BombHolder.transform.GetChild(0).gameObject.SetActive(false);
+
+                GameObject bomb = Instantiate(bombPrefab, new Vector3(-1.12f, 1f, 1.16f), Quaternion.identity);
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    bomb.transform.localScale = Vector3.Lerp(new Vector3(0.04f, 1f, 0.04f), new Vector3(0.06f, 1f, 0.06f), runTime / 0.5f);
+                    yield return null;
+                }
+                yield return new WaitForSeconds(0.3f);
+                runTime = 0f;
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    float t = -4.76f * runTime - 1.12f;
+                    bomb.transform.position = new Vector3(t, 1, bombMovingPlot[playerIndex].x * (t + 1.6f) * (t + 1.6f) + bombMovingPlot[playerIndex].y);
+                    yield return null;
+                }
+                Destroy(bomb);
+                GameObject explosion = Instantiate(explosionPrefab, new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7)), Quaternion.Euler(90, 0, 0));
+                explosion.transform.localScale = new Vector3(0.08f, 0.08f, 1f);
+                explosion.GetComponent<Animator>().Play("EXPAnimator");
+                BombHolder.transform.GetChild(0).gameObject.SetActive(true);
+                //Destroy(explosion);
+                PlayerDie(playerIndex, deadCause);
+                break;
+            case DeadCause.Corrupted:
+            case DeadCause.RevivalFail:
+                PlayerDie(playerIndex, deadCause);
+                break;
+            default:
+                break;
         }
     }
+
 
     public void PlayerRevive(int playerIndex) {
         if (playerIndex % 2 == 0)
@@ -282,10 +446,14 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    public void UpdateNumberText(int curCount, int maxCount) { 
+    public void UpdateNumberText(int curCount, int maxCount) {
         //RectTransform rect = NumberGauge.GetComponent<RectTransform>();
         //rect.sizeDelta = new Vector2(480 * curCount / maxCount, 60);
-        NumberText.text = $"{curCount} / {maxCount}";
+        if (curCount <= maxCount)
+        {
+            NumberText.text = $"{curCount} / {maxCount}";
+        }
+        else NumberText.text = $"{maxCount} / {maxCount}";
     }
 
     /* public List<Player> alivePlayers;
@@ -346,6 +514,9 @@ public class UIManager : MonoBehaviour
         SwordImage.color = DeactivatedColor;
         GunImage.color = DeactivatedColor;
         CorruptedImage.color = ActivatedColor;
+        arrowShootDone = false;
+        formerMoveDone = true;
+        operatorDiceDone = true;
     }
     void Start()
     {
@@ -354,18 +525,7 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        if (!(GameManager.Inst.gsm.State == GameState.Waiting))
-        {
-            updatedCurCount = GameManager.Inst.pm.curCount;
-            updatedMaxCount = GameManager.Inst.pm.maxCount;
-            UpdateUI();
-
-            if (formerCurCount != updatedCurCount || formerMaxCount != updatedMaxCount) {
-                StartCoroutine(UpdateGaugeBar(updatedCurCount, updatedMaxCount, 0.5f));
-                formerCurCount = updatedCurCount;
-                formerMaxCount = updatedMaxCount;
-            }
-        }
+        UpdateUI();
     }
 
 
