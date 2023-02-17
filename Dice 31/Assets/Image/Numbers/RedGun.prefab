@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2005087464530382042}
   - component: {fileID: 6030909603691602209}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: RedGun
   m_TagString: Assassin
   m_Icon: {fileID: 0}

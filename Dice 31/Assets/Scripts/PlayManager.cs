@@ -55,6 +55,7 @@ public class PlayManager : MonoBehaviour
     private Player playerToRevive;
     
     private bool pendingRoundEnd = false;
+    private Dictionary<int, DeadCause> deadInfo = new Dictionary<int, DeadCause>();
 
 
     public void UpdateCurCount(int amount)
@@ -122,6 +123,8 @@ public class PlayManager : MonoBehaviour
             pendingRoundEnd = false;
             //turnDirection = 1; 라운드가 초기화되어도 진행 방향 초기화가 되지 않는 것이 원래 기획
             roundCount++;
+            deadInfo.Clear();
+            GameManager.Inst.um.GaugeBarCoroutine(curCount, maxCount);
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
         foreach (var player in playerInfos) {
@@ -230,8 +233,8 @@ public class PlayManager : MonoBehaviour
 
         for (int i = 0; i < playerInfos.Count; i++)
         {
-            //GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
-            GameObject specialDice = Instantiate(Resources.Load("OperatorDice")) as GameObject;
+            GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
+            //GameObject specialDice = Instantiate(Resources.Load("OperatorDice")) as GameObject;
             playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
             playerInfos[i].specialDice.EnableDice();
         }
@@ -259,9 +262,6 @@ public class PlayManager : MonoBehaviour
             GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
         }
         
-
-
-
         LoadDicesToRoll();
 
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
@@ -274,7 +274,10 @@ public class PlayManager : MonoBehaviour
         }
 
         if (pendingRoundEnd) {
-            OperateDieAnimation();
+            previousDices.Clear();
+            activatedPlayer.normalDice.transform.position = StoragePosition;
+            activatedPlayer.specialDice.transform.position = StoragePosition;
+            StartCoroutine(OperateDieAnimation());
         }
 
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
@@ -456,7 +459,7 @@ public class PlayManager : MonoBehaviour
 
         if (pendingRoundEnd)
         {
-            OperateDieAnimation();
+            StartCoroutine(OperateDieAnimation());
         }
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
@@ -464,8 +467,12 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    private void OperateDieAnimation() {
-        GameManager.Inst.um.PlayerDieAnimation(DeadCause.Number);
+    private IEnumerator OperateDieAnimation() {
+        GameManager.Inst.gsm.OperateAnimation();
+        foreach (KeyValuePair<int, DeadCause> item in deadInfo) {
+            yield return StartCoroutine(GameManager.Inst.um.PlayerDieAnimation(item.Key, item.Value));
+        }
+        ResetRound();
     }
     private Player Convert(GameObject player)
     {
@@ -515,6 +522,7 @@ public class PlayManager : MonoBehaviour
         StartCoroutine(OperatorDiceAnimation()); 
     }
     private IEnumerator OperatorDiceAnimation() {
+        
         yield return new WaitUntil(() => GameManager.Inst.um.formerMoveDone);
         GameObject Number = GameObject.FindGameObjectWithTag("RealNumber");
         GameManager.Inst.um.DirectlyMoveNumber(false, Number);
@@ -549,7 +557,9 @@ public class PlayManager : MonoBehaviour
         player.Die();
         player.deadCause = deadCause;
         player.deadRound = roundCount;
-        GameManager.Inst.um.PlayerDie(playerInfos.IndexOf(player), deadCause);
+        //요 밑에 줄은 애니메이션 끝나고 재생해야 함
+        
+        deadInfo.Add(playerInfos.IndexOf(player), deadCause);
         pendingRoundEnd = true;
     }
 

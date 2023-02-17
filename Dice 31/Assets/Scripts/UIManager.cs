@@ -20,12 +20,24 @@ public class UIManager : MonoBehaviour
     public Text NumberText;
     public bool formerMoveDone;
 
+
     public Image BombHolder;
     public Image BowImage;
     public Image SwordImage;
     public Image GunImage;
     public Image CorruptedImage;
 
+    private bool gaugeBarMoving;
+    public GameObject laserSpherePrefab;
+    public GameObject laserBeamPrefab;
+    public List<float> laserBeamRotations;
+    public List<Vector3> laserBeamTarget;
+    public List<Vector2> bombMovingPlot;
+    public GameObject explosionPrefab;
+    public GameObject bombPrefab;
+    public GameObject bowPrefab;
+    public bool arrowShootDone = false;
+    public Vector3 arrowTarget;
 
     public List<Sprite> PlayerStates;
 
@@ -34,6 +46,8 @@ public class UIManager : MonoBehaviour
 
     public Button SelectOneButton;
     public Button SelectTwoButton;
+
+    public bool operatorDiceDone = true;
 
     [SerializeField]
     private List<GameObject> Numbers;
@@ -122,7 +136,9 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator MoveNumberLater(bool isNormal, GameObject Number) {
         DiceUtil.specialDone = true;
-        yield return new WaitUntil(() => formerMoveDone);
+        operatorDiceDone = false;
+        Debug.Log(formerMoveDone);
+        //yield return new WaitUntil(() => formerMoveDone);
         Debug.Log("Hello from delayed move");
         float runtime = 0f;
         Vector3 target;
@@ -145,7 +161,6 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator MoveNumber(bool isNormal, GameObject Number) {
         formerMoveDone = false;
-        Debug.Log("Hello from MoveNumber");
         float runtime = 0f;
         Vector3 target;
         switch (Number.tag) {
@@ -192,14 +207,14 @@ public class UIManager : MonoBehaviour
     }
     //게이지 바를 서서히 움직이는 애니메이션
     private IEnumerator UpdateGaugeBar(int curCount, int maxCount, float duration) {
-
+        gaugeBarMoving = true;
         var runTime = 0.0f;
 
         RectTransform rect = NumberGauge.GetComponent<RectTransform>();
         Image image = NumberGauge.GetComponent<Image>();
 
         Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
-        Vector2 targetWidth = new Vector2(480 * curCount / maxCount, 60);
+        Vector2 targetWidth = curCount <= maxCount ? new Vector2(480 * curCount / maxCount, 60) : new Vector2(480, 60);
 
         if (targetWidth.x < 240)
         {
@@ -218,7 +233,9 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(0.5f);
+        gaugeBarMoving = false;
         formerMoveDone = true;
+        operatorDiceDone = true;
     }
 
     //Run whenever new player starts his turn
@@ -240,8 +257,6 @@ public class UIManager : MonoBehaviour
         else if (!GameManager.Inst.pm.activatedPlayer.specialDice.available) {
             SpecialDiceToggle.interactable = false;
         }
-
-        Debug.Log($"{GameManager.Inst.pm.activatedPlayer.specialDice.available}");
     }
 
     public void UpdateUI() {
@@ -316,16 +331,108 @@ public class UIManager : MonoBehaviour
         PlayerImages[playerIndex].sprite = PlayerStates[deadIndex];
     }
 
-    public void PlayerDieAnimation(DeadCause deadCause) {
-        StartCoroutine(DieAnimate(deadCause));
+    public IEnumerator PlayerDieAnimation(int playerIndex, DeadCause deadCause) {
+        yield return StartCoroutine(DieAnimate(playerIndex, deadCause));
     }
 
-    private IEnumerator DieAnimate(DeadCause deadCause) {
+    private IEnumerator DieAnimate(int playerIndex, DeadCause deadCause) {
+        yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
+        float runTime = 0f;
         Debug.Log("Player Died!");
-        yield return new WaitForSeconds(1);
+        switch (deadCause)
+        {
+            case DeadCause.Number:
+                Debug.Log("Hello from Number");
 
-        GameManager.Inst.pm.ResetRound();
+                RectTransform rect = NumberGauge.GetComponent<RectTransform>();
+                Image image = NumberGauge.GetComponent<Image>();
+
+                Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
+                Vector2 targetWidth = new Vector2(0, 60);
+
+                GameObject laserSphere = Instantiate(laserSpherePrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.identity);
+                while (runTime < 1f)
+                {
+                    runTime += Time.deltaTime;
+                    laserSphere.transform.localScale = Vector3.Lerp(new Vector3(0f, 0.0001f, 0f), new Vector3(0.1f, 0.0001f, 0.1f), runTime / 1f);
+                    rect.sizeDelta = Vector2.Lerp(curWidth, targetWidth, runTime / 1f);
+                    yield return null;
+                }
+                runTime = 0f;
+                Destroy(laserSphere);
+
+                yield return new WaitForSeconds(0.3f);
+                GameObject laserBeam = Instantiate(laserBeamPrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.Euler(90f, 0f, laserBeamRotations[playerIndex]));
+                laserBeam.transform.localScale = new Vector3(0.05f, -0.005f, 0.05f);
+                Vector3 startPos = laserBeam.transform.position;
+                while (runTime < 0.3f)
+                {
+                    runTime += Time.deltaTime;
+                    laserBeam.transform.position = (startPos * (0.3f - runTime) + (laserBeamTarget[playerIndex] * runTime)) / 0.3f;
+                    yield return null;
+                }
+                Destroy(laserBeam);
+                PlayerDie(playerIndex, deadCause);
+                break;
+            case DeadCause.Assassin:
+            case DeadCause.AssassinFail:
+                Debug.Log("Hello from Assassin");
+                switch (GameManager.Inst.pm.assassinInfo) {
+                    case AssassinInfo.Bow:
+                        /*BowImage.transform.GetChild(0).gameObject.SetActive(false);
+                        GameObject bow = Instantiate(bowPrefab, new Vector3(0.5f, 1f, 1.14f), Quaternion.identity);
+                        bow.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        bow.GetComponent<Animator>().Play("ArrowAnimation");
+                        BowImage.transform.GetChild(0).gameObject.SetActive(false);
+                        arrowTarget = new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7));
+                        yield return new WaitUntil(() => arrowShootDone);*/
+                    case AssassinInfo.Sword:
+                    case AssassinInfo.Gun:
+                        PlayerDie(playerIndex, deadCause);
+                        break;
+                }
+                GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
+                AssassinFinish();
+                break;
+            
+            case DeadCause.Bomb:
+                Debug.Log("Hello from Bomb");
+                runTime = 0f;
+
+                BombHolder.transform.GetChild(0).gameObject.SetActive(false);
+
+                GameObject bomb = Instantiate(bombPrefab, new Vector3(-1.12f, 1f, 1.16f), Quaternion.identity);
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    bomb.transform.localScale = Vector3.Lerp(new Vector3(0.04f, 1f, 0.04f), new Vector3(0.06f, 1f, 0.06f), runTime / 0.5f);
+                    yield return null;
+                }
+                yield return new WaitForSeconds(0.3f);
+                runTime = 0f;
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    float t = -4.76f * runTime - 1.12f;
+                    bomb.transform.position = new Vector3(t, 1, bombMovingPlot[playerIndex].x * (t + 1.6f) * (t + 1.6f) + bombMovingPlot[playerIndex].y);
+                    yield return null;
+                }
+                Destroy(bomb);
+                GameObject explosion = Instantiate(explosionPrefab, new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7)), Quaternion.Euler(90, 0, 0));
+                explosion.transform.localScale = new Vector3(0.08f, 0.08f, 1f);
+                explosion.GetComponent<Animator>().Play("EXPAnimator");
+                BombHolder.transform.GetChild(0).gameObject.SetActive(true);
+                //Destroy(explosion);
+                PlayerDie(playerIndex, deadCause);
+                break;
+            case DeadCause.Corrupted:
+            case DeadCause.RevivalFail:
+                PlayerDie(playerIndex, deadCause);
+                break;
+            default:
+                break;
+        }
     }
+
+
     public void PlayerRevive(int playerIndex) {
         if (playerIndex % 2 == 0)
         {
@@ -407,7 +514,9 @@ public class UIManager : MonoBehaviour
         SwordImage.color = DeactivatedColor;
         GunImage.color = DeactivatedColor;
         CorruptedImage.color = ActivatedColor;
+        arrowShootDone = false;
         formerMoveDone = true;
+        operatorDiceDone = true;
     }
     void Start()
     {

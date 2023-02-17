@@ -64,13 +64,13 @@ public class AssassinDice : Dice
         switch (value)
         {
             case 1:
-                assassinResult = x < 5;
+                assassinResult = 0 < x && x < 5;
                 break;
             case 2:
-                assassinResult = x > 2;
+                assassinResult = 6 >= x && x > 2;
                 break;
             case 3:
-                assassinResult = x % 3 != 0;
+                assassinResult = x % 3 != 0 && 0 < x && x <= 6;
                 break;
             default:
                 Assert.IsTrue(false, "dice value must be in 1 ~ 6");
@@ -88,8 +88,7 @@ public class AssassinDice : Dice
             GameManager.Inst.pm.PlayerDie(diceOwner, DeadCause.AssassinFail);
         }
 
-        GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
-        GameManager.Inst.um.AssassinFinish();
+        
     }
 
     private void Awake()
