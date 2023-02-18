@@ -34,7 +34,10 @@ public class GameManagerDisplay : EditorWindow
             GUILayout.BeginHorizontal();
             toggles[i] = GUILayout.Toggle(toggles[i], "");
             GUILayout.Label(player.playerName);
-            GUILayout.Label(player.specialDice.diceName);
+            if (player.specialDice is null)
+                GUILayout.Label("?");
+            else
+                GUILayout.Label(player.specialDice.diceName ?? "");
             GUILayout.EndHorizontal();
         }
 

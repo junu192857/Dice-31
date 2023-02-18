@@ -107,8 +107,10 @@ public class PlayManager : MonoBehaviour
                 {
                     playerInfos[index].SetBlueTeam();
                 }
+                playerInfos[index].playerName = SetupSceneManager.playerNames[index];
             }
 
+            GameManager.Inst.um.ResetPlayerNames();
             ResetMatch();
         }
     }

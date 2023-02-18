@@ -274,6 +274,14 @@ public class UIManager : MonoBehaviour
             PlayerImages[i + 1].GetComponent<Image>().sprite = PlayerStates[10];
         }
     }
+    public void ResetPlayerNames()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            PlayerImages[i].transform.GetChild(0).GetComponent<Text>().text = 
+                GameManager.Inst.pm.playerInfos[i].playerName;
+        }
+    }
     public void PlayerDeactivate(int playerIndex) {
         if (playerIndex % 2 == 0)
         {
