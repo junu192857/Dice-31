@@ -149,50 +149,55 @@ public class PlayManager : MonoBehaviour
         }
     }
 
+    public void SaveInfoAndLoadEndScene()
+    {
+        if (winCount["Red"] > winCount["Blue"])
+        {
+            EndSceneManager.winnerSprites = new[]
+            {
+                GameManager.Inst.um.PlayerImages[0].sprite,
+                GameManager.Inst.um.PlayerImages[2].sprite,
+                GameManager.Inst.um.PlayerImages[4].sprite,
+                GameManager.Inst.um.PlayerImages[8].sprite,
+            };
+            EndSceneManager.winnerNames = new[]
+            {
+                playerInfos[0].playerName,
+                playerInfos[2].playerName,
+                playerInfos[4].playerName,
+                playerInfos[8].playerName,
+            };
+            EndSceneManager.winnerTeam = "Red";
+        }
+        else
+        {
+            EndSceneManager.winnerSprites = new[]
+            {
+                GameManager.Inst.um.PlayerImages[1].sprite,
+                GameManager.Inst.um.PlayerImages[3].sprite,
+                GameManager.Inst.um.PlayerImages[5].sprite,
+                GameManager.Inst.um.PlayerImages[7].sprite,
+            };
+            EndSceneManager.winnerNames = new[]
+            {
+                playerInfos[1].playerName,
+                playerInfos[3].playerName,
+                playerInfos[5].playerName,
+                playerInfos[7].playerName,
+            };
+            EndSceneManager.winnerTeam = "Blue";
+        }
+
+        SceneManager.LoadScene("End");
+    }
+
     //라운드가 바뀔 때마다 초기화시킬 것들
     private void ResetMatch()
     {
         if (GameOver())
         {
             GameManager.Inst.gsm.OperateGameOver();
-            if (winCount["Red"] > winCount["Blue"])
-            {
-                EndSceneManager.winnerSprites = new[]
-                {
-                    GameManager.Inst.um.PlayerImages[0].sprite,
-                    GameManager.Inst.um.PlayerImages[2].sprite,
-                    GameManager.Inst.um.PlayerImages[4].sprite,
-                    GameManager.Inst.um.PlayerImages[8].sprite,
-                };
-                EndSceneManager.winnerNames = new[]
-                {
-                    playerInfos[0].playerName,
-                    playerInfos[2].playerName,
-                    playerInfos[4].playerName,
-                    playerInfos[8].playerName,
-                };
-                EndSceneManager.winnerTeam = "Red";
-            }
-            else
-            {
-                EndSceneManager.winnerSprites = new[]
-                {
-                    GameManager.Inst.um.PlayerImages[1].sprite,
-                    GameManager.Inst.um.PlayerImages[3].sprite,
-                    GameManager.Inst.um.PlayerImages[5].sprite,
-                    GameManager.Inst.um.PlayerImages[7].sprite,
-                };
-                EndSceneManager.winnerNames = new[]
-                {
-                    playerInfos[1].playerName,
-                    playerInfos[3].playerName,
-                    playerInfos[5].playerName,
-                    playerInfos[7].playerName,
-                };
-                EndSceneManager.winnerTeam = "Blue";
-            }
-
-            SceneManager.LoadScene("End");
+            SaveInfoAndLoadEndScene();
         }
         else
         {

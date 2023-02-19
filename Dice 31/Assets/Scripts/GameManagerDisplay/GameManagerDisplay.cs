@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerDisplay : EditorWindow
 {
@@ -49,6 +50,11 @@ public class GameManagerDisplay : EditorWindow
         }
         
         AutoPlay = GUILayout.Toggle(AutoPlay, "자동 플레이");
+
+        if (GUILayout.Button("강제로 엔딩 씬 불러오기"))
+        {
+            GameManager.Inst.pm.SaveInfoAndLoadEndScene();
+        }
     }
 
     private void HandleOnDiceChanged(List<Player> players, Player activatedPlayer)

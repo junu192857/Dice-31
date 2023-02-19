@@ -369,8 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831172668b75341e995082684f13bebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPanel: {fileID: 0}
-  winnerText: {fileID: 0}
+  playerPanel: {fileID: 907644964}
+  winnerText: {fileID: 675251248}
 --- !u!4 &256126498
 Transform:
   m_ObjectHideFlags: 0
