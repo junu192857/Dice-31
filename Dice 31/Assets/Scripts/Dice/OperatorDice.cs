@@ -57,4 +57,8 @@ public class OperatorDice : Dice
         color = DiceColor.Green;
         diceIndex = 5;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

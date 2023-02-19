@@ -35,4 +35,9 @@ public class BombDice : Dice
         color = DiceColor.Red;
         diceIndex = 8;
     }
+
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

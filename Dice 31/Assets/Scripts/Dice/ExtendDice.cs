@@ -29,4 +29,8 @@ public class ExtendDice : Dice
         color = DiceColor.Green;
         diceIndex = 3;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }
