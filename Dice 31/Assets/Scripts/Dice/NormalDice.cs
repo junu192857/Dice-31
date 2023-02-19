@@ -38,4 +38,8 @@ public class NormalDice : Dice
         color = DiceColor.Yellow;
         diceIndex = 0;
     }
+
+    protected override void OnCollisionEnter() { 
+        base.OnCollisionEnter();
+    }
 }

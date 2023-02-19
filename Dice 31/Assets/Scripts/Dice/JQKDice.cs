@@ -53,4 +53,8 @@ public class JQKDice : Dice
         color = DiceColor.Green;
         diceIndex = 4;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

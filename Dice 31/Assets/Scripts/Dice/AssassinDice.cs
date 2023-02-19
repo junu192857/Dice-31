@@ -99,4 +99,9 @@ public class AssassinDice : Dice
         color = DiceColor.Red;
         diceIndex = 7;
     }
+
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

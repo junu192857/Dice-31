@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public Text CorruptedCountText;
 
     public Image NumberGauge;
+    public List<Sprite> GaugeBarColors;
+
     public Text NumberText;
     public bool formerMoveDone;
 
@@ -46,8 +48,11 @@ public class UIManager : MonoBehaviour
 
     public Button SelectOneButton;
     public Button SelectTwoButton;
+    public Button RollDiceButton;
 
     public bool operatorDiceDone = true;
+
+    public GameObject purpleGlow;
 
     [SerializeField]
     private List<GameObject> Numbers;
@@ -218,14 +223,14 @@ public class UIManager : MonoBehaviour
 
         if (targetWidth.x < 240)
         {
-            image.color = Color.green;
+            image.sprite = GaugeBarColors[0];
         }
         else if (targetWidth.x >= 240 && targetWidth.x < 360)
         {
-            image.color = Color.yellow;
+            image.sprite = GaugeBarColors[1];
         }
         else {
-            image.color = Color.red;
+            image.sprite = GaugeBarColors[2];
         }  
         while (runTime < duration) {
             runTime += Time.deltaTime;
@@ -350,7 +355,8 @@ public class UIManager : MonoBehaviour
                 Vector2 curWidth = new Vector2(rect.sizeDelta.x, 60);
                 Vector2 targetWidth = new Vector2(0, 60);
 
-                GameObject laserSphere = Instantiate(laserSpherePrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.identity);
+                GameObject laserSphere = Instantiate(laserSpherePrefab, new Vector3(1.9f, 1f, 1f), Quaternion.identity);
+                GameManager.Inst.sm.LaserChargeSound();
                 while (runTime < 1f)
                 {
                     runTime += Time.deltaTime;
@@ -359,12 +365,13 @@ public class UIManager : MonoBehaviour
                     yield return null;
                 }
                 runTime = 0f;
+                yield return new WaitForSeconds(0.3f);
                 Destroy(laserSphere);
 
-                yield return new WaitForSeconds(0.3f);
-                GameObject laserBeam = Instantiate(laserBeamPrefab, new Vector3(1.9f, 1f, 1.4f), Quaternion.Euler(90f, 0f, laserBeamRotations[playerIndex]));
+                GameObject laserBeam = Instantiate(laserBeamPrefab, new Vector3(1.9f, 1f, 1f), Quaternion.Euler(90f, 0f, laserBeamRotations[playerIndex]));
                 laserBeam.transform.localScale = new Vector3(0.05f, -0.005f, 0.05f);
                 Vector3 startPos = laserBeam.transform.position;
+                GameManager.Inst.sm.LaserShootingSound();
                 while (runTime < 0.3f)
                 {
                     runTime += Time.deltaTime;
@@ -386,7 +393,11 @@ public class UIManager : MonoBehaviour
                         BowImage.transform.GetChild(0).gameObject.SetActive(false);
                         arrowTarget = new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7));
                         yield return new WaitUntil(() => arrowShootDone);*/
+                        PlayerDie(playerIndex, deadCause);
+                        break;
                     case AssassinInfo.Sword:
+                        PlayerDie(playerIndex, deadCause);
+                        break;
                     case AssassinInfo.Gun:
                         PlayerDie(playerIndex, deadCause);
                         break;
@@ -401,7 +412,7 @@ public class UIManager : MonoBehaviour
 
                 BombHolder.transform.GetChild(0).gameObject.SetActive(false);
 
-                GameObject bomb = Instantiate(bombPrefab, new Vector3(-1.12f, 1f, 1.16f), Quaternion.identity);
+                GameObject bomb = Instantiate(bombPrefab, new Vector3(-1.12f, 1f, 0.76f), Quaternion.identity);
                 while (runTime < 0.5f) {
                     runTime += Time.deltaTime;
                     bomb.transform.localScale = Vector3.Lerp(new Vector3(0.04f, 1f, 0.04f), new Vector3(0.06f, 1f, 0.06f), runTime / 0.5f);
@@ -416,9 +427,10 @@ public class UIManager : MonoBehaviour
                     yield return null;
                 }
                 Destroy(bomb);
-                GameObject explosion = Instantiate(explosionPrefab, new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7)), Quaternion.Euler(90, 0, 0));
+                GameObject explosion = Instantiate(explosionPrefab, new Vector3(-3.5f, 1f, -0.54f - (playerIndex * 2.46f / 7)), Quaternion.Euler(90, 0, 0));
                 explosion.transform.localScale = new Vector3(0.08f, 0.08f, 1f);
                 explosion.GetComponent<Animator>().Play("EXPAnimator");
+                GameManager.Inst.sm.PlayExplosionSound();
                 BombHolder.transform.GetChild(0).gameObject.SetActive(true);
                 //Destroy(explosion);
                 PlayerDie(playerIndex, deadCause);
@@ -484,6 +496,14 @@ public class UIManager : MonoBehaviour
         SelectOneButton.gameObject.SetActive(false);
         SelectTwoButton.gameObject.SetActive(false);
     }
+    public void DisableRollButton() {
+        RollDiceButton.interactable = false;
+        RollDiceButton.transform.GetChild(0).gameObject.SetActive(false);
+    }
+    public void EnableRollButton() {
+        RollDiceButton.interactable = true;
+        RollDiceButton.transform.GetChild(0).gameObject.SetActive(true);
+    }
     public void ActivateBow() {
         BowImage.color = ActivatedColor;
     }
@@ -506,6 +526,31 @@ public class UIManager : MonoBehaviour
         BombHolder.color = DeactivatedColor;
         BombNumberText.text = "";
     }
+    public void GlowFadeIn() {
+        StartCoroutine(GlowOn());
+    }
+    public void GlowFadeOut() {
+        StartCoroutine(GlowOff());
+    }
+    private IEnumerator GlowOn() {
+        var runTime = 0f;
+        purpleGlow.SetActive(true);
+        while (runTime < 2f) {
+            runTime += Time.deltaTime;
+            purpleGlow.transform.position = new Vector3(0f, 7.1f - 3 * runTime, 0f);
+            yield return null;
+        }
+    }
+    private IEnumerator GlowOff() {
+        var runTime = 0f;
+        while (runTime < 2f)
+        {
+            runTime += Time.deltaTime;
+            purpleGlow.transform.position = new Vector3(0f, 1f + 3 * runTime, 0f);
+            yield return null;
+        }
+        purpleGlow.SetActive(false);
+    }
     public void ResetUI() {
         //TODO: 경기 시작 및 매치 초기화 때 모든 UI 초기화.
         ResetPlayerImage();
@@ -514,6 +559,8 @@ public class UIManager : MonoBehaviour
         SwordImage.color = DeactivatedColor;
         GunImage.color = DeactivatedColor;
         CorruptedImage.color = ActivatedColor;
+        EnableRollButton();
+        purpleGlow.SetActive(false);
         arrowShootDone = false;
         formerMoveDone = true;
         operatorDiceDone = true;

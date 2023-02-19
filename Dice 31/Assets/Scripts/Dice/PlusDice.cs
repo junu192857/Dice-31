@@ -34,4 +34,8 @@ public class PlusDice : Dice
         color = DiceColor.Green;
         diceIndex = 1;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }
