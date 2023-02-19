@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     public Text NumberText;
     public bool formerMoveDone;
 
+    public Image DiceSelectPanel;
+    public List<Sprite> DiceSelectPanelByTeam;
 
     public Image BombHolder;
     public Image BowImage;
@@ -48,7 +50,7 @@ public class UIManager : MonoBehaviour
 
     public Button SelectOneButton;
     public Button SelectTwoButton;
-    public Button RollDiceButton;
+    public List<Button> RollDiceButtonByTeam;
 
     public bool operatorDiceDone = true;
 
@@ -245,23 +247,31 @@ public class UIManager : MonoBehaviour
 
     //Run whenever new player starts his turn
     public void UpdateDiceSelectPanel() {
-
-        NormalDiceToggle.interactable = false;
-        NormalDiceToggle.isOn = true;
+        Player player = GameManager.Inst.pm.activatedPlayer;
         NormalDiceImage.sprite = Dice2D[0];
 
         SpecialDiceToggle.interactable = true;
         SpecialDiceToggle.isOn = false;
-        SpecialDiceImage.sprite = Dice2D[GameManager.Inst.pm.activatedPlayer.specialDice.diceIndex];
+        SpecialDiceImage.sprite = Dice2D[player.specialDice.diceIndex];
 
-        if (GameManager.Inst.pm.activatedPlayer.specialDice is CorruptedDice)
+        if (player.specialDice is CorruptedDice)
         {
             SpecialDiceToggle.isOn = true;
             SpecialDiceToggle.interactable = false;
         }
-        else if (!GameManager.Inst.pm.activatedPlayer.specialDice.available) {
+        else if (!player.specialDice.available) {
             SpecialDiceToggle.interactable = false;
         }
+
+        if (player.team == Team.Red)
+        {
+            DiceSelectPanel.sprite = DiceSelectPanelByTeam[0];
+        }
+        else
+        {
+            DiceSelectPanel.sprite = DiceSelectPanelByTeam[1];
+        }
+        GameManager.Inst.um.EnableRollButton();
     }
 
     public void UpdateUI() {
@@ -505,12 +515,28 @@ public class UIManager : MonoBehaviour
         SelectTwoButton.gameObject.SetActive(false);
     }
     public void DisableRollButton() {
-        RollDiceButton.interactable = false;
-        RollDiceButton.transform.GetChild(0).gameObject.SetActive(false);
+        if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
+        {
+            RollDiceButtonByTeam[0].gameObject.SetActive(false);
+        }
+        else {
+            RollDiceButtonByTeam[1].gameObject.SetActive(false);
+        }
     }
     public void EnableRollButton() {
-        RollDiceButton.interactable = true;
-        RollDiceButton.transform.GetChild(0).gameObject.SetActive(true);
+        if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
+        {
+            RollDiceButtonByTeam[0].gameObject.SetActive(true);
+            RollDiceButtonByTeam[1].gameObject.SetActive(false);
+            RollDiceButtonByTeam[0].interactable = true;
+            RollDiceButtonByTeam[0].transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else {
+            RollDiceButtonByTeam[1].gameObject.SetActive(true);
+            RollDiceButtonByTeam[0].gameObject.SetActive(false);
+            RollDiceButtonByTeam[1].interactable = true;
+            RollDiceButtonByTeam[1].transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
     public void ActivateBow() {
         BowImage.color = ActivatedColor;
@@ -567,7 +593,6 @@ public class UIManager : MonoBehaviour
         SwordImage.color = DeactivatedColor;
         GunImage.color = DeactivatedColor;
         CorruptedImage.color = ActivatedColor;
-        EnableRollButton();
         purpleGlow.SetActive(false);
         arrowShootDone = false;
         formerMoveDone = true;

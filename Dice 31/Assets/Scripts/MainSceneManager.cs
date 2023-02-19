@@ -10,7 +10,6 @@ public class MainSceneManager : MonoBehaviour
     [SerializeField] private string settingsSceneName;
     [SerializeField] private string tutorialSceneName;
     [SerializeField] private GameObject tableCamera;
-    [SerializeField] private Text gameModeText;
     private Camera mainCamera;
     private static readonly int StartGame = Animator.StringToHash("StartGame");
 
@@ -44,21 +43,8 @@ public class MainSceneManager : MonoBehaviour
 #endif
     }
 
-    public void SetGameMode() {
-        if (GameManager.gameMode == GameMode.Drag)
-        {
-            gameModeText.text = "One-Click";
-            GameManager.gameMode = GameMode.OneClick;
-        }
-        else {
-            gameModeText.text = "Drag & Drop";
-            GameManager.gameMode = GameMode.Drag;
-        }
-    }
-
     private void Start()
     {
-        gameModeText.text = "Drag & Drop";
-        GameManager.gameMode = GameMode.Drag;
+
     }
 }
