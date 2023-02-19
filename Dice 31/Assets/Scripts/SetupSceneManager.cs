@@ -13,9 +13,10 @@ public class SetupSceneManager : MonoBehaviour
     {
         "Player1", "Player2", "Player3", "Player4", "Player5", "Player6", "Player7", "Player8"
     };
-    
+
     [SerializeField] private GameObject tableCamera;
     [SerializeField] private GameObject inputs;
+    [SerializeField] private Text rollModeText;
     private static readonly int StartGame = Animator.StringToHash("StartGame");
     private static readonly int Back = Animator.StringToHash("Back");
 
@@ -26,6 +27,9 @@ public class SetupSceneManager : MonoBehaviour
             var input = inputs.transform.GetChild(i).GetComponent<InputField>();
             input.text = playerNames[i];
         }
+
+        rollModeText.text = "Drag & Drop";
+        GameManager.gameMode = GameMode.Drag;
     }
 
     private void Update()
@@ -79,9 +83,22 @@ public class SetupSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene("joongwon_MainScene");
     }
-    
+
     public void HandleBackClick()
     {
         tableCamera.GetComponent<Animator>().SetTrigger(Back);
     }
+
+    public void ChangeRollMode(){
+        if (GameManager.gameMode == GameMode.Drag)
+        {
+            GameManager.gameMode = GameMode.OneClick;
+            rollModeText.text = "One-click";
+        }
+        else {
+            GameManager.gameMode = GameMode.Drag;
+            rollModeText.text = "Drag & Drop";
+        }
+    }
+
 }
