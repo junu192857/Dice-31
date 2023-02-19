@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class GameManagerDisplay : EditorWindow
 {
+    public static bool AutoPlay = false;
+    
     [MenuItem("Window/UI Toolkit/GameManagerDisplay")]
     public static void ShowExample()
     {
@@ -45,6 +47,8 @@ public class GameManagerDisplay : EditorWindow
         {
             HandleOnDiceChanged(players, gameManager.pm.activatedPlayer);
         }
+        
+        AutoPlay = GUILayout.Toggle(AutoPlay, "자동 플레이");
     }
 
     private void HandleOnDiceChanged(List<Player> players, Player activatedPlayer)
