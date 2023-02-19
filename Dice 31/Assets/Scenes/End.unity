@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 186131394}
   - component: {fileID: 186131397}
   - component: {fileID: 186131396}
-  - component: {fileID: 186131398}
   m_Layer: 5
   m_Name: Player2Image
   m_TagString: PlayerImage
@@ -321,25 +320,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &186131398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186131392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9765f90122ea847478741091c4eeb024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerInfo: {fileID: 0}
-  playerTooltip: {fileID: 0}
-  PlayerName: {fileID: 0}
-  NormalDiceImage: {fileID: 0}
-  SpecialDiceImage: {fileID: 0}
-  PlayerState: {fileID: 0}
 --- !u!1 &256126496
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,7 +918,6 @@ GameObject:
   - component: {fileID: 708634971}
   - component: {fileID: 708634974}
   - component: {fileID: 708634973}
-  - component: {fileID: 708634975}
   m_Layer: 5
   m_Name: Player4Image
   m_TagString: PlayerImage
@@ -1043,25 +1022,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &708634975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708634969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9765f90122ea847478741091c4eeb024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerInfo: {fileID: 0}
-  playerTooltip: {fileID: 0}
-  PlayerName: {fileID: 0}
-  NormalDiceImage: {fileID: 0}
-  SpecialDiceImage: {fileID: 0}
-  PlayerState: {fileID: 0}
 --- !u!1 &809128291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,7 +1329,6 @@ GameObject:
   - component: {fileID: 1316557534}
   - component: {fileID: 1316557537}
   - component: {fileID: 1316557536}
-  - component: {fileID: 1316557538}
   m_Layer: 5
   m_Name: Player3Image
   m_TagString: PlayerImage
@@ -1474,25 +1433,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1316557538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316557532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9765f90122ea847478741091c4eeb024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerInfo: {fileID: 0}
-  playerTooltip: {fileID: 0}
-  PlayerName: {fileID: 0}
-  NormalDiceImage: {fileID: 0}
-  SpecialDiceImage: {fileID: 0}
-  PlayerState: {fileID: 0}
 --- !u!1 &1333323098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,7 +1909,6 @@ GameObject:
   - component: {fileID: 1869170863}
   - component: {fileID: 1869170867}
   - component: {fileID: 1869170866}
-  - component: {fileID: 1869170865}
   m_Layer: 5
   m_Name: Player1Image
   m_TagString: PlayerImage
@@ -2036,25 +1975,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1869170861}
   m_CullTransparentMesh: 1
---- !u!114 &1869170865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869170861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9765f90122ea847478741091c4eeb024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerInfo: {fileID: 0}
-  playerTooltip: {fileID: 0}
-  PlayerName: {fileID: 0}
-  NormalDiceImage: {fileID: 0}
-  SpecialDiceImage: {fileID: 0}
-  PlayerState: {fileID: 0}
 --- !u!114 &1869170866
 MonoBehaviour:
   m_ObjectHideFlags: 0

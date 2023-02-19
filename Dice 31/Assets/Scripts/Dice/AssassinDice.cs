@@ -87,8 +87,7 @@ public class AssassinDice : Dice
             Debug.Log("assassin fail");
             GameManager.Inst.pm.PlayerDie(diceOwner, DeadCause.AssassinFail);
         }
-
-        
+        GameManager.Inst.um.AssassinFinish();
     }
 
     private void Awake()

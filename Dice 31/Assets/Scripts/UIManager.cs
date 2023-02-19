@@ -412,16 +412,20 @@ public class UIManager : MonoBehaviour
                         arrowTarget = new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7));
                         yield return new WaitUntil(() => arrowShootDone);*/
                         PlayerDie(playerIndex, deadCause);
+                        GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Sword:
                         PlayerDie(playerIndex, deadCause);
+                        GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Gun:
                         PlayerDie(playerIndex, deadCause);
+                        GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
+                        break;
+                    default:
+                        Debug.Log("Assassin Error");
                         break;
                 }
-                GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
-                AssassinFinish();
                 break;
             
             case DeadCause.Bomb:

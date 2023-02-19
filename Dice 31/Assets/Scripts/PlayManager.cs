@@ -101,7 +101,7 @@ public class PlayManager : MonoBehaviour
             matchCount = 0;
             winCount["Red"] = 0;
             winCount["Blue"] = 0;
-            maxWinCount = 2;
+            maxWinCount = 1;
             for (int index = 0; index < players.Count; index++)
             {
                 if (index % 2 == 0)
@@ -158,14 +158,14 @@ public class PlayManager : MonoBehaviour
                 GameManager.Inst.um.PlayerImages[0].sprite,
                 GameManager.Inst.um.PlayerImages[2].sprite,
                 GameManager.Inst.um.PlayerImages[4].sprite,
-                GameManager.Inst.um.PlayerImages[8].sprite,
+                GameManager.Inst.um.PlayerImages[6].sprite,
             };
             EndSceneManager.winnerNames = new[]
             {
                 playerInfos[0].playerName,
                 playerInfos[2].playerName,
                 playerInfos[4].playerName,
-                playerInfos[8].playerName,
+                playerInfos[6].playerName,
             };
             EndSceneManager.winnerTeam = "Red";
         }
