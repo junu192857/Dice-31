@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class PlayManager : MonoBehaviour
     [HideInInspector] public int roundCount;
     [HideInInspector] public int matchCount;
 
-
     public Player activatedPlayer;
     //public Player playerInfo;
 
@@ -47,7 +47,9 @@ public class PlayManager : MonoBehaviour
 
     private List<Dice> previousDices;
 
-    [SerializeField] private List<String> specialDiceNames;
+    //[SerializeField] private List<String> specialDiceNames;
+    [SerializeField] private List<String> greenDiceNames;
+    [SerializeField] private List<String> RedPurpleDiceNames;
 
 
     // 폭탄 주사위를 굴렸을 때 1~6 사이의 숫자로 설정됨
@@ -57,6 +59,7 @@ public class PlayManager : MonoBehaviour
     public int onMyOwnDiceNum = 0;
     public AssassinInfo assassinInfo;
     private Player playerToRevive;
+    public GameObject purpleGlow;
 
     private bool pendingRoundEnd = false;
     private Dictionary<int, DeadCause> deadInfo = new Dictionary<int, DeadCause>();
@@ -92,6 +95,7 @@ public class PlayManager : MonoBehaviour
     {
         if (GameManager.Inst.gsm.State == GameState.Waiting || GameManager.Inst.gsm.State == GameState.Gameover)
         {
+            Debug.Log(GameManager.gameMode);
             index = -1;
             matchCount = 0;
             winCount["Red"] = 0;
@@ -129,6 +133,7 @@ public class PlayManager : MonoBehaviour
             roundCount++;
             deadInfo.Clear();
             GameManager.Inst.um.GaugeBarCoroutine(curCount, maxCount);
+            
             GameManager.Inst.gsm.WaitForPlayerTurn();
         }
 
@@ -236,14 +241,39 @@ public class PlayManager : MonoBehaviour
         }
 
         System.Random Rand = new System.Random();
-        var shuffled = specialDiceNames.OrderBy(_ => Rand.Next()).ToList();
+        //var shuffled = specialDiceNames.OrderBy(_ => Rand.Next()).ToList();
+        var shuffled2 = greenDiceNames.OrderBy(_ => Rand.Next()).ToList();
+        var shuffled3 = RedPurpleDiceNames.OrderBy(_ => Rand.Next()).ToList();
 
-        for (int i = 0; i < playerInfos.Count; i++)
+        List<int> evenIndexList = new List<int> { 0, 2, 4, 6 };
+        evenIndexList = evenIndexList.OrderBy(_ => Rand.Next()).ToList();
+        List<int> oddIndexList = new List<int> { 1, 3, 5, 7 };
+        oddIndexList = oddIndexList.OrderBy(_ => Rand.Next()).ToList();
+
+        for (int i = 0; i < 4; i++)
         {
-            GameObject specialDice = Instantiate(Resources.Load(shuffled[i])) as GameObject;
-            //GameObject specialDice = Instantiate(Resources.Load("OperatorDice")) as GameObject;
-            playerInfos[i].specialDice = specialDice.GetComponent<Dice>();
-            playerInfos[i].specialDice.EnableDice();
+            if (i == 0 || i == 1)
+            {
+                GameObject redSpecialDice = Instantiate(Resources.Load(shuffled3[i])) as GameObject;
+                GameObject greenSpecialDice = Instantiate(Resources.Load(shuffled2[i])) as GameObject;
+                //GameObject specialDice = Instantiate(Resources.Load("CorruptedDice")) as GameObject;
+                playerInfos[evenIndexList[i]].specialDice = redSpecialDice.GetComponent<Dice>();
+                playerInfos[evenIndexList[i]].specialDice.EnableDice();
+
+                playerInfos[oddIndexList[i]].specialDice = greenSpecialDice.GetComponent<Dice>();
+                playerInfos[oddIndexList[i]].specialDice.EnableDice();
+            }
+            else
+            {
+                GameObject redSpecialDice = Instantiate(Resources.Load(shuffled3[i])) as GameObject;
+                GameObject greenSpecialDice = Instantiate(Resources.Load(shuffled2[i])) as GameObject;
+                //GameObject specialDice = Instantiate(Resources.Load("CorruptedDice")) as GameObject;
+                playerInfos[oddIndexList[i]].specialDice = redSpecialDice.GetComponent<Dice>();
+                playerInfos[oddIndexList[i]].specialDice.EnableDice();
+
+                playerInfos[evenIndexList[i]].specialDice = greenSpecialDice.GetComponent<Dice>();
+                playerInfos[evenIndexList[i]].specialDice.EnableDice();
+            }
         }
     }
 
@@ -275,6 +305,7 @@ public class PlayManager : MonoBehaviour
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
         activatedPlayer.specialDice.GetComponent<DiceController>().ResetDice();
         GameManager.Inst.um.UpdateDiceSelectPanel();
+        GameManager.Inst.um.EnableRollButton();
 
         if (CountExceeded())
         {
@@ -284,7 +315,9 @@ public class PlayManager : MonoBehaviour
         if (pendingRoundEnd) {
             previousDices.Clear();
             activatedPlayer.normalDice.transform.position = StoragePosition;
+            activatedPlayer.normalDice.currentlyRolling = false;
             activatedPlayer.specialDice.transform.position = StoragePosition;
+            activatedPlayer.specialDice.currentlyRolling = false;
             StartCoroutine(OperateDieAnimation());
         }
 
@@ -311,6 +344,7 @@ public class PlayManager : MonoBehaviour
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
         activatedPlayer.normalDice.transform.position = NormalDicePosition;
+        activatedPlayer.normalDice.currentlyRolling = true;
         activatedPlayer.normalDice.transform.rotation = Quaternion.Euler(
             Random.Range(0, 4) * 90f,
             Random.Range(0, 4) * 90f,
@@ -321,6 +355,7 @@ public class PlayManager : MonoBehaviour
         {
             dicesToRoll.Add(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = SpecialDicePosition;
+            activatedPlayer.specialDice.currentlyRolling = true;
             activatedPlayer.specialDice.transform.rotation = Quaternion.Euler(
                 Random.Range(0, 4) * 90f,
                 Random.Range(0, 4) * 90f,
@@ -337,6 +372,7 @@ public class PlayManager : MonoBehaviour
         {
             if (dicesToRoll.Count != 1)
             {
+                Debug.Log(dicesToRoll.Count);
                 Debug.LogWarning("dicesToRoll.Count should be 1");
                 return;
             }
@@ -361,6 +397,7 @@ public class PlayManager : MonoBehaviour
         {
             if (dicesToRoll.Count != 2)
             {
+                Debug.Log(dicesToRoll.Count);
                 Debug.LogWarning("dicesToRoll.Count should be 2");
                 return;
             }
@@ -377,9 +414,9 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    public void OnClickToggleButton(bool isOn)
+    public void OnClickToggleButton(Toggle toggle)
     {
-        if (isOn)
+        if (toggle.isOn)
         {
             AddSpecialDiceCommand();
         }
@@ -388,6 +425,16 @@ public class PlayManager : MonoBehaviour
             RemoveSpecialDiceCommand();
         }
     }
+
+    public void AnywayRollPlayerDice() {
+        if (GameManager.gameMode == GameMode.Drag) {
+            OnRollPlayerDice();
+        }
+        else {
+            InstantlyRollPlayerDice();
+        }
+    }
+
 
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
     public void OnRollPlayerDice()
@@ -430,7 +477,9 @@ public class PlayManager : MonoBehaviour
     private void EndPlayerTurn()
     {
         activatedPlayer.normalDice.transform.position = StoragePosition;
+        activatedPlayer.normalDice.currentlyRolling = false;
         activatedPlayer.specialDice.transform.position = StoragePosition;
+        activatedPlayer.specialDice.currentlyRolling = false;
 
         foreach (var dice in previousDices)
         {
@@ -560,7 +609,7 @@ public class PlayManager : MonoBehaviour
     {
         dicesToRoll = new List<Dice>();
         previousDices = new List<Dice>();
-        players = GameObject.FindGameObjectsWithTag("Player").ToList();
+        players = GameObject.FindGameObjectsWithTag("Player").ToList().OrderBy(player => player.GetComponent<Player>().playerIndex).ToList();
         playerInfos = players.ConvertAll(new Converter<GameObject, Player>(Convert)).ToList();
         winCount = new Dictionary<String, int>()
         {
@@ -572,6 +621,7 @@ public class PlayManager : MonoBehaviour
     private void Start()
     {
         GameManager.Inst.gsm.PrepareGame();
+        Initiate();
     }
 
     public void PlayerDie(Player player, DeadCause deadCause)

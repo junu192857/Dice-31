@@ -47,4 +47,8 @@ public class RevivalDice : Dice
         color = DiceColor.Red;
         diceIndex = 9;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

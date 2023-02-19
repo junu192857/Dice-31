@@ -340,7 +340,7 @@
         },
         {
           "image": "DiceFaces/Corrupted",
-          "description": "타락 단계가 1 증가한다\n<color=#9370DB>타락 4단계: 모든 숫자 2배로 적용, 타락 5단계: 플레이어 사망</color>"
+          "description": "타락 단계가 1 증가한다\n타락 4단계: 모든 숫자 2배로 적용, 타락 5단계: 플레이어 사망"
         },
         {
           "image": "DiceFaces/Empty",

@@ -33,4 +33,8 @@ public class OnMyOwnDice : Dice
         color = DiceColor.Green;
         diceIndex = 6;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

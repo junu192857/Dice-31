@@ -51,4 +51,8 @@ public class MinusDice : Dice
         color = DiceColor.Green;
         diceIndex = 2;
     }
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
+    }
 }

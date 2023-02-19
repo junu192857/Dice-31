@@ -10,8 +10,9 @@ public class CorruptedDice : Dice
     private Player owner;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => { 
+        return DiceUtil.Roll(this, diceName, i => {
             corrupted = i == 1;
+            //corrupted = true;
             GameManager.Inst.um.ShowNumberAnimate(gameObject, i);
         });
 
@@ -21,9 +22,15 @@ public class CorruptedDice : Dice
     {
         if (corrupted)
         {
-            if (++GameManager.Inst.pm.corruptStack == 5)
+            GameManager.Inst.pm.corruptStack++;
+            if (GameManager.Inst.pm.corruptStack == 4)
+            {
+                GameManager.Inst.um.GlowFadeIn();
+            }
+            else if (GameManager.Inst.pm.corruptStack == 5)
             {
                 GameManager.Inst.pm.CurrentPlayerDie(DeadCause.Corrupted);
+                GameManager.Inst.um.GlowFadeOut();
             }
             Debug.Log($"corrupted: {GameManager.Inst.pm.corruptStack}");
         }
@@ -51,5 +58,10 @@ public class CorruptedDice : Dice
         diceInformation = "타락의 기운을 담고 있는 주사위";
         color = DiceColor.Purple;
         diceIndex = 10;
+    }
+
+    protected override void OnCollisionEnter()
+    {
+        base.OnCollisionEnter();
     }
 }
