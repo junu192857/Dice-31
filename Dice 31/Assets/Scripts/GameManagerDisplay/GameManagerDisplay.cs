@@ -4,9 +4,12 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerDisplay : EditorWindow
 {
+    public static bool AutoPlay = false;
+    
     [MenuItem("Window/UI Toolkit/GameManagerDisplay")]
     public static void ShowExample()
     {
@@ -44,6 +47,13 @@ public class GameManagerDisplay : EditorWindow
         if (GUILayout.Button("주사위 교환"))
         {
             HandleOnDiceChanged(players, gameManager.pm.activatedPlayer);
+        }
+        
+        AutoPlay = GUILayout.Toggle(AutoPlay, "자동 플레이");
+
+        if (GUILayout.Button("강제로 엔딩 씬 불러오기"))
+        {
+            GameManager.Inst.pm.SaveInfoAndLoadEndScene();
         }
     }
 

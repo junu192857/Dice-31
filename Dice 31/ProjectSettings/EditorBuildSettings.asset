@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/joongwon_setup.unity
     guid: 8d23a36831446498f87d1996c08f50f5
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 3343d50e8d5d44f10a82e5c31dfba44a
   m_configObjects: {}
