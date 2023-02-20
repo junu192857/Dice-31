@@ -21,7 +21,7 @@ public abstract class Dice : MonoBehaviour
     public DiceColor color;
     public string diceName;
     public int diceIndex;
-    //밑의 두 개는 툴팁에서 사용하는 변수
+    //???? ?? ???? ???????? ?????? ????
     public string koreanDiceName;
     public string diceInformation;
 

@@ -65,6 +65,8 @@ public class PlayManager : MonoBehaviour
     private bool pendingRoundEnd = false;
     private Dictionary<int, DeadCause> deadInfo = new Dictionary<int, DeadCause>();
 
+    [SerializeField] private Toggle specialDiceToggle;
+
 
     public void UpdateCurCount(int amount)
     {
@@ -113,6 +115,7 @@ public class PlayManager : MonoBehaviour
                     playerInfos[index].SetBlueTeam();
                 }
                 playerInfos[index].playerName = SetupSceneManager.playerNames[index];
+                playerInfos[index].isBot = SetupSceneManager.isBot[index];
             }
 
             GameManager.Inst.um.ResetPlayerNames();
@@ -350,7 +353,15 @@ public class PlayManager : MonoBehaviour
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
         activatedPlayer.specialDice.GetComponent<DiceController>().ResetDice();
         GameManager.Inst.um.UpdateDiceSelectPanel();
-        GameManager.Inst.um.EnableRollButton();
+
+        if (activatedPlayer.isBot)
+        {
+            GameManager.Inst.um.DisableRollButton();
+        }
+        else
+        {
+            GameManager.Inst.um.EnableRollButton();
+        }
 
         if (CountExceeded())
         {
@@ -369,7 +380,78 @@ public class PlayManager : MonoBehaviour
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
             GameManager.Inst.gsm.WaitForInput();
+            if (activatedPlayer.isBot)
+            {
+                StartCoroutine(DoBotTurn());
+            }
         }
+    }
+
+    private IEnumerator DoBotTurn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (activatedPlayer.specialDice.available)
+        {
+            if (DecideBotSpecialDice())
+            {
+                specialDiceToggle.isOn = true;
+                AddSpecialDiceCommand();
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        InstantlyRollPlayerDice();
+    }
+
+    private bool DecideBotSpecialDice()
+    {
+        #if UNITY_EDITOR
+        if (GameManagerDisplay.AlwaysThrow)
+        {
+            return true;
+        }
+        #endif
+        switch (activatedPlayer.specialDice.diceName)
+        {
+            case "Plus Dice":
+            case "JQK Dice":
+            case "On My Own Dice":
+                return maxCount - curCount >= 10;
+            case "Minus Dice":
+            case "Extend Dice":
+            case "Operator Dice":
+                return maxCount - curCount <= 10;
+            case "Assassin Dice":
+                return FindNextPlayer().team != activatedPlayer.team;
+            case "Bomb Dice":
+                return true;
+            case "Revival Dice":
+                return IsMyTeamDead();
+            case "Corrupted Dice":
+                return false; // 어차피 무적권 굴려야됨
+            default:
+                Debug.Log("Unknown special dice: " + activatedPlayer.specialDice.diceName);
+                return false;
+        }
+    }
+
+    private Player FindNextPlayer()
+    {
+        for (int i = 1; i <= 7; i++)
+        {
+            int nextIndex = (index + i) % 8;
+            if (playerInfos[nextIndex].alive)
+            {
+                return playerInfos[nextIndex];
+            }
+        }
+
+        return activatedPlayer;
+    }
+
+    bool IsMyTeamDead()
+    {
+        return playerInfos.Any(player => player.team == activatedPlayer.team && player.dead);
     }
 
     bool CountExceeded()

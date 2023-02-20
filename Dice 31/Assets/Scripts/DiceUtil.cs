@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class DiceUtil
 {
@@ -27,9 +28,17 @@ public static class DiceUtil
         yield return new WaitUntil(() => controller.maxFace != 0);
         if (diceName == "On My Own Dice") {
             WaitingOMO = true;
-            GameManager.Inst.um.ShowOMOButton();
-            while (WaitingOMO) {
-                yield return null;
+            if (GameManager.Inst.pm.activatedPlayer.isBot)
+            {
+                if (Random.value > 0.5f)
+                    GameManager.Inst.pm.SelectNumberOne();
+                else
+                    GameManager.Inst.pm.SelectNumberTwo();
+            }
+            else
+            {
+                GameManager.Inst.um.ShowOMOButton();
+                yield return new WaitWhile(() => WaitingOMO);
             }
             value = GameManager.Inst.pm.onMyOwnDiceNum;
         }
