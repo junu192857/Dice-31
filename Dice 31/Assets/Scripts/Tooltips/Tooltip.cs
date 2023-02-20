@@ -24,7 +24,14 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             SpecialDiceImage.sprite = GameManager.Inst.um.Dice2D[playerInfo.specialDice.diceIndex];
             if (playerInfo.alive)
             {
-                PlayerState.text = "생존함";
+                if (playerInfo.unDead)
+                {
+                    PlayerState.text = $"{playerInfo.deadRound}라운드에 언데드가 됨";
+                }
+                else 
+                {
+                    PlayerState.text = "생존함";
+                }
             }
             else
             {

@@ -86,6 +86,7 @@ public class UIManager : MonoBehaviour
 
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
         Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
+        Debug.Log(numberIndex);
         GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
 
         float runtime = 0f;
@@ -286,7 +287,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < 7; i += 2)
         {
             PlayerImages[i].GetComponent<Image>().sprite = PlayerStates[0];
-            PlayerImages[i + 1].GetComponent<Image>().sprite = PlayerStates[10];
+            PlayerImages[i + 1].GetComponent<Image>().sprite = PlayerStates[12];
         }
     }
     public void ResetPlayerNames()
@@ -297,59 +298,64 @@ public class UIManager : MonoBehaviour
                 GameManager.Inst.pm.playerInfos[i].playerName;
         }
     }
-    public void PlayerDeactivate(int playerIndex) {
-        if (playerIndex % 2 == 0)
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[0];
-        }
-        else
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[10];
-        }
+    public void PlayerDeactivate(Player player) {
+        int index = 0;
+
+        if (player.playerIndex % 2 == 1) index += 12;
+        if (player.unDead) index += 9;
+        PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index];
     }
-    public void PlayerActivate(int playerIndex) {
-        if (playerIndex % 2 == 0)
-        {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[1];
-        }
-        else {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[11];
-        }
+    public void PlayerActivate(Player player) {
+        int index = 0;
+
+        if (player.playerIndex % 2 == 1) index += 12;
+        if (player.unDead) index += 9;
+
+        PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index+1];
     }
 
     public void PlayerDie(int playerIndex, DeadCause deadCause) {
         int deadIndex = 0;
-        switch (deadCause) {
-            case DeadCause.Number:
-                deadIndex += 2;
-                break;
-            case DeadCause.Bomb:
-                deadIndex += 3;
-                break;
-            case DeadCause.Assassin:
-            case DeadCause.AssassinFail:
-                switch (GameManager.Inst.pm.assassinInfo) {
-                    case AssassinInfo.Bow:
-                        deadIndex += 4;
-                        break;
-                    case AssassinInfo.Sword:
-                        deadIndex += 5;
-                        break;
-                    case AssassinInfo.Gun:
-                        deadIndex += 6;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case DeadCause.RevivalFail:
-                deadIndex += 7;
-                break;
-            case DeadCause.Corrupted:
-                deadIndex += 8;
-                break;
+        if (GameManager.Inst.pm.playerInfos[playerIndex].unDead)
+        {
+            deadIndex += 9;
         }
-        if (playerIndex % 2 == 1) deadIndex += 10;
+        else
+        {
+            switch (deadCause)
+            {
+                case DeadCause.Number:
+                    deadIndex += 2;
+                    break;
+                case DeadCause.Bomb:
+                    deadIndex += 3;
+                    break;
+                case DeadCause.Assassin:
+                case DeadCause.AssassinFail:
+                    switch (GameManager.Inst.pm.assassinInfo)
+                    {
+                        case AssassinInfo.Bow:
+                            deadIndex += 4;
+                            break;
+                        case AssassinInfo.Sword:
+                            deadIndex += 5;
+                            break;
+                        case AssassinInfo.Gun:
+                            deadIndex += 6;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case DeadCause.RevivalFail:
+                    deadIndex += 7;
+                    break;
+                case DeadCause.Corrupted:
+                    deadIndex += 8;
+                    break;
+            }
+        }
+        if (playerIndex % 2 == 1) deadIndex += 12;
 
         PlayerImages[playerIndex].sprite = PlayerStates[deadIndex];
     }
@@ -475,7 +481,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[10];
+            PlayerImages[playerIndex].GetComponent<Image>().sprite = PlayerStates[12];
             Debug.Log("Blue Team Member Revived");
         }
     }
