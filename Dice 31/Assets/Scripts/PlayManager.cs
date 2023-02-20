@@ -217,6 +217,7 @@ public class PlayManager : MonoBehaviour
             foreach (var player in playerInfos)
             {
                 player.Revive();
+                player.unDead = false;
             }
 
             GameManager.Inst.um.ResetUI();
@@ -345,7 +346,7 @@ public class PlayManager : MonoBehaviour
 
         if (activatedPlayer.alive)
         {
-            GameManager.Inst.um.PlayerActivate(playerInfos.IndexOf(activatedPlayer));
+            GameManager.Inst.um.PlayerActivate(activatedPlayer);
         }
         
         LoadDicesToRoll();
@@ -643,7 +644,7 @@ public class PlayManager : MonoBehaviour
 
         if (activatedPlayer.alive)
         {
-            GameManager.Inst.um.PlayerDeactivate(playerInfos.IndexOf(activatedPlayer));
+            GameManager.Inst.um.PlayerDeactivate(activatedPlayer);
         }
 
         if (CountExceeded())
@@ -760,12 +761,25 @@ public class PlayManager : MonoBehaviour
         }
 
         Debug.Log($"{player.playerName} is dead");
-        player.Die();
+        if (player.specialDice is CorruptedDice && !(player.specialDice.GetComponent<CorruptedDice>().pass) && !player.unDead)
+        {
+            Debug.Log("Hello?");
+            player.MakeUndead();
+        }
+        else if (player.unDead && deadCause != DeadCause.Corrupted) {
+            Debug.Log("언데드는 타락 이외의 이유로 사망하지 않습니다.");
+            pendingRoundEnd = true;
+            return;
+        }
+        else
+        {
+            player.Die();
+        }
         player.deadCause = deadCause;
         player.deadRound = roundCount;
         //요 밑에 줄은 애니메이션 끝나고 재생해야 함
         
-        deadInfo.Add(playerInfos.IndexOf(player), deadCause);
+        deadInfo.Add(player.playerIndex, deadCause);
         pendingRoundEnd = true;
     }
 

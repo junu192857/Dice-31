@@ -6,7 +6,7 @@ using UnityEngine;
 public class CorruptedDice : Dice
 {
     private bool corrupted;
-    private bool pass => !corrupted;
+    public bool pass => !corrupted;
     private Player owner;
     public override IEnumerator Roll()
     {
@@ -43,7 +43,7 @@ public class CorruptedDice : Dice
 
     public override void EffectBeforeNextPlayerRoll()
     {
-        if (pass)
+        if (pass && !owner.unDead)
         {
             Player current = GameManager.Inst.pm.activatedPlayer;
             owner.specialDice = current.specialDice;

@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     public bool alive { get; private set; }
     public bool dead { get => !alive; }
 
+    public bool unDead;
+
 
     public bool specialDiceUsed { get; private set; }
     public Team team { get; private set; }
@@ -38,6 +40,7 @@ public class Player : MonoBehaviour
     {
         playerName = gameObject.name;
         alive = true;
+        unDead = false;
     }
 
     public void Die()
@@ -45,6 +48,7 @@ public class Player : MonoBehaviour
         if (alive)
         {
             alive = false;
+            unDead = false;
         }
         
     }
@@ -54,6 +58,13 @@ public class Player : MonoBehaviour
         if (!alive)
         {
             alive = true;
+            unDead = false;
+        }
+    }
+
+    public void MakeUndead() {
+        if (!unDead) {
+            unDead = true;
         }
     }
 
