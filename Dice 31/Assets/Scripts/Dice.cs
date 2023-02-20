@@ -25,6 +25,8 @@ public abstract class Dice : MonoBehaviour
     public string koreanDiceName;
     public string diceInformation;
 
+    public AudioSource audioSource;
+
     public bool currentlyRolling = false;
     public bool available { get; private set; }
 
@@ -40,8 +42,14 @@ public abstract class Dice : MonoBehaviour
         if (GameManager.Inst.gsm.State == GameState.DiceRolling && currentlyRolling)
         {
             float velocity = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
-            if (velocity > 0.01f)
-                GameManager.Inst.sm.DiceCollision(velocity);
+            if (velocity > 0.01f){
+                audioSource.volume = velocity;
+                audioSource.Play();
+            }
         }
+    }
+    protected virtual void Start(){
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = GameManager.Inst.sm.SFXList[0];
     }
 }

@@ -10,6 +10,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Text diceName;
     public Text diceInformation;
     public Text additionalInfo;
+    public Text warning;
 
     public bool isNormalDiceImage;
 
@@ -49,7 +50,16 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                             break;
                     }
                     additionalInfo.text = "<color=#FF0000>" + $"{GameManager.Inst.pm.bombDiceNum}" + post + " 나오면 폭발" + "</color>";
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
+                    if (specialDice.available) 
+                    {
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
+                        warning.text = "";
+                    }
+                    else {
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 360);
+                        warning.text = "이번 게임에서 이미 사용함";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -300, 0);
+                    }
                 }
                 else if (specialDice is CorruptedDice)
                 {
@@ -75,28 +85,68 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                         default:
                             break;
                     }
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 360);
+                    warning.text = "타락 주사위는 반드시 굴려야 함";
+                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 440);
+                    warning.rectTransform.anchoredPosition = new Vector3(16, -380, 0);
                 }
                 else if (specialDice is AssassinDice)
                 {
                     additionalInfo.text = "<color=#FF0000>" + "암살 성공 시 다음 사람 사망\n" +
                                           "암살 실패 시 자기자신 사망</color>";
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
+
+                    if (specialDice.available){
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
+                        warning.text = "";
+                    }
+                    else{
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 390);
+                        warning.text = "이번 게임에서 이미 사용함";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
+                    }
                 }
                 else if (specialDice is RevivalDice)
                 {
                     additionalInfo.text = "<color=#FF0000>" + "부활 성공 시 죽은 팀원 부활\n" +
                                           "부활 실패 시 자기자신 사망</color>";
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
+                    if (specialDice.available)
+                    {
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
+                        warning.text = "";
+                    }
+                    else{
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 390);
+                        warning.text = "이번 게임에서 이미 사용함";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
+                    }
                 }
                 else if (specialDice is MinusDice) {
-                    additionalInfo.text = "";
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 130);
+                    if (specialDice.available)
+                    {
+                        additionalInfo.text = "";
+                        warning.text = "";
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 130);
+                    }
+                    else 
+                    {
+                        additionalInfo.text = "";
+                        warning.text = "이번 라운드에서 이미 사용함";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -170, 0);
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 220);
+                    }
                 }
                 else
                 {
-                    additionalInfo.text = "";
-                    diceTooltip.rectTransform.sizeDelta = new Vector2(480, 180);
+                    if (specialDice.available){
+                        additionalInfo.text = "";
+                        warning.text = "";
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 180);
+                    }
+                    else{
+                        additionalInfo.text = "";
+                        warning.text = "이번 라운드에서 이미 사용함";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -210, 0);
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
+                    }
                 }
             }
         }
