@@ -34,7 +34,7 @@ public class JQKDice : Dice
         switch (value)
         {
             case 1:
-                GameManager.Inst.pm.UpdatePlayerIndex(1);
+                GameManager.Inst.pm.Jump = true;
                 break;
             case 2:
                 GameManager.Inst.pm.turnDirection = -GameManager.Inst.pm.turnDirection;

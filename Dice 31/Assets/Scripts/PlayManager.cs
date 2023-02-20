@@ -58,6 +58,7 @@ public class PlayManager : MonoBehaviour
     public int bombDiceNum = 0;
     public int corruptStack = 0;
     public int onMyOwnDiceNum = 0;
+    public bool Jump = false;
     public AssassinInfo assassinInfo;
     private Player playerToRevive;
     public GameObject purpleGlow;
@@ -70,7 +71,7 @@ public class PlayManager : MonoBehaviour
 
     public void UpdateCurCount(int amount)
     {
-        if (corruptStack == 4)
+        if (corruptStack >= 4)
             curCount += amount * 2;
         else
             curCount += amount;
@@ -78,7 +79,7 @@ public class PlayManager : MonoBehaviour
 
     public void ExtendMaxCount(int amount)
     {
-        if (corruptStack == 4)
+        if (corruptStack >= 4)
             maxCount += amount * 2;
         else
             maxCount += amount;
@@ -336,6 +337,13 @@ public class PlayManager : MonoBehaviour
         {
             GameManager.Inst.gsm.WaitForPlayerTurn();
             Debug.Log($"{activatedPlayer.playerName} is already dead; skip");
+            return;
+        }
+
+        if (Jump) {
+            GameManager.Inst.gsm.WaitForPlayerTurn();
+            Debug.Log("Former player rolled J from JQk Dice");
+            Jump = false;
             return;
         }
 
@@ -621,7 +629,7 @@ public class PlayManager : MonoBehaviour
         {
             if (
                 bombDiceNum == activatedPlayer.normalDice.value ||
-                (bombDiceNum == activatedPlayer.normalDice.value * 2 && corruptStack == 4)
+                (bombDiceNum == activatedPlayer.normalDice.value * 2 && corruptStack >= 4)
             )
             {
                 Debug.Log($"Bomb ({bombDiceNum}) exploded");

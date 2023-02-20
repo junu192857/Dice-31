@@ -68,6 +68,10 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                                                   "모든 숫자 2배로 적용 중\n" +
                                                   "5단계: 플레이어 사망</color>";
                             break;
+                        case 5:
+                            additionalInfo.text = "<color=#9400D3>타락 5단계\n" +
+                                                  "모든 숫자 2배로 적용 중\n";                 
+                            break;
                         default:
                             break;
                     }
