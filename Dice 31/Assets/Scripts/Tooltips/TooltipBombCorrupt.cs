@@ -44,7 +44,12 @@ public class TooltipBombCorrupt : MonoBehaviour, IPointerEnterHandler, IPointerE
                                    $"모든 숫자 2배로 적용 중</color>\n" +
                                    $"5단계: 플레이어 사망";
             }
-            else { 
+            else if (GameManager.Inst.pm.corruptStack == 5) {
+                CorruptText.text = $"<color=#9400D3>타락 {GameManager.Inst.pm.corruptStack}단계</color>\n" +
+                                   $"모든 숫자 2배로 적용 중\n";
+            }
+            else
+            {
                 CorruptText.text = $"<color=#9400D3>타락 {GameManager.Inst.pm.corruptStack}단계</color>\n" +
                                    $"4단계: 모든 숫자 2배로 적용\n" +
                                    $"5단계: 플레이어 사망";

@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
     }
 
     private int CalculateIndex(string diceName, int number) {
-        bool corrupted = GameManager.Inst.pm.corruptStack == 4;
+        bool corrupted = GameManager.Inst.pm.corruptStack >= 4;
         switch (diceName) {
             case "Normal Dice":
                 return corrupted ? number + 20 : number - 1;
