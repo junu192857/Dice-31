@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Toggle = UnityEngine.UI.Toggle;
 
 public class SetupSceneManager : MonoBehaviour
 {
@@ -14,8 +15,14 @@ public class SetupSceneManager : MonoBehaviour
         "Player1", "Player2", "Player3", "Player4", "Player5", "Player6", "Player7", "Player8"
     };
 
+    public static bool[] isBot =
+    {
+        false, false, false, false, false, false, false, false
+    };
+
     [SerializeField] private GameObject tableCamera;
     [SerializeField] private GameObject inputs;
+    [SerializeField] private GameObject toggles;
     [SerializeField] private Text rollModeText;
     private static readonly int StartGame = Animator.StringToHash("StartGame");
     private static readonly int Back = Animator.StringToHash("Back");
@@ -26,6 +33,28 @@ public class SetupSceneManager : MonoBehaviour
         {
             var input = inputs.transform.GetChild(i).GetComponent<InputField>();
             input.text = playerNames[i];
+        }
+        for (var i = 0; i < toggles.transform.childCount; i++)
+        {
+            var toggle = toggles.transform.GetChild(i).GetComponent<Toggle>();
+            var index = i;
+            var input = inputs.transform.GetChild(index).GetComponent<InputField>();
+            toggle.onValueChanged.AddListener((isOn) =>
+            {
+                if (isOn)
+                {
+                    playerNames[index] = input.text;
+                    input.textComponent.fontStyle = FontStyle.Italic;
+                    input.text = "Bot " + (index + 1);
+                    input.enabled = false;
+                }
+                else
+                {
+                    input.textComponent.fontStyle = FontStyle.Normal;
+                    input.text = playerNames[index];
+                    input.enabled = true;
+                }
+            });
         }
 
         rollModeText.text = "Drag & Drop";
@@ -70,6 +99,11 @@ public class SetupSceneManager : MonoBehaviour
                 playerNames[i] = "Player" + (i + 1);
             else
                 playerNames[i] = text;
+        }
+        isBot = new bool[8];
+        for (var i = 0; i < toggles.transform.childCount; i++)
+        {
+            isBot[i] = toggles.transform.GetChild(i).GetComponent<Toggle>().isOn;
         }
         tableCamera.GetComponent<Animator>().SetTrigger(StartGame);
     }

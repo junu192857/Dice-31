@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 
     public bool specialDiceUsed { get; private set; }
     public Team team { get; private set; }
+    public bool isBot;
 
     public NormalDice normalDice;
     public Dice specialDice;

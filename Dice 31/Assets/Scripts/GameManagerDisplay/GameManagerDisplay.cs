@@ -8,8 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerDisplay : EditorWindow
 {
-    public static bool AutoPlay = false;
-    
+    public static bool AutoPlay;
+    public static bool AlwaysThrow;
+
     [MenuItem("Window/UI Toolkit/GameManagerDisplay")]
     public static void ShowExample()
     {
@@ -17,6 +18,7 @@ public class GameManagerDisplay : EditorWindow
     }
 
     private bool[] toggles;
+    private string corruptStack;
 
     private void OnGUI()
     {
@@ -35,12 +37,13 @@ public class GameManagerDisplay : EditorWindow
         {
             var player = players[i];
             GUILayout.BeginHorizontal();
-            toggles[i] = GUILayout.Toggle(toggles[i], "");
+            toggles[i] = GUILayout.Toggle(toggles[i], "선택");
             GUILayout.Label(player.playerName);
             if (player.specialDice is null)
                 GUILayout.Label("?");
             else
-                GUILayout.Label(player.specialDice.diceName ?? "");
+                GUILayout.Label(player.specialDice.diceName ?? "(특수 주사위 없음)");
+            player.isBot = GUILayout.Toggle(player.isBot, "Bot");
             GUILayout.EndHorizontal();
         }
 
@@ -49,12 +52,52 @@ public class GameManagerDisplay : EditorWindow
             HandleOnDiceChanged(players, gameManager.pm.activatedPlayer);
         }
         
+        GUILayout.BeginHorizontal();
         AutoPlay = GUILayout.Toggle(AutoPlay, "자동 플레이");
-
+        AlwaysThrow = GUILayout.Toggle(AlwaysThrow, "봇은 무지성 굴리기");
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("강제로 엔딩 씬 불러오기"))
         {
             GameManager.Inst.pm.SaveInfoAndLoadEndScene();
         }
+
+        if (GUILayout.Button("전부 봇으로 바꾸기"))
+        {
+            foreach (var player in players)
+            {
+                player.isBot = true;
+            }
+        }
+        
+        if (GUILayout.Button("전부 사람으로 바꾸기"))
+        {
+            foreach (var player in players)
+            {
+                player.isBot = false;
+            }
+        }
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("타락 스택: " + gameManager.pm.corruptStack);
+        corruptStack = GUILayout.TextField(corruptStack);
+        if (corruptStack != gameManager.pm.corruptStack.ToString())
+        {
+            if (GUILayout.Button("수정"))
+            {
+                try
+                {
+                    gameManager.pm.corruptStack = int.Parse(corruptStack);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e);
+                }
+            }
+        }
+        GUILayout.EndHorizontal();
     }
 
     private void HandleOnDiceChanged(List<Player> players, Player activatedPlayer)
