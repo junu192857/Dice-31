@@ -59,7 +59,8 @@ public class AssassinDice : Dice
     }
     public override void EffectAfterNextPlayerRoll()
     {
-        int x = GameManager.Inst.pm.activatedPlayer.normalDice.value;
+        int val = GameManager.Inst.pm.activatedPlayer.normalDice.value;
+        int x = GameManager.Inst.pm.corruptStack == 4 ? val * 2 : val;
         bool assassinResult = false;
         switch (value)
         {
