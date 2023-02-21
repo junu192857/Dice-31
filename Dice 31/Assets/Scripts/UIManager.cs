@@ -269,7 +269,11 @@ public class UIManager : MonoBehaviour
             SpecialDiceToggle.isOn = true;
             SpecialDiceToggle.interactable = false;
         }
-        else if (!player.specialDice.available) {
+        else if (player.specialDice is RevivalDice && GameManager.Inst.pm.allAlive) {
+            SpecialDiceToggle.interactable = false;
+        }
+        else if (!player.specialDice.available)
+        {
             SpecialDiceToggle.interactable = false;
         }
 
@@ -311,7 +315,7 @@ public class UIManager : MonoBehaviour
         int index = 0;
 
         if (player.playerIndex % 2 == 1) index += 12;
-        if (player.unDead) index += 9;
+        if (player.unDead && !GameManager.Inst.pm.isNewUnDead) index += 9;
         PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index];
     }
     public void PlayerActivate(Player player) {

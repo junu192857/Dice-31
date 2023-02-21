@@ -27,6 +27,7 @@ public class SetupSceneManager : MonoBehaviour
     private static readonly int StartGame = Animator.StringToHash("StartGame");
     private static readonly int Back = Animator.StringToHash("Back");
 
+    public static int maxCount;
     private void Start()
     {
         for (var i = 0; i < inputs.transform.childCount; i++)
@@ -58,6 +59,7 @@ public class SetupSceneManager : MonoBehaviour
         }
 
         rollModeText.text = "Drag & Drop";
+        maxCount = 31;
         GameManager.gameMode = GameMode.Drag;
     }
 

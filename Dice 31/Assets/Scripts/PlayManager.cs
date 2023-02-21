@@ -61,11 +61,13 @@ public class PlayManager : MonoBehaviour
     public bool Jump = false;
     public AssassinInfo assassinInfo;
     private Player playerToRevive;
+    public bool isNewUnDead;
     public GameObject purpleGlow;
 
     private bool pendingRoundEnd = false;
     private Dictionary<int, DeadCause> deadInfo = new Dictionary<int, DeadCause>();
     private int revivalInfo;
+    public bool allAlive;
 
     [SerializeField] private Toggle specialDiceToggle;
 
@@ -141,6 +143,7 @@ public class PlayManager : MonoBehaviour
             roundCount++;
             deadInfo.Clear();
             revivalInfo = -1;
+            isNewUnDead = false;
             GameManager.Inst.um.GaugeBarCoroutine(curCount, maxCount);
             
             GameManager.Inst.gsm.WaitForPlayerTurn();
@@ -222,7 +225,7 @@ public class PlayManager : MonoBehaviour
                 player.Revive();
                 player.unDead = false;
             }
-
+            allAlive = true;
             GameManager.Inst.um.ResetUI();
             AssignDices();
             ResetRound();
@@ -512,6 +515,9 @@ public class PlayManager : MonoBehaviour
             );
             specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
+        else if (specialDice is RevivalDice) {
+            allAlive = playerInfos.Count(player => player.team == activatedPlayer.team && player.alive) == 4;
+        }
     }
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
@@ -701,6 +707,7 @@ public class PlayManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (revivalInfo != -1) {
             yield return StartCoroutine(GameManager.Inst.um.PlayerReviveAnimation(revivalInfo));
+            revivalInfo = -1;
         }
 
         if (pendingRoundEnd)
@@ -806,6 +813,7 @@ public class PlayManager : MonoBehaviour
         {
             Debug.Log("Hello?");
             player.MakeUndead();
+            isNewUnDead = true;
         }
         else if (player.unDead && deadCause != DeadCause.Corrupted) {
             Debug.Log("언데드는 타락 이외의 이유로 사망하지 않습니다.");

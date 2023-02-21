@@ -128,7 +128,12 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 {
                     additionalInfo.text = "<color=#FF0000>" + "부활 성공 시 죽은 팀원 부활\n" +
                                           "부활 실패 시 자기자신 사망</color>";
-                    if (specialDice.available)
+                    if (GameManager.Inst.pm.allAlive) {
+                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 440);
+                        warning.text = "팀원이 전부 생존하여 사용 불가능";
+                        warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
+                    }
+                    else if (specialDice.available)
                     {
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
                         warning.text = "";
