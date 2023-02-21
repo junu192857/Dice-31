@@ -327,6 +327,11 @@ public class PlayManager : MonoBehaviour
                 playerInfos[evenIndexList[i]].specialDice.EnableDice();
             }
         }
+        /*GameObject temp = Instantiate(Resources.Load("OperatorDice")) as GameObject;
+        GameObject temp2 = Instantiate(Resources.Load("AssassinDice")) as GameObject;
+        playerInfos[0].specialDice = temp.GetComponent<Dice>();
+        playerInfos[1].specialDice = temp2.GetComponent<Dice>();
+        playerInfos[1].specialDice.EnableDice(); */
     }
 
     public void StartPlayerTurn()
@@ -573,7 +578,6 @@ public class PlayManager : MonoBehaviour
     }
 
     public void AnywayRollPlayerDice() {
-        Debug.Log(GameManager.Inst.gsm.State);
         if (GameManager.gameMode == GameMode.Drag)
         {
             OnRollPlayerDice();
@@ -679,7 +683,7 @@ public class PlayManager : MonoBehaviour
             playerToRevive = null;
         }
 
-        if (pendingRoundEnd)
+        if (pendingRoundEnd || revivalInfo != -1)
         {
             StartCoroutine(OperateDieAndRevivalAnimation());
         }
@@ -698,7 +702,15 @@ public class PlayManager : MonoBehaviour
         if (revivalInfo != -1) {
             yield return StartCoroutine(GameManager.Inst.um.PlayerReviveAnimation(revivalInfo));
         }
-        ResetRound();
+
+        if (pendingRoundEnd)
+        {
+            ResetRound();
+        }
+        else if (GameManager.Inst.gsm.State != GameState.Gameover)
+        {
+            GameManager.Inst.gsm.WaitForPlayerTurn();
+        }
     }
     private Player Convert(GameObject player)
     {

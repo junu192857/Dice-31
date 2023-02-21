@@ -593,7 +593,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
         float runTime = 0f;
-        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.5f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
         SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
         Vector3 start1 = sprites[0].transform.localPosition;
         Vector3 start2 = sprites[1].transform.localPosition;
