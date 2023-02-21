@@ -41,7 +41,7 @@ public abstract class Dice : MonoBehaviour
         {
             float velocity = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
             if (velocity > 0.01f)
-                GameManager.Inst.sm.DiceCollision(velocity);
+            { GameManager.Inst.sm.DiceCollision(velocity); }
         }
     }
 }

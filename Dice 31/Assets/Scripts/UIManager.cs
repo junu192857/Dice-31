@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     public Image DiceSelectPanel;
     public List<Sprite> DiceSelectPanelByTeam;
+    public Image playerImage;
+    public Text playerText;
 
     public Image BombHolder;
     public Image BowImage;
@@ -312,6 +314,8 @@ public class UIManager : MonoBehaviour
         if (player.unDead) index += 9;
 
         PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index+1];
+        playerImage.sprite = PlayerStates[index + 1];
+        playerText.text = player.playerName;
     }
 
     public void PlayerDie(int playerIndex, DeadCause deadCause) {
