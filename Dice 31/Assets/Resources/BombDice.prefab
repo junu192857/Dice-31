@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7629606824943379049}
   - component: {fileID: 7629606824943379048}
   - component: {fileID: -1012580358803833218}
-  - component: {fileID: 3639578779149740078}
+  - component: {fileID: -4578438784655545613}
   m_Layer: 0
   m_Name: BombDice
   m_TagString: Dice
@@ -181,7 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &3639578779149740078
+--- !u!82 &-4578438784655545613
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

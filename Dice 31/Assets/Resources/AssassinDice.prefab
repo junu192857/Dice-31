@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9073554583100854301}
   - component: {fileID: 9073554583100854300}
   - component: {fileID: 7835498389343634568}
-  - component: {fileID: 7884677913587413421}
+  - component: {fileID: -1003532688568849640}
   m_Layer: 0
   m_Name: AssassinDice
   m_TagString: Dice
@@ -181,7 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &7884677913587413421
+--- !u!82 &-1003532688568849640
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

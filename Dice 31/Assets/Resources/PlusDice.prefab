@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 2842157343962284936}
   - component: {fileID: 2842157343962284937}
   - component: {fileID: -1509593507557756189}
-  - component: {fileID: 6389564677946288790}
+  - component: {fileID: -4235403630658816240}
   m_Layer: 0
   m_Name: PlusDice
   m_TagString: Dice
@@ -679,7 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &6389564677946288790
+--- !u!82 &-4235403630658816240
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

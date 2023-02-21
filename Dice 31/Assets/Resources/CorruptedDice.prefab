@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 3678062557188347968}
   - component: {fileID: 3678062557188347969}
   - component: {fileID: -1462123044841367394}
-  - component: {fileID: -7347282890500222056}
+  - component: {fileID: -8647558576986931336}
   m_Layer: 0
   m_Name: CorruptedDice
   m_TagString: Dice
@@ -679,7 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &-7347282890500222056
+--- !u!82 &-8647558576986931336
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

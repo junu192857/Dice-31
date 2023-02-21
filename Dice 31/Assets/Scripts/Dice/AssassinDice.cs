@@ -104,4 +104,8 @@ public class AssassinDice : Dice
     {
         base.OnCollisionEnter();
     }
+
+    protected override void Start(){
+        base.Start();
+    }
 }

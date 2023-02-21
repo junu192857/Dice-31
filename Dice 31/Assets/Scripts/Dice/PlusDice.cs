@@ -38,4 +38,7 @@ public class PlusDice : Dice
     {
         base.OnCollisionEnter();
     }
+    protected override void Start(){
+        base.Start();
+    }
 }

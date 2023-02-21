@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9099585391734496042}
   - component: {fileID: 9099585391734496043}
   - component: {fileID: 6792202760946689573}
-  - component: {fileID: -977440327675646446}
+  - component: {fileID: -1563788172992980366}
   m_Layer: 0
   m_Name: OperatorDice
   m_TagString: Dice
@@ -182,7 +182,7 @@ MonoBehaviour:
   diceInformation: 
   currentlyRolling: 0
   delayed: 0
---- !u!82 &-977440327675646446
+--- !u!82 &-1563788172992980366
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

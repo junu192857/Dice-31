@@ -42,4 +42,7 @@ public class NormalDice : Dice
     protected override void OnCollisionEnter() { 
         base.OnCollisionEnter();
     }
+    protected override void Start(){
+        base.Start();
+    }
 }

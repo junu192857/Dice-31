@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 3512315092178829557}
   - component: {fileID: 3512315092178829556}
   - component: {fileID: -1551039265037227106}
-  - component: {fileID: -5891542472777409689}
+  - component: {fileID: -506806055094929134}
   m_Layer: 0
   m_Name: JQKDice
   m_TagString: Dice
@@ -679,7 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &-5891542472777409689
+--- !u!82 &-506806055094929134
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

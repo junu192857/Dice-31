@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8897585727088176971}
   - component: {fileID: 8897585727088176970}
   - component: {fileID: 7033183625977308976}
-  - component: {fileID: 706207798317408861}
+  - component: {fileID: 5188781697208991832}
   m_Layer: 0
   m_Name: RevivalDice
   m_TagString: Dice
@@ -181,7 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &706207798317408861
+--- !u!82 &5188781697208991832
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

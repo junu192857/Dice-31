@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4302226799089049218}
   - component: {fileID: 4302226799089049219}
   - component: {fileID: -2493659697233189983}
-  - component: {fileID: 2616044136909320552}
+  - component: {fileID: 2031648838490825276}
   m_Layer: 0
   m_Name: MinusDice
   m_TagString: Dice
@@ -181,7 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   currentlyRolling: 0
---- !u!82 &2616044136909320552
+--- !u!82 &2031648838490825276
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
