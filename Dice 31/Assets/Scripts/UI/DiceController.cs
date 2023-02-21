@@ -57,7 +57,7 @@ public class DiceController : MonoBehaviour
     {
         if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
-            if (State != DiceState.Idle) return;
+            if (!preview && State != DiceState.Idle) return;
             State = DiceState.Dragging;
         }
     }

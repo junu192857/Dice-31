@@ -6,20 +6,22 @@ public class AfterBowCharging : MonoBehaviour
 {
     public GameObject arrowPrefab;
 
+    private float shootTime = 0.3f;
     public void ShootArrow() {
         StartCoroutine(ShootArrowAnimation());
     }
 
     public IEnumerator ShootArrowAnimation() {
-        GameObject arrow = Instantiate(arrowPrefab, new Vector3(0.5f, 1f, 1.14f), Quaternion.identity);
-        arrow.transform.rotation = Quaternion.Euler(90, 0, 0);
+        GameObject arrow = Instantiate(arrowPrefab, new Vector3(0.51f, 1f, 0.77f), Quaternion.identity);
+        Vector3 start = arrow.transform.position;
+        Vector3 target = GameManager.Inst.um.arrowTarget;
+        float rotation = Vector2.Angle(new Vector2(-1, 0), new Vector2(target.x-start.x,target.z-start.z));
+        Debug.Log(rotation);
+        arrow.transform.rotation = Quaternion.Euler(90f, 0f, -45 + rotation);
         var runTime = 0f;
-        while (runTime < 0.5f) {
+        while (runTime < shootTime) {
             runTime += Time.deltaTime;
-            Vector3 start = arrow.transform.position;
-            Vector3 target = GameManager.Inst.um.arrowTarget;
-
-            arrow.transform.position = ((runTime * target) + (0.5f - runTime) * start) / 0.5f;
+            arrow.transform.position = ((runTime * target) + (shootTime - runTime) * start) / shootTime;
             yield return null;
         }
         Destroy(arrow);

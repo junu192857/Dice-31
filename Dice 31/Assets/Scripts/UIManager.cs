@@ -88,7 +88,6 @@ public class UIManager : MonoBehaviour
 
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
         Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
-        Debug.Log(numberIndex);
         GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
 
         float runtime = 0f;
@@ -414,14 +413,17 @@ public class UIManager : MonoBehaviour
                 Debug.Log("Hello from Assassin");
                 switch (GameManager.Inst.pm.assassinInfo) {
                     case AssassinInfo.Bow:
-                        /*BowImage.transform.GetChild(0).gameObject.SetActive(false);
-                        GameObject bow = Instantiate(bowPrefab, new Vector3(0.5f, 1f, 1.14f), Quaternion.identity);
-                        bow.transform.rotation = Quaternion.Euler(90, 0, 0);
-                        bow.GetComponent<Animator>().Play("ArrowAnimation");
                         BowImage.transform.GetChild(0).gameObject.SetActive(false);
-                        arrowTarget = new Vector3(-3.5f, 1f, -0.14f - (playerIndex * 2.46f / 7));
-                        yield return new WaitUntil(() => arrowShootDone);*/
+                        arrowShootDone = false;
+                        arrowTarget = new Vector3(-3f, 1f, -0.4f - (playerIndex * 2.4f / 7));
+                        Vector3 start = new Vector3(0.55f, 1f, 0.80f);
+                        Vector3 target = GameManager.Inst.um.arrowTarget;
+                        float rotation = Vector2.Angle(new Vector2(-1, 0), new Vector2(target.x - start.x, target.z - start.z));
+                        GameObject bow = Instantiate(bowPrefab, start, Quaternion.Euler(90, 0, -45+rotation));
+                        yield return new WaitUntil(() => arrowShootDone);
                         PlayerDie(playerIndex, deadCause);
+                        Destroy(bow);
+                        BowImage.transform.GetChild(0).gameObject.SetActive(true);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Sword:
