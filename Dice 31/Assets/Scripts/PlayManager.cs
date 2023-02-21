@@ -450,7 +450,7 @@ public class PlayManager : MonoBehaviour
     {
         for (int i = 1; i <= 7; i++)
         {
-            int nextIndex = (index + i) % 8;
+            int nextIndex = (index + i * turnDirection + 8) % 8;
             if (playerInfos[nextIndex].alive)
             {
                 return playerInfos[nextIndex];
@@ -573,10 +573,13 @@ public class PlayManager : MonoBehaviour
     }
 
     public void AnywayRollPlayerDice() {
-        if (GameManager.gameMode == GameMode.Drag) {
+        Debug.Log(GameManager.Inst.gsm.State);
+        if (GameManager.gameMode == GameMode.Drag)
+        {
             OnRollPlayerDice();
         }
-        else {
+        else
+        {
             InstantlyRollPlayerDice();
         }
     }
@@ -784,7 +787,10 @@ public class PlayManager : MonoBehaviour
         }
 
         Debug.Log($"{player.playerName} is dead");
-        if (player.specialDice is CorruptedDice && !(player.specialDice.GetComponent<CorruptedDice>().pass) && !player.unDead)
+        if (player.specialDice is CorruptedDice &&
+            !(player.specialDice.GetComponent<CorruptedDice>().pass) &&
+            !player.unDead &&
+            corruptStack < 5)
         {
             Debug.Log("Hello?");
             player.MakeUndead();
@@ -800,8 +806,6 @@ public class PlayManager : MonoBehaviour
         }
         player.deadCause = deadCause;
         player.deadRound = roundCount;
-        //요 밑에 줄은 애니메이션 끝나고 재생해야 함
-        
         deadInfo.Add(player.playerIndex, deadCause);
         pendingRoundEnd = true;
     }

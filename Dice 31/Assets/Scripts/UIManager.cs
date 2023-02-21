@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     public Image GunImage;
     public Image CorruptedImage;
 
-    private bool gaugeBarMoving;
+    public bool gaugeBarMoving;
     public GameObject laserSpherePrefab;
     public GameObject laserBeamPrefab;
     public List<float> laserBeamRotations;
@@ -481,13 +481,14 @@ public class UIManager : MonoBehaviour
                         runTime = 0f;
                         while (runTime < 0.15f) {
                             runTime += Time.deltaTime;
-                            gun.transform.rotation = Quaternion.Euler(Vector3.Lerp(targetRotation, targetRotation + new Vector3(0, 0, -90), runTime / 0.15f));
+                            gun.transform.rotation = Quaternion.Euler(Vector3.Lerp(targetRotation, targetRotation + new Vector3(0, 0, -45), runTime / 0.15f));
                             bullet.transform.position = Vector3.Lerp(bulletStartPos, targetPosition, runTime / 0.15f);
                             yield return null;
                         }
                         Destroy(bullet);
                         Destroy(gun);
                         PlayerDie(playerIndex, deadCause);
+                        GunImage.transform.GetChild(0).gameObject.SetActive(true);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     default:
@@ -662,11 +663,14 @@ public class UIManager : MonoBehaviour
         SelectTwoButton.gameObject.SetActive(false);
     }
     public void DisableRollButton() {
+        SpecialDiceToggle.interactable = false;
+        Debug.Log(GameManager.Inst.gsm.State);
         if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
         {
             RollDiceButtonByTeam[0].gameObject.SetActive(false);
         }
-        else {
+        else
+        {
             RollDiceButtonByTeam[1].gameObject.SetActive(false);
         }
     }

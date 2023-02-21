@@ -38,12 +38,15 @@ public class CorruptedDice : Dice
         {
             Debug.Log($"corrupt pass: {GameManager.Inst.pm.corruptStack}");
             owner = GameManager.Inst.pm.activatedPlayer;
+            if (owner.unDead) {
+                GameManager.Inst.pm.CurrentPlayerDie(DeadCause.Corrupted);
+            }
         }
     }
 
     public override void EffectBeforeNextPlayerRoll()
     {
-        if (pass && !owner.unDead)
+        if (pass)
         {
             Player current = GameManager.Inst.pm.activatedPlayer;
             owner.specialDice = current.specialDice;

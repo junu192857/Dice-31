@@ -10,7 +10,7 @@ public class OperatorDice : Dice
     public bool delayed;
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => { 
+        return DiceUtil.Roll(this, diceName, i => {
             DiceOperation(i);
             GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
         });
