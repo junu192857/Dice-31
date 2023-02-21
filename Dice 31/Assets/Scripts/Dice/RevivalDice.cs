@@ -12,8 +12,9 @@ public class RevivalDice : Dice
     
     public override IEnumerator Roll()
     {
-        return DiceUtil.Roll(this, diceName, i => { 
+        return DiceUtil.Roll(this, diceName, i => {
             DiceOperation(i);
+            //success = true;
             GameManager.Inst.um.ShowNumberAnimate(gameObject, i);
         });
     }

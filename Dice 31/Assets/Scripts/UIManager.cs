@@ -42,8 +42,16 @@ public class UIManager : MonoBehaviour
     public GameObject explosionPrefab;
     public GameObject bombPrefab;
     public GameObject bowPrefab;
+    public GameObject swordPrefab;
+    public GameObject gunPrefab;
+    public GameObject bulletPrefab;
     public bool arrowShootDone = false;
     public Vector3 arrowTarget;
+    public GameObject brokenHeartPrefab;
+    public GameObject skullPrefab;
+    public GameObject RedCorruptingPrefab;
+    public GameObject BlueCorruptingPrefab;
+    public bool corruptAnimationDone;
 
     public List<Sprite> PlayerStates;
 
@@ -303,8 +311,11 @@ public class UIManager : MonoBehaviour
         int index = 0;
 
         if (player.playerIndex % 2 == 1) index += 12;
-        if (player.unDead) index += 9;
-        PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index];
+        //if (player.unDead) index += 9;
+        if (!player.unDead)
+        {
+            PlayerImages[player.playerIndex].GetComponent<Image>().sprite = PlayerStates[index];
+        }
     }
     public void PlayerActivate(Player player) {
         int index = 0;
@@ -427,10 +438,55 @@ public class UIManager : MonoBehaviour
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Sword:
+                        SwordImage.transform.GetChild(0).gameObject.SetActive(false);
+                        GameObject sword = Instantiate(swordPrefab, new Vector3(0.74f, 1f, 0.74f), Quaternion.Euler(90, 0, 0));
+                        Vector3 finalTarget = new Vector3(-3f, 1f, -0.4f - (playerIndex * 2.4f/ 7));
+
+                        Vector3 swordStartPos = sword.transform.position;
+                        Vector3 targetPos = swordStartPos + new Vector3(0.2f, 0, 0.2f);
+                        Vector3 swordStartRotation = new Vector3(90, 0, 0);
+                        Vector3 swordTargetRotation = new Vector3(90, 0, 135 + Vector2.Angle(new Vector2(-1, 0), new Vector2(finalTarget.x - targetPos.x, finalTarget.z - targetPos.z)));
+
+                        runTime = 0f;
+                        while (runTime < 0.5f) {
+                            runTime += Time.deltaTime;
+                            sword.transform.position = (runTime * targetPos + (0.5f - runTime) * swordStartPos) / 0.5f;
+                            sword.transform.rotation = Quaternion.Euler((runTime * swordTargetRotation + ((0.5f - runTime) * swordStartRotation)) / 0.5f);
+                            yield return null;
+                        }
+                        yield return new WaitForSeconds(0.5f);
+                        runTime = 0f;
+                        while (runTime < 0.5f) {
+                            runTime += Time.deltaTime;
+                            sword.transform.position = (runTime * finalTarget + (0.5f - runTime) * targetPos) / 0.5f;
+                            yield return null;
+                        }
+                        Destroy(sword);
+                        SwordImage.transform.GetChild(0).gameObject.SetActive(true);
                         PlayerDie(playerIndex, deadCause);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Gun:
+                        GunImage.transform.GetChild(0).gameObject.SetActive(false);
+                        GameObject gun = Instantiate(gunPrefab, new Vector3(1.13f, 1f, 0.72f), Quaternion.Euler(90, 0, 0));
+                        gun.transform.localScale = new Vector3(-0.1f, 0.1f, 0.1f);
+
+                        Vector3 curPos = gun.transform.position;
+                        Vector3 targetPosition = new Vector3(-3f, 1f, -0.4f - (playerIndex * 2.4f / 7));
+                        Vector3 targetRotation = new Vector3(90f, 0f, Vector2.Angle(new Vector2(-1, 0), new Vector2(targetPosition.x - curPos.x, targetPosition.z - curPos.z)));
+                        gun.transform.rotation = Quaternion.Euler(targetRotation);
+                        yield return new WaitForSeconds(0.5f);
+                        Vector3 bulletStartPos = new Vector3(0.83f, 1f, 0.71f);
+                        GameObject bullet = Instantiate(bulletPrefab, bulletStartPos, Quaternion.Euler(targetRotation));
+                        runTime = 0f;
+                        while (runTime < 0.15f) {
+                            runTime += Time.deltaTime;
+                            gun.transform.rotation = Quaternion.Euler(Vector3.Lerp(targetRotation, targetRotation + new Vector3(0, 0, -90), runTime / 0.15f));
+                            bullet.transform.position = Vector3.Lerp(bulletStartPos, targetPosition, runTime / 0.15f);
+                            yield return null;
+                        }
+                        Destroy(bullet);
+                        Destroy(gun);
                         PlayerDie(playerIndex, deadCause);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
@@ -470,7 +526,61 @@ public class UIManager : MonoBehaviour
                 PlayerDie(playerIndex, deadCause);
                 break;
             case DeadCause.Corrupted:
+                corruptAnimationDone = false;
+                GameObject skull = Instantiate(skullPrefab, new Vector3(-3.4f, 1f, -0.5f - (playerIndex * 2.47f / 7)), Quaternion.Euler(90, 0, 0));
+                runTime = 0f;
+                SpriteRenderer skullSprite = skull.GetComponent<SpriteRenderer>();
+                while (runTime < 0.7f) {
+                    runTime += Time.deltaTime;
+                    skullSprite.color = new Color { a = runTime / 0.5f, b = 1, g = 1, r = 1 };
+                    yield return null;
+                }
+                yield return new WaitForSeconds(0.5f);
+                runTime = 0f;
+                while (runTime < 0.7f)
+                {
+                    runTime += Time.deltaTime;
+                    skullSprite.color = new Color { a = 1-(runTime / 0.5f), b = 1, g = 1, r = 1 };
+                    yield return null;
+                }
+                GameObject corrupting;
+                if (playerIndex % 2 == 0)
+                {
+                    corrupting = Instantiate(RedCorruptingPrefab, new Vector3(-3.481f, 1f, -0.534f - (playerIndex * 2.442f / 7)), Quaternion.Euler(90, 0, 0));
+                }
+                else 
+                {
+                    corrupting = Instantiate(BlueCorruptingPrefab, new Vector3(-3.481f, 1f, -0.534f - (playerIndex * 2.442f / 7)), Quaternion.Euler(90, 0, 0));
+                }
+                corrupting.transform.localScale = new Vector3(0.086f, 0.086f, 1f);
+                yield return new WaitUntil(() => corruptAnimationDone);
+                Destroy(corrupting);
+                PlayerDie(playerIndex, deadCause);
+                break;
             case DeadCause.RevivalFail:
+                GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+                heart.transform.localScale = new Vector3(0.05f, 1f, 0.05f);
+                SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
+                runTime = 0f;
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    sprites[0].color = new Color { a = runTime / 0.5f, b = 1, g = 1, r=  1 };
+                    sprites[1].color = new Color { a = runTime / 0.5f, b = 1, g = 1, r = 1 };
+                    yield return null;
+                }
+                yield return new WaitForSeconds(0.7f);
+                runTime = 0f;
+                Vector3 start1 = sprites[0].transform.localPosition;
+                Vector3 start2 = sprites[1].transform.localPosition;
+                while (runTime < 0.5f) {
+                    runTime += Time.deltaTime;
+                    sprites[0].transform.localPosition = Vector3.Lerp(start1, start1 + new Vector3(0.7f, 0, 2f), runTime / 0.5f);
+                    sprites[1].transform.localPosition = Vector3.Lerp(start2, start2 + new Vector3(-0.7f, 0, -2f), runTime / 0.5f);
+                    sprites[0].color = new Color { a = 1-(runTime / 0.5f), b = 1, g = 1, r = 1 };
+                    sprites[1].color = new Color { a = 1-(runTime / 0.5f), b = 1, g = 1, r = 1 };
+                    yield return null;
+                }
+                Destroy(heart);
                 PlayerDie(playerIndex, deadCause);
                 break;
             default:
@@ -478,6 +588,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PlayerReviveAnimation(int playerIndex) 
+    {
+        yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
+        float runTime = 0f;
+        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+        SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
+        Vector3 start1 = sprites[0].transform.localPosition;
+        Vector3 start2 = sprites[1].transform.localPosition;
+        while (runTime < 0.7f)
+        {
+            runTime += Time.deltaTime;
+            sprites[0].color = new Color { a = runTime / 0.7f, b = 1, g = 1, r = 1 };
+            sprites[1].color = new Color { a = runTime / 0.7f, b = 1, g = 1, r = 1 };
+            sprites[0].transform.localPosition = Vector3.Lerp(start1 + new Vector3(0.7f, 0, 2f), start1, runTime / 0.7f);
+            sprites[1].transform.localPosition = Vector3.Lerp(start2 + new Vector3(-0.7f, 0, -2f), start2, runTime / 0.7f);
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.5f);
+        Destroy(heart);
+        PlayerRevive(playerIndex);
+    }
 
     public void PlayerRevive(int playerIndex) {
         if (playerIndex % 2 == 0)

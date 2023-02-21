@@ -65,6 +65,7 @@ public class PlayManager : MonoBehaviour
 
     private bool pendingRoundEnd = false;
     private Dictionary<int, DeadCause> deadInfo = new Dictionary<int, DeadCause>();
+    private int revivalInfo;
 
     [SerializeField] private Toggle specialDiceToggle;
 
@@ -139,6 +140,7 @@ public class PlayManager : MonoBehaviour
             //turnDirection = 1; 라운드가 초기화되어도 진행 방향 초기화가 되지 않는 것이 원래 기획
             roundCount++;
             deadInfo.Clear();
+            revivalInfo = -1;
             GameManager.Inst.um.GaugeBarCoroutine(curCount, maxCount);
             
             GameManager.Inst.gsm.WaitForPlayerTurn();
@@ -383,7 +385,7 @@ public class PlayManager : MonoBehaviour
             activatedPlayer.normalDice.currentlyRolling = false;
             activatedPlayer.specialDice.transform.position = StoragePosition;
             activatedPlayer.specialDice.currentlyRolling = false;
-            StartCoroutine(OperateDieAnimation());
+            StartCoroutine(OperateDieAndRevivalAnimation());
         }
 
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
@@ -676,7 +678,7 @@ public class PlayManager : MonoBehaviour
 
         if (pendingRoundEnd)
         {
-            StartCoroutine(OperateDieAnimation());
+            StartCoroutine(OperateDieAndRevivalAnimation());
         }
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
@@ -684,10 +686,14 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    private IEnumerator OperateDieAnimation() {
+    private IEnumerator OperateDieAndRevivalAnimation() {
         GameManager.Inst.gsm.OperateAnimation();
         foreach (KeyValuePair<int, DeadCause> item in deadInfo) {
             yield return StartCoroutine(GameManager.Inst.um.PlayerDieAnimation(item.Key, item.Value));
+        }
+        yield return new WaitForSeconds(0.5f);
+        if (revivalInfo != -1) {
+            yield return StartCoroutine(GameManager.Inst.um.PlayerReviveAnimation(revivalInfo));
         }
         ResetRound();
     }
@@ -710,7 +716,8 @@ public class PlayManager : MonoBehaviour
             {
                 playerToRevive = availablePlayers[Random.Range(0, availablePlayers.Count)];
                 Debug.Log($"You Revived {playerToRevive.playerName}");
-                GameManager.Inst.um.PlayerRevive(playerInfos.IndexOf(playerToRevive));
+                revivalInfo = playerToRevive.playerIndex;
+                //GameManager.Inst.um.PlayerRevive(playerInfos.IndexOf(playerToRevive));
             }
         }
         else
