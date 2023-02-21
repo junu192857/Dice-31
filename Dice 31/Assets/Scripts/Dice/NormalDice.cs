@@ -13,7 +13,7 @@ public class NormalDice : Dice
     {
         return DiceUtil.Roll(this, diceName, i =>
         {
-            value = i;
+            value = 1;
             Debug.Log($"You rolled {value} from {diceName}");
             GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
         });
