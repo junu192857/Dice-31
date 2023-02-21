@@ -9,7 +9,7 @@ public class BombDice : Dice
     public override IEnumerator Roll()
     {
         return DiceUtil.Roll(this, diceName, i => { 
-            value = 1;
+            value = i;
             GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
         });
         
