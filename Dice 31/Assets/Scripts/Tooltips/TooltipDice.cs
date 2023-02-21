@@ -32,34 +32,53 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             {
                 diceName.text = $"{specialDice.koreanDiceName}";
                 diceInformation.text = $"{specialDice.diceInformation}";
-                if (specialDice is BombDice && GameManager.Inst.pm.bombDiceNum != 0)
+                if (specialDice is BombDice)
                 {
-                    string post;
-                    switch (GameManager.Inst.pm.bombDiceNum) {
-                        case 1:
-                        case 3:
-                        case 6:
-                            post = "이";
-                            break;
-                        case 2:
-                        case 4:
-                        case 5:
-                            post = "가";
-                            break;
-                        default:
-                            post = "";
-                            break;
-                    }
-                    additionalInfo.text = "<color=#FF0000>" + $"{GameManager.Inst.pm.bombDiceNum}" + post + " 나오면 폭발" + "</color>";
-                    if (specialDice.available) 
+                    if (GameManager.Inst.pm.bombDiceNum != 0)
                     {
-                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
-                        warning.text = "";
+                        string post;
+                        switch (GameManager.Inst.pm.bombDiceNum)
+                        {
+                            case 1:
+                            case 3:
+                            case 6:
+                                post = "이";
+                                break;
+                            case 2:
+                            case 4:
+                            case 5:
+                                post = "가";
+                                break;
+                            default:
+                                post = "";
+                                break;
+                        }
+                        additionalInfo.text = "<color=#FF0000>" + $"{GameManager.Inst.pm.bombDiceNum}" + post + " 나오면 폭발" + "</color>";
+                        if (specialDice.available)
+                        {
+                            diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
+                            warning.text = "";
+                        }
+                        else
+                        {
+                            diceTooltip.rectTransform.sizeDelta = new Vector2(480, 360);
+                            warning.text = "이번 게임에서 이미 사용함";
+                            warning.rectTransform.anchoredPosition = new Vector3(16, -300, 0);
+                        }
                     }
                     else {
-                        diceTooltip.rectTransform.sizeDelta = new Vector2(480, 360);
-                        warning.text = "이번 게임에서 이미 사용함";
-                        warning.rectTransform.anchoredPosition = new Vector3(16, -300, 0);
+                        if (specialDice.available)
+                        {
+                            diceTooltip.rectTransform.sizeDelta = new Vector2(480, 180);
+                            additionalInfo.text = "";
+                            warning.text = "";
+                        }
+                        else {
+                            diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
+                            additionalInfo.text = "";
+                            warning.text = "이번 게임에서 이미 사용함";
+                            warning.rectTransform.anchoredPosition = new Vector3(16, -210, 0);
+                        }
                     }
                 }
                 else if (specialDice is CorruptedDice)
@@ -145,6 +164,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     else{
                         additionalInfo.text = "";
                         warning.text = "이번 라운드에서 이미 사용함";
+                        Debug.Log("Hey Hello");
                         warning.rectTransform.anchoredPosition = new Vector3(16, -210, 0);
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
                     }
