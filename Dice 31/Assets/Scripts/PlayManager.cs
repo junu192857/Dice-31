@@ -477,27 +477,33 @@ public class PlayManager : MonoBehaviour
 
     private void LoadDicesToRoll()
     {
+        Dice normalDice = activatedPlayer.normalDice;
+        Dice specialDice = activatedPlayer.specialDice;
+
+        normalDice.audioPlayedCount = 0;
+        specialDice.audioPlayedCount = 0;
+
         dicesToRoll.Clear();
         dicesToRoll.Add(activatedPlayer.normalDice);
-        activatedPlayer.normalDice.transform.position = NormalDicePosition;
-        activatedPlayer.normalDice.currentlyRolling = true;
-        activatedPlayer.normalDice.transform.rotation = Quaternion.Euler(
+        normalDice.transform.position = NormalDicePosition;
+        normalDice.currentlyRolling = true;
+        normalDice.transform.rotation = Quaternion.Euler(
             Random.Range(0, 4) * 90f,
             Random.Range(0, 4) * 90f,
             Random.Range(0, 4) * 90f
         );
-        activatedPlayer.normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        if (activatedPlayer.specialDice is CorruptedDice)
+        normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        if (specialDice is CorruptedDice)
         {
-            dicesToRoll.Add(activatedPlayer.specialDice);
-            activatedPlayer.specialDice.transform.position = SpecialDicePosition;
-            activatedPlayer.specialDice.currentlyRolling = true;
-            activatedPlayer.specialDice.transform.rotation = Quaternion.Euler(
+            dicesToRoll.Add(specialDice);
+            specialDice.transform.position = SpecialDicePosition;
+            specialDice.currentlyRolling = true;
+            specialDice.transform.rotation = Quaternion.Euler(
                 Random.Range(0, 4) * 90f,
                 Random.Range(0, 4) * 90f,
                 Random.Range(0, 4) * 90f
             );
-            activatedPlayer.specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 
@@ -523,6 +529,7 @@ public class PlayManager : MonoBehaviour
             dicesToRoll.Add(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = SpecialDicePosition;
             activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
+            activatedPlayer.specialDice.currentlyRolling = true;
         }
     }
 
@@ -547,6 +554,7 @@ public class PlayManager : MonoBehaviour
             Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
             dicesToRoll.Remove(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = StoragePosition;
+            activatedPlayer.specialDice.currentlyRolling = false;
         }
     }
 

@@ -26,6 +26,9 @@ public abstract class Dice : MonoBehaviour
     public string diceInformation;
 
     public AudioSource audioSource;
+    public int audioPlayedCount;
+    private float former;
+    private float after;
 
     public bool currentlyRolling = false;
     public bool available { get; private set; }
@@ -41,15 +44,21 @@ public abstract class Dice : MonoBehaviour
     protected virtual void OnCollisionEnter() {
         if (GameManager.Inst.gsm.State == GameState.DiceRolling && currentlyRolling)
         {
-            float velocity = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
-            if (velocity > 0.01f){
-                audioSource.volume = velocity;
+            after = Time.time;
+            if (after - former > 0.1f)
+            {
+                audioSource.volume = Mathf.Pow(0.9f, audioPlayedCount);
                 audioSource.Play();
+                audioPlayedCount++;
+                former = Time.time;
             }
         }
     }
     protected virtual void Start(){
         audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.clip = GameManager.Inst.sm.SFXList[0];
+        audioPlayedCount = 0;
+        former = 0;
+        after = 0;
     }
 }

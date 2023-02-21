@@ -25,6 +25,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 diceName.text = $"{normalDice.koreanDiceName}";
                 diceInformation.text = $"{normalDice.diceInformation}";
                 additionalInfo.text = "";
+                warning.text = "";
                 diceTooltip.rectTransform.sizeDelta = new Vector2(480, 180);
             }
             else

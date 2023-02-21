@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 enum DiceState
 {
@@ -17,7 +18,8 @@ public class DiceController : MonoBehaviour
     private CheckNum checkNum;
     public int maxFace;
     public bool alreadyRolled;
-
+    private bool preview;
+    private Camera cam;
     DiceState State
     {
         get => state;
@@ -39,19 +41,21 @@ public class DiceController : MonoBehaviour
     public void Start()
     {
         //plate 할당하는거 나중에 바꾸든가 해야지..
+        preview = SceneManager.GetActiveScene().name == "joongwon_MainScene";
         plate = GameObject.Find("plate");
         DefaultPos = transform.position;
         var extents = plate.GetComponent<Renderer>().bounds.extents;
         boundX = extents.x - 0.3f;
         boundZ = extents.z - 0.2f;
         checkNum = GetComponent<CheckNum>();
+        cam = UnityEngine.Camera.main;
         ResetDice();
     }
 
 
     private void OnMouseDown()
     {
-        if (GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled)
+        if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
             if (State != DiceState.Idle) return;
             State = DiceState.Dragging;
@@ -60,7 +64,7 @@ public class DiceController : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled)
+        if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
             if (State != DiceState.Dragging) return;
             var rigidbody = GetComponent<Rigidbody>();
@@ -73,7 +77,8 @@ public class DiceController : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if (GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled)
+
+        if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
             if (State != DiceState.Dragging) return;
             float planeY = 1.2f;
@@ -85,8 +90,12 @@ public class DiceController : MonoBehaviour
             if (!plane.Raycast(ray, out var distance)) return;
             var point = ray.GetPoint(distance); // distance along the ray
             var position = plate.transform.position;
-            point.x = Mathf.Clamp(point.x, position.x - boundX, position.x + boundX);
-            point.z = Mathf.Clamp(point.z, position.z - boundZ, position.z + boundZ);
+
+            if (!preview)
+            {
+                point.x = Mathf.Clamp(point.x, position.x - boundX, position.x + boundX);
+                point.z = Mathf.Clamp(point.z, position.z - boundZ, position.z + boundZ);
+            }
 
             var diff = point - transform.position;
             var velocity = diff * 10;
@@ -123,10 +132,22 @@ public class DiceController : MonoBehaviour
             GetComponent<Rigidbody>().angularVelocity.magnitude < 0.001f)
         {
             State = DiceState.Idle;
+            if (preview) return;
             maxFace = checkNum.GetResultNum();
             Debug.Log($"dice face: {maxFace}");
             alreadyRolled = true;
             onDiceSettle.Invoke(maxFace);
         }
+        if (preview) {
+            Vector3 viewPos = cam.WorldToViewportPoint(gameObject.transform.position);
+            if (viewPos.x < 0 || viewPos.x > 1 || viewPos.y < 0 || viewPos.y > 1 || viewPos.z < 0) {
+                gameObject.transform.position = new Vector3(0, 2, 0);
+                gameObject.transform.rotation = Quaternion.identity;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+                GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+            }
+        }
     }
+
 }

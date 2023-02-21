@@ -9806,6 +9806,7 @@ MonoBehaviour:
   diceIndex: 0
   koreanDiceName: 
   diceInformation: 
+  audioSource: {fileID: 0}
   currentlyRolling: 0
 --- !u!82 &3220609041114091907
 AudioSource:
@@ -9818,7 +9819,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

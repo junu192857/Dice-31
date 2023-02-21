@@ -10,6 +10,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Player playerInfo;
 
     public Image playerTooltip;
+    public List<Sprite> TeamPlayerTooltipImage;
     public Text PlayerName;
     public Image NormalDiceImage;
     public Image SpecialDiceImage;
@@ -18,7 +19,12 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (GameManager.Inst.gsm.State != GameState.Waiting && GameManager.Inst.gsm.State != GameState.Gameover)
         {
             playerTooltip.gameObject.SetActive(true);
-            playerTooltip.rectTransform.anchoredPosition = new Vector3(-440, 123 - 80 * playerInfo.playerIndex, 0);
+            playerTooltip.rectTransform.anchoredPosition = new Vector3(270, 123 - 80 * playerInfo.playerIndex, 0);
+
+            if (playerInfo.team == Team.Red){
+                playerTooltip.sprite = TeamPlayerTooltipImage[0];
+            }
+            else playerTooltip.sprite = TeamPlayerTooltipImage[1];
             PlayerName.text = $"{playerInfo.playerName}";
             NormalDiceImage.sprite = GameManager.Inst.um.Dice2D[0];
             SpecialDiceImage.sprite = GameManager.Inst.um.Dice2D[playerInfo.specialDice.diceIndex];
