@@ -8,7 +8,7 @@
       "faces": [
         {
           "image": "DiceFaces/Normal1",
-          "description": "1~6: 나온 숫자만큼 게이지를 채운다"
+          "description": "1~6: 나온 숫자만큼 게이지를 증가시킨다"
         },
         {
           "image": "DiceFaces/Normal2",
@@ -40,7 +40,7 @@
       "faces": [
         {
           "image": "DiceFaces/Plus1",
-          "description": "1, 2, 3: 나온 숫자만큼 게이지를 채운다"
+          "description": "1, 2, 3: 나온 숫자만큼 게이지를 증가시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -72,7 +72,7 @@
       "faces": [
         {
           "image": "DiceFaces/Minus-1",
-          "description": "-1, -2, -3: 나온 숫자만큼 게이지를 줄인다"
+          "description": "-1, -2, -3: 나온 숫자만큼 게이지를 감소시킨다"
         },
         {
           "image": "DiceFaces/Empty",
