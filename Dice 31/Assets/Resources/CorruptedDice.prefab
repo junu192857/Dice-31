@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3678062556967350804}
   - component: {fileID: 3678062556967350806}
   - component: {fileID: 3678062556967350805}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3678062557017372246}
   - component: {fileID: 3678062557017372248}
   - component: {fileID: 3678062557017372247}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3678062557195794323}
   - component: {fileID: 3678062557195794325}
   - component: {fileID: 3678062557195794324}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 3678062557916760886}
   - component: {fileID: 3678062557916760888}
   - component: {fileID: 3678062557916760887}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 3678062558167288020}
   - component: {fileID: 3678062558167288022}
   - component: {fileID: 3678062558167288021}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 3678062558912704496}
   - component: {fileID: 3678062558912704498}
   - component: {fileID: 3678062558912704497}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 3678062557188347969}
   - component: {fileID: -1462123044841367394}
   - component: {fileID: -8647558576986931336}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CorruptedDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -679,6 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &-8647558576986931336
 AudioSource:

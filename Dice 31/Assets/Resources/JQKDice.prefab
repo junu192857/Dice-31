@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3512315092188376870}
   - component: {fileID: 3512315092188376864}
   - component: {fileID: 3512315092188376865}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3512315092620226275}
   - component: {fileID: 3512315092620226285}
   - component: {fileID: 3512315092620226274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3512315092702358177}
   - component: {fileID: 3512315092702358179}
   - component: {fileID: 3512315092702358176}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 3512315092904949573}
   - component: {fileID: 3512315092904949575}
   - component: {fileID: 3512315092904949572}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 3512315093365395553}
   - component: {fileID: 3512315093365395555}
   - component: {fileID: 3512315093365395552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 3512315093582566275}
   - component: {fileID: 3512315093582566285}
   - component: {fileID: 3512315093582566274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 3512315092178829556}
   - component: {fileID: -1551039265037227106}
   - component: {fileID: -506806055094929134}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: JQKDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -679,6 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &-506806055094929134
 AudioSource:

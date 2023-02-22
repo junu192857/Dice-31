@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1390300587272935717}
   - component: {fileID: 1390300587272935719}
   - component: {fileID: 1390300587272935716}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1390300587425758691}
   - component: {fileID: 1390300587425758701}
   - component: {fileID: 1390300587425758690}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 1390300587751751169}
   - component: {fileID: 1390300587751751171}
   - component: {fileID: 1390300587751751168}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 1390300588597772419}
   - component: {fileID: 1390300588597772429}
   - component: {fileID: 1390300588597772418}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 1390300588683052225}
   - component: {fileID: 1390300588683052227}
   - component: {fileID: 1390300588683052224}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 1390300588719046982}
   - component: {fileID: 1390300588719046976}
   - component: {fileID: 1390300588719046977}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 1390300588694843028}
   - component: {fileID: 2181524101311733401}
   - component: {fileID: -8848156979302927962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExtendDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -679,6 +679,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &-8848156979302927962
 AudioSource:

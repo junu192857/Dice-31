@@ -420,7 +420,9 @@ public class UIManager : MonoBehaviour
                     yield return null;
                 }
                 Destroy(laserBeam);
-                PlayerDie(playerIndex, deadCause);
+                
+                if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
+                yield return new WaitForSeconds(0.5f);
                 break;
             case DeadCause.Assassin:
             case DeadCause.AssassinFail:
@@ -435,7 +437,7 @@ public class UIManager : MonoBehaviour
                         float rotation = Vector2.Angle(new Vector2(-1, 0), new Vector2(target.x - start.x, target.z - start.z));
                         GameObject bow = Instantiate(bowPrefab, start, Quaternion.Euler(90, 0, -45+rotation));
                         yield return new WaitUntil(() => arrowShootDone);
-                        PlayerDie(playerIndex, deadCause);
+                        if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                         Destroy(bow);
                         BowImage.transform.GetChild(0).gameObject.SetActive(true);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
@@ -466,7 +468,7 @@ public class UIManager : MonoBehaviour
                         }
                         Destroy(sword);
                         SwordImage.transform.GetChild(0).gameObject.SetActive(true);
-                        PlayerDie(playerIndex, deadCause);
+                        if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
                     case AssassinInfo.Gun:
@@ -478,19 +480,19 @@ public class UIManager : MonoBehaviour
                         Vector3 targetPosition = new Vector3(-3f, 1f, -0.4f - (playerIndex * 2.4f / 7));
                         Vector3 targetRotation = new Vector3(90f, 0f, Vector2.Angle(new Vector2(-1, 0), new Vector2(targetPosition.x - curPos.x, targetPosition.z - curPos.z)));
                         gun.transform.rotation = Quaternion.Euler(targetRotation);
-                        yield return new WaitForSeconds(0.5f);
+                        yield return new WaitForSeconds(1f);
                         Vector3 bulletStartPos = new Vector3(0.83f, 1f, 0.71f);
                         GameObject bullet = Instantiate(bulletPrefab, bulletStartPos, Quaternion.Euler(targetRotation));
                         runTime = 0f;
-                        while (runTime < 0.15f) {
+                        while (runTime < 0.2f) {
                             runTime += Time.deltaTime;
-                            gun.transform.rotation = Quaternion.Euler(Vector3.Lerp(targetRotation, targetRotation + new Vector3(0, 0, -45), runTime / 0.15f));
-                            bullet.transform.position = Vector3.Lerp(bulletStartPos, targetPosition, runTime / 0.15f);
+                            gun.transform.rotation = Quaternion.Euler(Vector3.Lerp(targetRotation, targetRotation + new Vector3(0, 0, -45), runTime / 0.2f));
+                            bullet.transform.position = Vector3.Lerp(bulletStartPos, targetPosition, runTime / 0.2f);
                             yield return null;
                         }
                         Destroy(bullet);
                         Destroy(gun);
-                        PlayerDie(playerIndex, deadCause);
+                        if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                         GunImage.transform.GetChild(0).gameObject.SetActive(true);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
@@ -527,7 +529,7 @@ public class UIManager : MonoBehaviour
                 GameManager.Inst.sm.PlayExplosionSound();
                 BombHolder.transform.GetChild(0).gameObject.SetActive(true);
                 //Destroy(explosion);
-                PlayerDie(playerIndex, deadCause);
+                if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                 break;
             case DeadCause.Corrupted:
                 corruptAnimationDone = false;
@@ -562,7 +564,7 @@ public class UIManager : MonoBehaviour
                 PlayerDie(playerIndex, deadCause);
                 break;
             case DeadCause.RevivalFail:
-                GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+                GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.45f - (playerIndex * 2.4f / 7)), Quaternion.identity);
                 heart.transform.localScale = new Vector3(0.05f, 1f, 0.05f);
                 SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
                 runTime = 0f;
@@ -585,7 +587,7 @@ public class UIManager : MonoBehaviour
                     yield return null;
                 }
                 Destroy(heart);
-                PlayerDie(playerIndex, deadCause);
+                if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                 break;
             default:
                 break;
@@ -596,7 +598,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
         float runTime = 0f;
-        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.5f, 1f, -0.4f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.5f, 1f, -0.45f - (playerIndex * 2.4f / 7)), Quaternion.identity);
         SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
         Vector3 start1 = sprites[0].transform.localPosition;
         Vector3 start2 = sprites[1].transform.localPosition;
