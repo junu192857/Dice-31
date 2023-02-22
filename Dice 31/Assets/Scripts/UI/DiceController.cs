@@ -55,6 +55,7 @@ public class DiceController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        GameManager.Inst.pm.OnClickDice();
         if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
             if (!preview && State != DiceState.Idle) return;
