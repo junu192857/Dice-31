@@ -8,7 +8,7 @@
       "faces": [
         {
           "image": "DiceFaces/Normal1",
-          "description": "1~6: 나온 숫자만큼 진행도를 증가시킨다"
+          "description": "1~6: 나온 숫자만큼 게이지를 채운다"
         },
         {
           "image": "DiceFaces/Normal2",
@@ -40,7 +40,7 @@
       "faces": [
         {
           "image": "DiceFaces/Plus1",
-          "description": "1, 2, 3: 나온 숫자만큼 진행도를 증가시킨다"
+          "description": "1, 2, 3: 나온 숫자만큼 게이지를 채운다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -72,7 +72,7 @@
       "faces": [
         {
           "image": "DiceFaces/Minus-1",
-          "description": "-1, -2, -3: 나온 숫자만큼 진행도를 감소시킨다"
+          "description": "-1, -2, -3: 나온 숫자만큼 게이지를 줄인다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -104,7 +104,7 @@
       "faces": [
         {
           "image": "DiceFaces/Extend1",
-          "description": "1, 2, 3, 4, 5, 20: 나온 숫자만큼 최대 카운트를 증가시킨다"
+          "description": "1, 2, 3, 4, 5, 20: 나온 숫자만큼 게이지 바의 최댓값을 증가시킨다"
         },
         {
           "image": "DiceFaces/Extend2",
@@ -168,7 +168,7 @@
       "faces": [
         {
           "image": "DiceFaces/Operator2",
-          "description": "다음 사람의 턴이 시작할 때 진행도를 2 증가시킨다"
+          "description": "다음 사람의 턴이 시작할 때 게이지를 2만큼 증가시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -180,7 +180,7 @@
         },
         {
           "image": "DiceFaces/Operator-3",
-          "description": "자신의 턴에서 진행도를 3 감소시킨다"
+          "description": "자신의 턴에서 게이지를 3만큼 감소시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -200,7 +200,7 @@
       "faces": [
         {
           "image": "DiceFaces/OnMyOwn",
-          "description": "1과 2 중 원하는 숫자를 선택한다"
+          "description": "1과 2 중 원하는 숫자를 선택해 게이지를 증가시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -235,16 +235,8 @@
           "description": "다음 사람이 일반 주사위에서 <color=#FFB0B0>1, 2, 3, 4</color>를 굴리면 암살 성공"
         },
         {
-          "image": "DiceFaces/Empty",
-          "description": ""
-        },
-        {
           "image": "DiceFaces/AssassinSword",
           "description": "다음 사람이 일반 주사위에서 <color=#FFB0B0>3, 4, 5, 6</color>을 굴리면 암살 성공"
-        },
-        {
-          "image": "DiceFaces/Empty",
-          "description": ""
         },
         {
           "image": "DiceFaces/AssassinGun",
@@ -252,7 +244,15 @@
         },
         {
           "image": "DiceFaces/Empty",
+          "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
           "description": "암살 성공 시 해당 플레이어 탈락, 실패 시 자기자신 탈락"
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": ""
         }
       ]
     },
