@@ -137,7 +137,7 @@ public class UIManager : MonoBehaviour
         int numberIndex = CalculateIndex(dicename, number);
 
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
-        Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint) + new Vector3(0, 0.5f, 0);
+        Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint) + new Vector3(0, 0.2f, 0);
         GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
 
         AudioSource numberAudio = numberSprite.GetComponent<AudioSource>();

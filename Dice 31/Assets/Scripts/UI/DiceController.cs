@@ -82,7 +82,7 @@ public class DiceController : MonoBehaviour
         {
             if (State != DiceState.Dragging) return;
             var rigidbody = GetComponent<Rigidbody>();
-            rigidbody.velocity += Vector3.up * 6;
+            rigidbody.velocity += Vector3.up * 3;
             rigidbody.angularVelocity += Random.onUnitSphere * 15;
             // transform.rotation = Random.rotation;
             State = DiceState.Rolling;
