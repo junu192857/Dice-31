@@ -73,6 +73,7 @@ public class TutorialSceneManager : MonoBehaviour
         dice.transform.localScale = Vector3.one * 0.15f;
     }
     public void ShowHelpPage(int currentPage) {
+        page = currentPage;
         for (int i = 0; i < GeneralInfos.Count; i++)
         {
             if (i == currentPage) { 
