@@ -17,12 +17,10 @@ public class PausePanelManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider bgmSlider;
-    
-    private void Start()
+    private void OnEnable()
     {
         ShowMainMenu();
         Time.timeScale = 0;
-        gameObject.SetActive(false);
     }
     
     public void ShowMainMenu()

@@ -785,6 +785,7 @@ public class UIManager : MonoBehaviour
 
     public void PauseGame()
     {
+        Debug.Log("Pause");
         pausePanel.SetActive(true);
     }
     void Start()
