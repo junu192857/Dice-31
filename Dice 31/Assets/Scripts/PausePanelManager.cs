@@ -17,6 +17,7 @@ public class PausePanelManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider bgmSlider;
+    [SerializeField] private GameObject SFXTest;
     private void OnEnable()
     {
         ShowMainMenu();
@@ -71,7 +72,10 @@ public class PausePanelManager : MonoBehaviour
     public void TestSFX()
     {
         Debug.Log("Test SFX - volume: " + GameManager.Inst.sm.SFXVolume);
-        GameManager.Inst.sm.LaserShootingSound();
+        AudioSource testAudio = SFXTest.GetComponent<AudioSource>();
+        testAudio.volume = GameManager.Inst.sm.SFXVolume;
+        testAudio.Play();
+        //GameManager.Inst.sm.LaserShootingSound();
     }
 
     public void PressEsc()

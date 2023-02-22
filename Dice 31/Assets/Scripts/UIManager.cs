@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Light dirLight;
 
     public List<Image> PlayerImages;
+    public List<Image> RedPlayerImageHolders;
 
     public List<Sprite> Dice2D;
     public Image NormalDiceImage;
@@ -52,10 +53,13 @@ public class UIManager : MonoBehaviour
     public bool arrowShootDone = false;
     public Vector3 arrowTarget;
     public GameObject brokenHeartPrefab;
+    public GameObject RevivingHeartPrefab;
     public GameObject skullPrefab;
     public GameObject RedCorruptingPrefab;
     public GameObject BlueCorruptingPrefab;
     public bool corruptAnimationDone;
+
+    [SerializeField] private List<AudioClip> ExtraAudioClip;
 
     public List<Sprite> PlayerStates;
 
@@ -133,7 +137,7 @@ public class UIManager : MonoBehaviour
         int numberIndex = CalculateIndex(dicename, number);
 
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
-        Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
+        Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint) + new Vector3(0, 0.5f, 0);
         GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
 
         AudioSource numberAudio = numberSprite.GetComponent<AudioSource>();
@@ -309,6 +313,7 @@ public class UIManager : MonoBehaviour
 
         if (player.specialDice is CorruptedDice)
         {
+            Debug.Log("Hello from 1");
             SpecialDiceToggle.isOn = true;
             SpecialDiceToggle.interactable = false;
         }
@@ -317,6 +322,7 @@ public class UIManager : MonoBehaviour
         }
         else if (!player.specialDice.available)
         {
+            Debug.Log("Hello from 3");
             SpecialDiceToggle.interactable = false;
         }
 
@@ -330,7 +336,7 @@ public class UIManager : MonoBehaviour
         }
         
         specialDiceToggleArrow.SetActive(SpecialDiceToggle.interactable);
-        if (GameManager.gameMode == GameMode.Drag)
+        if (GameManager.gameMode == GameMode.OneClick)
         {
             normalPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
             specialPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
@@ -432,6 +438,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator DieAnimate(int playerIndex, DeadCause deadCause) {
         yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
+        RedPlayerImageHolders[playerIndex].gameObject.SetActive(true);
         float runTime = 0f;
         Debug.Log("Player Died!");
         switch (deadCause)
@@ -526,13 +533,20 @@ public class UIManager : MonoBehaviour
                             sword.transform.rotation = Quaternion.Euler((runTime * swordTargetRotation + ((0.5f - runTime) * swordStartRotation)) / 0.5f);
                             yield return null;
                         }
+                        swordStartPos = sword.transform.position;
                         yield return new WaitForSeconds(0.5f);
                         runTime = 0f;
-                        while (runTime < 0.5f) {
+                        while (runTime < 0.3f) {
                             runTime += Time.deltaTime;
-                            sword.transform.position = (runTime * finalTarget + (0.5f - runTime) * targetPos) / 0.5f;
+                            sword.transform.position = Vector3.Lerp(swordStartPos, finalTarget, runTime / 0.3f);
+                            //sword.transform.position = (runTime * finalTarget + (0.5f - runTime) * targetPos) / 0.5f;
                             yield return null;
                         }
+                        swordAudio.clip = ExtraAudioClip[0];
+                        swordAudio.volume = GameManager.Inst.sm.SFXVolume;
+                        swordAudio.Play();
+
+                        yield return new WaitForSeconds(0.5f);
                         Destroy(sword);
                         SwordImage.transform.GetChild(0).gameObject.SetActive(true);
                         if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
@@ -656,8 +670,8 @@ public class UIManager : MonoBehaviour
                 PlayerDie(playerIndex, deadCause);
                 break;
             case DeadCause.RevivalFail:
-                GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.45f - (playerIndex * 2.4f / 7)), Quaternion.identity);
-                heart.transform.localScale = new Vector3(0.05f, 1f, 0.05f);
+                GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.4f, 1f, -0.44f - (playerIndex * 2.43f / 7)), Quaternion.identity);
+                heart.transform.localScale = new Vector3(0.07f, 1f, 0.07f);
                 SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
                 runTime = 0f;
                 while (runTime < 0.5f) {
@@ -670,42 +684,58 @@ public class UIManager : MonoBehaviour
                 runTime = 0f;
                 Vector3 start1 = sprites[0].transform.localPosition;
                 Vector3 start2 = sprites[1].transform.localPosition;
-                while (runTime < 0.5f) {
+
+                AudioSource heartAudio = heart.GetComponent<AudioSource>();
+                heartAudio.volume = GameManager.Inst.sm.SFXVolume;
+                heartAudio.Play();
+
+                while (runTime < 1f) {
                     runTime += Time.deltaTime;
-                    sprites[0].transform.localPosition = Vector3.Lerp(start1, start1 + new Vector3(0.7f, 0, 2f), runTime / 0.5f);
-                    sprites[1].transform.localPosition = Vector3.Lerp(start2, start2 + new Vector3(-0.7f, 0, -2f), runTime / 0.5f);
-                    sprites[0].color = new Color { a = 1-(runTime / 0.5f), b = 1, g = 1, r = 1 };
-                    sprites[1].color = new Color { a = 1-(runTime / 0.5f), b = 1, g = 1, r = 1 };
+                    sprites[0].transform.localPosition = Vector3.Lerp(start1, start1 + new Vector3(0.7f, 0, 2f), runTime / 1f);
+                    sprites[1].transform.localPosition = Vector3.Lerp(start2, start2 + new Vector3(-0.7f, 0, -2f), runTime / 1f);
+                    sprites[0].color = new Color { a = 1-(runTime / 1f), b = 1, g = 1, r = 1 };
+                    sprites[1].color = new Color { a = 1-(runTime / 1f), b = 1, g = 1, r = 1 };
                     yield return null;
                 }
-                Destroy(heart);
+
+                //Destroy(heart);
                 if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
+                yield return new WaitForSeconds(1);
+                Destroy(heart);
                 break;
             default:
                 break;
         }
+        RedPlayerImageHolders[playerIndex].gameObject.SetActive(false);
     }
 
     public IEnumerator PlayerReviveAnimation(int playerIndex) 
     {
         yield return new WaitUntil(() => !gaugeBarMoving && operatorDiceDone);
+        RedPlayerImageHolders[playerIndex].gameObject.SetActive(true);
         float runTime = 0f;
-        GameObject heart = Instantiate(brokenHeartPrefab, new Vector3(-3.5f, 1f, -0.45f - (playerIndex * 2.4f / 7)), Quaternion.identity);
+        GameObject heart = Instantiate(RevivingHeartPrefab, new Vector3(-3.5f, 1f, -0.45f - (playerIndex * 2.4f / 7)), Quaternion.identity);
         SpriteRenderer[] sprites = heart.GetComponentsInChildren<SpriteRenderer>();
         Vector3 start1 = sprites[0].transform.localPosition;
         Vector3 start2 = sprites[1].transform.localPosition;
-        while (runTime < 0.7f)
+
+        AudioSource revivalAudio = heart.GetComponent<AudioSource>();
+        revivalAudio.volume = GameManager.Inst.sm.SFXVolume;
+        revivalAudio.Play();
+
+        while (runTime < 1f)
         {
             runTime += Time.deltaTime;
-            sprites[0].color = new Color { a = runTime / 0.7f, b = 1, g = 1, r = 1 };
-            sprites[1].color = new Color { a = runTime / 0.7f, b = 1, g = 1, r = 1 };
-            sprites[0].transform.localPosition = Vector3.Lerp(start1 + new Vector3(0.7f, 0, 2f), start1, runTime / 0.7f);
-            sprites[1].transform.localPosition = Vector3.Lerp(start2 + new Vector3(-0.7f, 0, -2f), start2, runTime / 0.7f);
+            sprites[0].color = new Color { a = runTime / 1f, b = 1, g = 1, r = 1 };
+            sprites[1].color = new Color { a = runTime / 1f, b = 1, g = 1, r = 1 };
+            sprites[0].transform.localPosition = Vector3.Lerp(start1 + new Vector3(0.7f, 0, 2f), start1, runTime / 1f);
+            sprites[1].transform.localPosition = Vector3.Lerp(start2 + new Vector3(-0.7f, 0, -2f), start2, runTime / 1f);
             yield return null;
         }
         yield return new WaitForSeconds(0.5f);
         Destroy(heart);
         PlayerRevive(playerIndex);
+        RedPlayerImageHolders[playerIndex].gameObject.SetActive(false);
     }
 
     public void PlayerRevive(int playerIndex) {
@@ -887,6 +917,9 @@ public class UIManager : MonoBehaviour
         arrowShootDone = false;
         formerMoveDone = true;
         operatorDiceDone = true;
+        foreach (var holder in RedPlayerImageHolders) {
+            holder.gameObject.SetActive(false);
+        }
     }
 
     public void PauseGame()

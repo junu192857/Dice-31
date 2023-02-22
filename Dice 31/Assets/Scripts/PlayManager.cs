@@ -369,10 +369,11 @@ public class PlayManager : MonoBehaviour
         
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
         activatedPlayer.specialDice.GetComponent<DiceController>().ResetDice();
-        GameManager.Inst.um.UpdateDiceSelectPanel();
 
         LoadDicesToRoll();
-        
+
+        GameManager.Inst.um.UpdateDiceSelectPanel();
+
         if (CountExceeded())
         {
             CurrentPlayerDie(DeadCause.Number);
@@ -484,6 +485,10 @@ public class PlayManager : MonoBehaviour
 
     private void LoadDicesToRoll()
     {
+        if (GameManager.gameMode == GameMode.Drag) {
+            GameManager.Inst.um.HideNormalPleaseArrow();
+            GameManager.Inst.um.HideSpecialPleaseArrow();
+        }
         Dice normalDice = activatedPlayer.normalDice;
         Dice specialDice = activatedPlayer.specialDice;
 
@@ -498,6 +503,7 @@ public class PlayManager : MonoBehaviour
         }
         else if (specialDice is RevivalDice) {
             allAlive = playerInfos.Count(player => player.team == activatedPlayer.team && player.alive) == 4;
+            //allAlive = false;
         }
     }
 
@@ -579,7 +585,7 @@ public class PlayManager : MonoBehaviour
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
     public void OnRollPlayerDice()
     {
-        if (GameManager.Inst.gsm.State != GameState.WaitingForInput) return;
+        if (GameManager.Inst.gsm.State != GameState.WaitingForInput && !activatedPlayer.isBot) return;
         GameManager.Inst.gsm.BeginRoll();
         StartCoroutine(RollPlayerDice());
     }
@@ -607,6 +613,11 @@ public class PlayManager : MonoBehaviour
                 rigidbody.angularVelocity = Random.onUnitSphere * 15f;
                 controller.ChangeStateToRolling();
             }
+        }
+        if (activatedPlayer.isBot) {
+            GameManager.Inst.um.DisableSpecialDiceToggle();
+            GameManager.Inst.um.HideSpecialPleaseArrow();
+            GameManager.Inst.um.HideNormalPleaseArrow();
         }
     }
 

@@ -12,11 +12,6 @@ public class SoundManager : MonoBehaviour
     public float SFXVolume = 1;
     public float BGMVolume = 1;
 
-    public void LaserShootingSound() {
-        audioSource.clip = SFXList[3];
-        audioSource.volume = SFXVolume;
-        audioSource.Play();
-    }
     public IEnumerator CorruptedBGMFadeIn() {
         float runTime = 0f;
         while (runTime < 2f) {

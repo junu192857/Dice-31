@@ -9,6 +9,7 @@ public class ButtonAudio : MonoBehaviour
         GetComponentInParent<Button>().onClick.AddListener(() =>
         {
             Debug.Log("Button clicked. sound should play");
+            sound.volume = GameManager.Inst.sm.SFXVolume;
             sound.Play();
         });
     }
