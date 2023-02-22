@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,3 +125,4 @@ public class GameManagerDisplay : EditorWindow
             (selectedPlayers[1].specialDice, selectedPlayers[0].specialDice);
     }
 }
+#endif
