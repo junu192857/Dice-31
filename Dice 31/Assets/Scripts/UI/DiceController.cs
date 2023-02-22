@@ -58,8 +58,18 @@ public class DiceController : MonoBehaviour
         if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
             if (!preview && State != DiceState.Idle) return;
-            State = DiceState.Dragging;
+            StartDrag();
         }
+    }
+
+    private void StartDrag()
+    {
+        State = DiceState.Dragging;
+        var dice = GetComponent<Dice>();
+        if (dice.diceName == "Normal Dice")
+            GameManager.Inst.um.HideNormalPleaseArrow();
+        else
+            GameManager.Inst.um.HideSpecialPleaseArrow();
     }
 
     private void OnMouseUp()

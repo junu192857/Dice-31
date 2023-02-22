@@ -75,11 +75,40 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject pausePanel;
 
+    [SerializeField] private GameObject normalPleaseArrow;
+    [SerializeField] private GameObject specialPleaseArrow;
+    [SerializeField] private GameObject rollButtonTooltip;
+
     private float scaleDuration = 0.25f;
     private float moveDuration = 0.5f;
 
     private Color ActivatedColor = new Color(1f, 1f, 1f);
     private Color DeactivatedColor = new Color(100 / 255f, 100 / 255f, 100 / 255f);
+
+    public void ShowArrow(Dice dice)
+    {
+        var diceName = dice.diceName;
+        var isNormal = diceName == "Normal Dice";
+
+        //GameManager.Inst.gsm.OperateAnimation();
+
+        var screenPoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
+        var target = Camera.main.ScreenToWorldPoint(screenPoint);
+        var arrow = isNormal ? normalPleaseArrow : specialPleaseArrow;
+        arrow.transform.position = target;
+        arrow.SetActive(true);
+    }
+    
+    public void HideSpecialPleaseArrow()
+    {
+        specialPleaseArrow.SetActive(false);
+    }
+    
+    public void HideNormalPleaseArrow()
+    {
+        normalPleaseArrow.SetActive(false);
+    }
+
     public void ShowNumberAnimate(GameObject dice, int number)
     {
         StartCoroutine(ShowNumber(dice, number));
@@ -706,6 +735,7 @@ public class UIManager : MonoBehaviour
         {
             RollDiceButtonByTeam[1].gameObject.SetActive(false);
         }
+        rollButtonTooltip.SetActive(false);
     }
     public void EnableRollButton() {
         if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)

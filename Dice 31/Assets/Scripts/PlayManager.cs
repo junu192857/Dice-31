@@ -494,30 +494,27 @@ public class PlayManager : MonoBehaviour
         specialDice.audioPlayedCount = 0;
 
         dicesToRoll.Clear();
-        dicesToRoll.Add(activatedPlayer.normalDice);
-        normalDice.transform.position = NormalDicePosition;
-        normalDice.currentlyRolling = true;
-        normalDice.transform.rotation = Quaternion.Euler(
-            Random.Range(0, 4) * 90f,
-            Random.Range(0, 4) * 90f,
-            Random.Range(0, 4) * 90f
-        );
-        normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        AddDice(normalDice, NormalDicePosition);
         if (specialDice is CorruptedDice)
         {
-            dicesToRoll.Add(specialDice);
-            specialDice.transform.position = SpecialDicePosition;
-            specialDice.currentlyRolling = true;
-            specialDice.transform.rotation = Quaternion.Euler(
-                Random.Range(0, 4) * 90f,
-                Random.Range(0, 4) * 90f,
-                Random.Range(0, 4) * 90f
-            );
-            specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            AddDice(specialDice, SpecialDicePosition);
         }
         else if (specialDice is RevivalDice) {
             allAlive = playerInfos.Count(player => player.team == activatedPlayer.team && player.alive) == 4;
         }
+    }
+
+    private void AddDice(Dice dice, Vector3 position)
+    {
+        dicesToRoll.Add(dice);
+        dice.transform.position = position;
+        dice.currentlyRolling = true;
+        dice.transform.rotation = Quaternion.Euler(
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f
+        );
+        dice.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
@@ -539,10 +536,7 @@ public class PlayManager : MonoBehaviour
             }
 
             Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
-            dicesToRoll.Add(activatedPlayer.specialDice);
-            activatedPlayer.specialDice.transform.position = SpecialDicePosition;
-            activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
-            activatedPlayer.specialDice.currentlyRolling = true;
+            AddDice(activatedPlayer.specialDice, SpecialDicePosition);
         }
     }
 
@@ -568,6 +562,8 @@ public class PlayManager : MonoBehaviour
             dicesToRoll.Remove(activatedPlayer.specialDice);
             activatedPlayer.specialDice.transform.position = StoragePosition;
             activatedPlayer.specialDice.currentlyRolling = false;
+            if (GameManager.gameMode == GameMode.Drag)
+                GameManager.Inst.um.HideSpecialPleaseArrow();
         }
     }
 
@@ -586,6 +582,9 @@ public class PlayManager : MonoBehaviour
     public void AnywayRollPlayerDice() {
         if (GameManager.gameMode == GameMode.Drag)
         {
+            if (GameManager.gameMode == GameMode.Drag)
+                foreach (var dice in dicesToRoll)
+                    GameManager.Inst.um.ShowArrow(dice);
             OnRollPlayerDice();
         }
         else
