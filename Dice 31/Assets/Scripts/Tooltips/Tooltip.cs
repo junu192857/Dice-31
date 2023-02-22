@@ -19,7 +19,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (GameManager.Inst.gsm.State != GameState.Waiting && GameManager.Inst.gsm.State != GameState.Gameover)
         {
             playerTooltip.gameObject.SetActive(true);
-            playerTooltip.rectTransform.anchoredPosition = new Vector3(270, 123 - 80 * playerInfo.playerIndex, 0);
+            playerTooltip.rectTransform.anchoredPosition = new Vector3(270, 663 - 80 * playerInfo.playerIndex, 0);
 
             if (playerInfo.team == Team.Red){
                 playerTooltip.sprite = TeamPlayerTooltipImage[0];
