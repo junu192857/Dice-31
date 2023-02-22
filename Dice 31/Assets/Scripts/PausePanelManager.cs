@@ -1,10 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+enum PauseMenuState
+{
+    MainMenu,
+    SettingsMenu
+}
+
 public class PausePanelManager : MonoBehaviour
 {
+    private PauseMenuState state = PauseMenuState.MainMenu;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private Slider sfxSlider;
@@ -18,12 +26,14 @@ public class PausePanelManager : MonoBehaviour
     
     public void ShowMainMenu()
     {
+        state = PauseMenuState.MainMenu;
         mainMenu.SetActive(true);
         settingsMenu.SetActive(false);
     }
 
     public void ShowSettingsMenu()
     {
+        state = PauseMenuState.SettingsMenu;
         mainMenu.SetActive(false);
         settingsMenu.SetActive(true);
         InitSettingsUI();
@@ -63,5 +73,23 @@ public class PausePanelManager : MonoBehaviour
     {
         Debug.Log("Test SFX - volume: " + GameManager.Inst.sm.SFXVolume);
         GameManager.Inst.sm.LaserShootingSound();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            switch (state)
+            {
+                case PauseMenuState.MainMenu:
+                    ResumeGame();
+                    break;
+                case PauseMenuState.SettingsMenu:
+                    ShowMainMenu();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }
