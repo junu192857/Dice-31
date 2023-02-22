@@ -19,7 +19,8 @@ public class TutorialSceneManager : MonoBehaviour
     
     private DiceInfoData diceInfoData;
 
-    private int page = 0;
+    private int page;
+    [SerializeField] private Text pageText;
     [SerializeField] private List<GameObject> GeneralInfos;
     [SerializeField] private GameObject DiceInfo;
     private void Start()
@@ -36,7 +37,8 @@ public class TutorialSceneManager : MonoBehaviour
             var imageComp = button.transform.GetChild(0).GetComponent<Image>();
             imageComp.sprite = image;
         }
-        HandleSelectDiceClick(0);
+        page = 0;
+        ShowHelpPage(0);
     }
 
     private void Update()
@@ -79,6 +81,7 @@ public class TutorialSceneManager : MonoBehaviour
             else GeneralInfos[i].gameObject.SetActive(false);
         }
         DiceInfo.gameObject.SetActive(false);
+        pageText.text = $"{currentPage + 1} / {GeneralInfos.Count}";
     }
     public void HandleMovingPage(bool left) {
         if (left)
@@ -93,6 +96,7 @@ public class TutorialSceneManager : MonoBehaviour
             panel.gameObject.SetActive(false);
         }
         DiceInfo.gameObject.SetActive(true);
+        pageText.text = "";
     }
     public void HandleBackClick()
     {
