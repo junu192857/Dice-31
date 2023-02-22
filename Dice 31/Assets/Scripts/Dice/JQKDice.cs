@@ -48,8 +48,8 @@ public class JQKDice : Dice
     private void Awake()
     {
         diceName = "JQK Dice";
-        koreanDiceName = "JQK ÁÖ»çÀ§";
-        diceInformation = "Á¡ÇÁ, ¹æÇâ ÀüÈ¯, ´Ù½Ã ÇÑ ¹øÀÇ 3°¡Áö ±â´ÉÀ» °¡Áø ÁÖ»çÀ§";
+        koreanDiceName = "JQK ì£¼ì‚¬ìœ„";
+        diceInformation = "ì í”„, ë°©í–¥ ì „í™˜, ë‹¤ì‹œ í•œ ë²ˆì˜ 3ê°€ì§€ ê¸°ëŠ¥ì„ ê°€ì§„ ì£¼ì‚¬ìœ„";
         color = DiceColor.Green;
         diceIndex = 4;
     }

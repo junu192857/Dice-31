@@ -28,8 +28,8 @@ public class OnMyOwnDice : Dice
     private void Awake()
     {
         diceName = "On My Own Dice";
-        koreanDiceName = "³» ¸¾´ë·Î ÁÖ»çÀ§";
-        diceInformation = "1°ú 2 Áß ¿øÇÏ´Â ¼ýÀÚ¸¦ ¸¶À½´ë·Î °í¸¦ ¼ö ÀÖ´Â ÁÖ»çÀ§";
+        koreanDiceName = "ë‚´ ë§˜ëŒ€ë¡œ ì£¼ì‚¬ìœ„";
+        diceInformation = "1ê³¼ 2 ì¤‘ ì›í•˜ëŠ” ìˆ«ìžë¥¼ ë§ˆìŒëŒ€ë¡œ ê³ ë¥¼ ìˆ˜ ìžˆëŠ” ì£¼ì‚¬ìœ„";
         color = DiceColor.Green;
         diceIndex = 6;
     }

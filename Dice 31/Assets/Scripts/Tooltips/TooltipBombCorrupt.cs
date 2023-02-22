@@ -14,8 +14,8 @@ public class TooltipBombCorrupt : MonoBehaviour, IPointerEnterHandler, IPointerE
             BombCorruptImage.gameObject.SetActive(true);
             if (GameManager.Inst.pm.bombDiceNum == 0)
             {
-                BombText.text = $"<color=#FF0000>ÆøÅº</color>\n" +
-                                 "ºñÈ°¼ºÈ­µÊ";
+                BombText.text = $"<color=#FF0000>í­íƒ„</color>\n" +
+                                 "ë¹„í™œì„±í™”ë¨";
             }
             else {
                 string post;
@@ -24,35 +24,35 @@ public class TooltipBombCorrupt : MonoBehaviour, IPointerEnterHandler, IPointerE
                     case 1:
                     case 3:
                     case 6:
-                        post = "ÀÌ";
+                        post = "ì´";
                         break;
                     case 2:
                     case 4:
                     case 5:
-                        post = "°¡";
+                        post = "ê°€";
                         break;
                     default:
                         post = "";
                         break;
                 }
-                BombText.text = $"<color=#FF0000>ÆøÅº\n" +
-                                $"{GameManager.Inst.pm.bombDiceNum}" + post + " ³ª¿À¸é Æø¹ß</color>";
+                BombText.text = $"<color=#FF0000>í­íƒ„\n" +
+                                $"{GameManager.Inst.pm.bombDiceNum}" + post + " ë‚˜ì˜¤ë©´ í­ë°œ</color>";
             }
             if (GameManager.Inst.pm.corruptStack == 4)
             {
-                CorruptText.text = $"<color=#9400D3>Å¸¶ô 4´Ü°è\n" +
-                                   $"¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë Áß</color>\n" +
-                                   $"5´Ü°è: ÇÃ·¹ÀÌ¾î »ç¸Á";
+                CorruptText.text = $"<color=#9400D3>íƒ€ë½ 4ë‹¨ê³„\n" +
+                                   $"ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš© ì¤‘</color>\n" +
+                                   $"5ë‹¨ê³„: í”Œë ˆì´ì–´ ì‚¬ë§";
             }
             else if (GameManager.Inst.pm.corruptStack == 5) {
-                CorruptText.text = $"<color=#9400D3>Å¸¶ô {GameManager.Inst.pm.corruptStack}´Ü°è</color>\n" +
-                                   $"¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë Áß\n";
+                CorruptText.text = $"<color=#9400D3>íƒ€ë½ {GameManager.Inst.pm.corruptStack}ë‹¨ê³„</color>\n" +
+                                   $"ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš© ì¤‘\n";
             }
             else
             {
-                CorruptText.text = $"<color=#9400D3>Å¸¶ô {GameManager.Inst.pm.corruptStack}´Ü°è</color>\n" +
-                                   $"4´Ü°è: ¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë\n" +
-                                   $"5´Ü°è: ÇÃ·¹ÀÌ¾î »ç¸Á";
+                CorruptText.text = $"<color=#9400D3>íƒ€ë½ {GameManager.Inst.pm.corruptStack}ë‹¨ê³„</color>\n" +
+                                   $"4ë‹¨ê³„: ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš©\n" +
+                                   $"5ë‹¨ê³„: í”Œë ˆì´ì–´ ì‚¬ë§";
             }
         }
     }

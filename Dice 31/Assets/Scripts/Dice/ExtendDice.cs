@@ -24,8 +24,8 @@ public class ExtendDice : Dice
     private void Awake()
     {
         diceName = "Extend Dice";
-        koreanDiceName = "Ώ¬ΐε ΑΦ»ηΐ§";
-        diceInformation = "ΐΜΉψ ¶σΏξµεΐΗ ΓΦ΄λ ΌύΐΪΈ¦ Αυ°΅½ΓΕ°΄Β ΑΦ»ηΐ§";
+        koreanDiceName = "μ—°μ¥ μ£Όμ‚¬μ„";
+        diceInformation = "μ΄λ² λΌμ΄λ“μ μµλ€ μ«μλ¥Ό μ¦κ°€μ‹ν‚¤λ” μ£Όμ‚¬μ„";
         color = DiceColor.Green;
         diceIndex = 3;
     }

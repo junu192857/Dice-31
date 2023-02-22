@@ -94,8 +94,8 @@ public class AssassinDice : Dice
     private void Awake()
     {
         diceName = "Assassin Dice";
-        koreanDiceName = "¾Ï»ì ÁÖ»çÀ§";
-        diceInformation = "´ÙÀ½ »ç¶÷À» ¾Ï»ìÇÒ ¼ö ÀÖ´Â °­·ÂÇÑ ÁÖ»çÀ§";
+        koreanDiceName = "ì•”ì‚´ ì£¼ì‚¬ìœ„";
+        diceInformation = "ë‹¤ìŒ ì‚¬ëŒì„ ì•”ì‚´í•  ìˆ˜ ìˆëŠ” ê°•ë ¥í•œ ì£¼ì‚¬ìœ„";
         color = DiceColor.Red;
         diceIndex = 7;
     }

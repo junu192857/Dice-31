@@ -42,18 +42,18 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                             case 1:
                             case 3:
                             case 6:
-                                post = "ÀÌ";
+                                post = "ì´";
                                 break;
                             case 2:
                             case 4:
                             case 5:
-                                post = "°¡";
+                                post = "ê°€";
                                 break;
                             default:
                                 post = "";
                                 break;
                         }
-                        additionalInfo.text = "<color=#FF0000>" + $"{GameManager.Inst.pm.bombDiceNum}" + post + " ³ª¿À¸é Æø¹ß" + "</color>";
+                        additionalInfo.text = "<color=#FF0000>" + $"{GameManager.Inst.pm.bombDiceNum}" + post + " ë‚˜ì˜¤ë©´ í­ë°œ" + "</color>";
                         if (specialDice.available)
                         {
                             diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
@@ -62,7 +62,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                         else
                         {
                             diceTooltip.rectTransform.sizeDelta = new Vector2(480, 360);
-                            warning.text = "ÀÌ¹ø °ÔÀÓ¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                            warning.text = "ì´ë²ˆ ê²Œì„ì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                             warning.rectTransform.anchoredPosition = new Vector3(16, -300, 0);
                         }
                     }
@@ -76,7 +76,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                         else {
                             diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);
                             additionalInfo.text = "";
-                            warning.text = "ÀÌ¹ø °ÔÀÓ¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                            warning.text = "ì´ë²ˆ ê²Œì„ì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                             warning.rectTransform.anchoredPosition = new Vector3(16, -210, 0);
                         }
                     }
@@ -89,30 +89,30 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                         case 1:
                         case 2:
                         case 3:
-                            additionalInfo.text = "<color=#9400D3>" + $"Å¸¶ô {GameManager.Inst.pm.corruptStack}´Ü°è</color>\n" +
-                                                  "4´Ü°è: ¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë\n" +
-                                                  "5´Ü°è: ÇÃ·¹ÀÌ¾î »ç¸Á";
+                            additionalInfo.text = "<color=#9400D3>" + $"íƒ€ë½ {GameManager.Inst.pm.corruptStack}ë‹¨ê³„</color>\n" +
+                                                  "4ë‹¨ê³„: ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš©\n" +
+                                                  "5ë‹¨ê³„: í”Œë ˆì´ì–´ ì‚¬ë§";
                             break;
                         case 4:
-                            additionalInfo.text = "<color=#9400D3>Å¸¶ô 4´Ü°è\n" +
-                                                  "¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë Áß\n" +
-                                                  "5´Ü°è: ÇÃ·¹ÀÌ¾î »ç¸Á</color>";
+                            additionalInfo.text = "<color=#9400D3>íƒ€ë½ 4ë‹¨ê³„\n" +
+                                                  "ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš© ì¤‘\n" +
+                                                  "5ë‹¨ê³„: í”Œë ˆì´ì–´ ì‚¬ë§</color>";
                             break;
                         case 5:
-                            additionalInfo.text = "<color=#9400D3>Å¸¶ô 5´Ü°è\n" +
-                                                  "¸ğµç ¼ıÀÚ 2¹è·Î Àû¿ë Áß\n";                 
+                            additionalInfo.text = "<color=#9400D3>íƒ€ë½ 5ë‹¨ê³„\n" +
+                                                  "ëª¨ë“  ìˆ«ì 2ë°°ë¡œ ì ìš© ì¤‘\n";                 
                             break;
                         default:
                             break;
                     }
-                    warning.text = "Å¸¶ô ÁÖ»çÀ§´Â ¹İµå½Ã ±¼·Á¾ß ÇÔ";
+                    warning.text = "íƒ€ë½ ì£¼ì‚¬ìœ„ëŠ” ë°˜ë“œì‹œ êµ´ë ¤ì•¼ í•¨";
                     diceTooltip.rectTransform.sizeDelta = new Vector2(480, 440);
                     warning.rectTransform.anchoredPosition = new Vector3(16, -380, 0);
                 }
                 else if (specialDice is AssassinDice)
                 {
-                    additionalInfo.text = "<color=#FF0000>" + "¾Ï»ì ¼º°ø ½Ã ´ÙÀ½ »ç¶÷ »ç¸Á\n" +
-                                          "¾Ï»ì ½ÇÆĞ ½Ã ÀÚ±âÀÚ½Å »ç¸Á</color>";
+                    additionalInfo.text = "<color=#FF0000>" + "ì•”ì‚´ ì„±ê³µ ì‹œ ë‹¤ìŒ ì‚¬ëŒ ì‚¬ë§\n" +
+                                          "ì•”ì‚´ ì‹¤íŒ¨ ì‹œ ìê¸°ìì‹  ì‚¬ë§</color>";
 
                     if (specialDice.available){
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 310);
@@ -120,17 +120,17 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     }
                     else{
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 390);
-                        warning.text = "ÀÌ¹ø °ÔÀÓ¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                        warning.text = "ì´ë²ˆ ê²Œì„ì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                         warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
                     }
                 }
                 else if (specialDice is RevivalDice)
                 {
-                    additionalInfo.text = "<color=#FF0000>" + "ºÎÈ° ¼º°ø ½Ã Á×Àº ÆÀ¿ø ºÎÈ°\n" +
-                                          "ºÎÈ° ½ÇÆĞ ½Ã ÀÚ±âÀÚ½Å »ç¸Á</color>";
+                    additionalInfo.text = "<color=#FF0000>" + "ë¶€í™œ ì„±ê³µ ì‹œ ì£½ì€ íŒ€ì› ë¶€í™œ\n" +
+                                          "ë¶€í™œ ì‹¤íŒ¨ ì‹œ ìê¸°ìì‹  ì‚¬ë§</color>";
                     if (GameManager.Inst.pm.allAlive) {
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 440);
-                        warning.text = "ÆÀ¿øÀÌ ÀüºÎ »ıÁ¸ÇÏ¿© »ç¿ë ºÒ°¡´É";
+                        warning.text = "íŒ€ì›ì´ ì „ë¶€ ìƒì¡´í•˜ì—¬ ì‚¬ìš© ë¶ˆê°€ëŠ¥";
                         warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
                     }
                     else if (specialDice.available)
@@ -140,7 +140,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     }
                     else{
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 390);
-                        warning.text = "ÀÌ¹ø °ÔÀÓ¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                        warning.text = "ì´ë²ˆ ê²Œì„ì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                         warning.rectTransform.anchoredPosition = new Vector3(16, -340, 0);
                     }
                 }
@@ -154,7 +154,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     else 
                     {
                         additionalInfo.text = "";
-                        warning.text = "ÀÌ¹ø ¶ó¿îµå¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                        warning.text = "ì´ë²ˆ ë¼ìš´ë“œì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                         warning.rectTransform.anchoredPosition = new Vector3(16, -170, 0);
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 220);
                     }
@@ -168,7 +168,7 @@ public class TooltipDice : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                     }
                     else{
                         additionalInfo.text = "";
-                        warning.text = "ÀÌ¹ø ¶ó¿îµå¿¡¼­ ÀÌ¹Ì »ç¿ëÇÔ";
+                        warning.text = "ì´ë²ˆ ë¼ìš´ë“œì—ì„œ ì´ë¯¸ ì‚¬ìš©í•¨";
                         Debug.Log("Hey Hello");
                         warning.rectTransform.anchoredPosition = new Vector3(16, -210, 0);
                         diceTooltip.rectTransform.sizeDelta = new Vector2(480, 260);

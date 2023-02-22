@@ -13,16 +13,16 @@ public class TooltipAssassin : MonoBehaviour, IPointerEnterHandler, IPointerExit
             AssassinTooltip.gameObject.SetActive(true);
             switch (GameManager.Inst.pm.assassinInfo) {
                 case AssassinInfo.None:
-                    commonInfo.text = "<color=#FF0000>¾Ï»ì</color>\nºñÈ°¼ºÈ­µÊ";
+                    commonInfo.text = "<color=#FF0000>ì•”ì‚´</color>\në¹„í™œì„±í™”ë¨";
                     break;
                 case AssassinInfo.Bow:
-                    commonInfo.text = "<color=#FF0000>¾Ï»ì\nÈ°: 1, 2, 3, 4 -> ¾Ï»ì ¼º°ø</color>";
+                    commonInfo.text = "<color=#FF0000>ì•”ì‚´\ní™œ: 1, 2, 3, 4 -> ì•”ì‚´ ì„±ê³µ</color>";
                     break;
                 case AssassinInfo.Sword:
-                    commonInfo.text = "<color=#FF0000>¾Ï»ì\nÄ®: 3, 4, 5, 6 -> ¾Ï»ì ¼º°ø</color>";
+                    commonInfo.text = "<color=#FF0000>ì•”ì‚´\nì¹¼: 3, 4, 5, 6 -> ì•”ì‚´ ì„±ê³µ</color>";
                     break;
                 case AssassinInfo.Gun:
-                    commonInfo.text = "<color=#FF0000>¾Ï»ì\nÃÑ: 1, 2, 4, 5 -> ¾Ï»ì ¼º°ø</color>";
+                    commonInfo.text = "<color=#FF0000>ì•”ì‚´\nì´: 1, 2, 4, 5 -> ì•”ì‚´ ì„±ê³µ</color>";
                     break;
             }
         }

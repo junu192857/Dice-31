@@ -46,8 +46,8 @@ public class MinusDice : Dice
     private void Awake()
     {
         diceName = "Minus Dice";
-        koreanDiceName = "¸¶ÀÌ³Ê½º ÁÖ»çÀ§";
-        diceInformation = "0º¸´Ù ÀÛÀº ¼ıÀÚ¸¦ °¡Áø ÁÖ»çÀ§";
+        koreanDiceName = "ë§ˆì´ë„ˆìŠ¤ ì£¼ì‚¬ìœ„";
+        diceInformation = "0ë³´ë‹¤ ì‘ì€ ìˆ«ìë¥¼ ê°€ì§„ ì£¼ì‚¬ìœ„";
         color = DiceColor.Green;
         diceIndex = 2;
     }

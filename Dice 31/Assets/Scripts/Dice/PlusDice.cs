@@ -29,8 +29,8 @@ public class PlusDice : Dice
     private void Awake()
     {
         diceName = "Plus Dice";
-        koreanDiceName = "ÇÃ·¯½º ÁÖ»çÀ§";
-        diceInformation = "1ºÎÅÍ 3±îÁöÀÇ ¼ýÀÚ¸¦ Ãß°¡·Î ±¼¸± ¼ö ÀÖ´Â ÁÖ»çÀ§";
+        koreanDiceName = "í”ŒëŸ¬ìŠ¤ ì£¼ì‚¬ìœ„";
+        diceInformation = "1ë¶€í„° 3ê¹Œì§€ì˜ ìˆ«ìžë¥¼ ì¶”ê°€ë¡œ êµ´ë¦´ ìˆ˜ ìžˆëŠ” ì£¼ì‚¬ìœ„";
         color = DiceColor.Green;
         diceIndex = 1;
     }

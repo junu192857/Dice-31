@@ -32,11 +32,11 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             {
                 if (playerInfo.unDead)
                 {
-                    PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ¾ğµ¥µå°¡ µÊ";
+                    PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— ì–¸ë°ë“œê°€ ë¨";
                 }
                 else 
                 {
-                    PlayerState.text = "»ıÁ¸ÇÔ";
+                    PlayerState.text = "ìƒì¡´í•¨";
                 }
             }
             else
@@ -44,22 +44,22 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 switch (playerInfo.deadCause)
                 {
                     case DeadCause.Number:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ¼ıÀÚ ÃÊ°ú·Î ÀÎÇØ »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— ìˆ«ì ì´ˆê³¼ë¡œ ì¸í•´ ì‚¬ë§";
                         break;
                     case DeadCause.Assassin:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ¾Ï»ì·Î ÀÎÇØ »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— ì•”ì‚´ë¡œ ì¸í•´ ì‚¬ë§";
                         break;
                     case DeadCause.AssassinFail:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ¾Ï»ì ½ÇÆĞ·Î ÀÎÇØ »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— ì•”ì‚´ ì‹¤íŒ¨ë¡œ ì¸í•´ ì‚¬ë§";
                         break;
                     case DeadCause.Bomb:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ÆøÅºÀ¸·Î ÀÎÇØ »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— í­íƒ„ìœ¼ë¡œ ì¸í•´ ì‚¬ë§";
                         break;
                     case DeadCause.RevivalFail:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ ºÎÈ° ½ÇÆĞ·Î ÀÎÇØ »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— ë¶€í™œ ì‹¤íŒ¨ë¡œ ì¸í•´ ì‚¬ë§";
                         break;
                     case DeadCause.Corrupted:
-                        PlayerState.text = $"{playerInfo.deadRound}¶ó¿îµå¿¡ Å¸¶ô¿¡ ¿À¿°µÇ¾î »ç¸Á";
+                        PlayerState.text = $"{playerInfo.deadRound}ë¼ìš´ë“œì— íƒ€ë½ì— ì˜¤ì—¼ë˜ì–´ ì‚¬ë§";
                         break;
                     default:
                         PlayerState.text = "";
