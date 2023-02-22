@@ -30,8 +30,8 @@ public class BombDice : Dice
     private void Awake()
     {
         diceName = "Bomb Dice";
-        koreanDiceName = "ÆøÅº ÁÖ»çÀ§";
-        diceInformation = "Æ¯Á¤ ¼ýÀÚ°¡ ³ª¿À¸é ÅÍÁö´Â ÆøÅºÀ» ´ãÀº ÁÖ»çÀ§";
+        koreanDiceName = "í­íƒ„ ì£¼ì‚¬ìœ„";
+        diceInformation = "íŠ¹ì • ìˆ«ìžê°€ ë‚˜ì˜¤ë©´ í„°ì§€ëŠ” í­íƒ„ì„ ë‹´ì€ ì£¼ì‚¬ìœ„";
         color = DiceColor.Red;
         diceIndex = 8;
     }

@@ -43,8 +43,8 @@ public class RevivalDice : Dice
     private void Awake()
     {
         diceName = "Revival Dice";
-        koreanDiceName = "ºÎÈ° ÁÖ»çÀ§";
-        diceInformation = "ÆÀ¿øÀ» ºÎÈ°½ÃÅ°´Â ´É·ÂÀ» °¡Áø ÁÖ»çÀ§";
+        koreanDiceName = "ë¶€í™œ ì£¼ì‚¬ìœ„";
+        diceInformation = "íŒ€ì›ì„ ë¶€í™œì‹œí‚¤ëŠ” ëŠ¥ë ¥ì„ ê°€ì§„ ì£¼ì‚¬ìœ„";
         color = DiceColor.Red;
         diceIndex = 9;
     }

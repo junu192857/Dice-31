@@ -21,7 +21,6 @@ public abstract class Dice : MonoBehaviour
     public DiceColor color;
     public string diceName;
     public int diceIndex;
-    //???? ?? ???? ???????? ?????? ????
     public string koreanDiceName;
     public string diceInformation;
 
@@ -47,7 +46,7 @@ public abstract class Dice : MonoBehaviour
             after = Time.time;
             if (after - former > 0.1f)
             {
-                audioSource.volume = Mathf.Pow(0.9f, audioPlayedCount);
+                audioSource.volume = Mathf.Pow(0.9f, audioPlayedCount) * GameManager.Inst.sm.SFXVolume;
                 audioSource.Play();
                 audioPlayedCount++;
                 former = Time.time;

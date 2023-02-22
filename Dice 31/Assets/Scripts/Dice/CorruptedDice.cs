@@ -57,8 +57,8 @@ public class CorruptedDice : Dice
     private void Awake()
     {
         diceName = "Corrupted Dice";
-        koreanDiceName = "Å¸¶ô ÁÖ»çÀ§";
-        diceInformation = "Å¸¶ôÀÇ ±â¿îÀ» ´ã°í ÀÖ´Â ÁÖ»çÀ§";
+        koreanDiceName = "íƒ€ë½ ì£¼ì‚¬ìœ„";
+        diceInformation = "íƒ€ë½ì˜ ê¸°ìš´ì„ ë‹´ê³  ìˆëŠ” ì£¼ì‚¬ìœ„";
         color = DiceColor.Purple;
         diceIndex = 10;
     }

@@ -31,4 +31,10 @@ public class GameManager : MonoBehaviour
         sm = gameObject.GetComponentInChildren<SoundManager>();
     }
 
+    public static void Destroy()
+    {
+        if (Inst == null) return;
+        Destroy(Inst.gameObject);
+        Inst = null;
+    }
 }

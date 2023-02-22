@@ -40,7 +40,7 @@ public class DiceController : MonoBehaviour
 
     public void Start()
     {
-        //plate ÇÒ´çÇÏ´Â°Å ³ªÁß¿¡ ¹Ù²Ùµç°¡ ÇØ¾ßÁö..
+        //plate í• ë‹¹í•˜ëŠ”ê±° ë‚˜ì¤‘ì— ë°”ê¾¸ë“ ê°€ í•´ì•¼ì§€..
         preview = SceneManager.GetActiveScene().name == "joongwon_MainScene";
         plate = GameObject.Find("plate");
         DefaultPos = transform.position;

@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 {
     public string playerName;
 
-    //PlayerIndex, DeadCause, DeadRound´Â ÇÃ·¹ÀÌ¾î ÅøÆÁ¿¡¼­ »ç¿ëÇÏ´Â º¯¼öµé
+    //PlayerIndex, DeadCause, DeadRoundëŠ” í”Œë ˆì´ì–´ íˆ´íŒì—ì„œ ì‚¬ìš©í•˜ëŠ” ë³€ìˆ˜ë“¤
     public int playerIndex;
     public DeadCause deadCause;
     public int deadRound;

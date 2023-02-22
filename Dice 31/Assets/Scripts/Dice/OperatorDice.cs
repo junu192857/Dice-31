@@ -52,8 +52,8 @@ public class OperatorDice : Dice
     private void Awake()
     {
         diceName = "Operator Dice";
-        koreanDiceName = "µô·¹ÀÌ ÁÖ»çÀ§";
-        diceInformation = "³»°¡ »ÌÀº ¼ýÀÚ¸¦ ´ÙÀ½ »ç¶÷¿¡°Ô Àû¿ë½ÃÅ³ ¼ö ÀÖ´Â ÁÖ»çÀ§";
+        koreanDiceName = "ë”œë ˆì´ ì£¼ì‚¬ìœ„";
+        diceInformation = "ë‚´ê°€ ë½‘ì€ ìˆ«ìžë¥¼ ë‹¤ìŒ ì‚¬ëžŒì—ê²Œ ì ìš©ì‹œí‚¬ ìˆ˜ ìžˆëŠ” ì£¼ì‚¬ìœ„";
         color = DiceColor.Green;
         diceIndex = 5;
     }

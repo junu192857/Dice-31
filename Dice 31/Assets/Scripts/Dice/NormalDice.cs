@@ -33,8 +33,8 @@ public class NormalDice : Dice
     private void Awake()
     {
         diceName = "Normal Dice";
-        koreanDiceName = "ÀÏ¹Ý ÁÖ»çÀ§";
-        diceInformation = "1ºÎÅÍ 6±îÁöÀÇ ¼ýÀÚ°¡ ÀÖ´Â Æò¹üÇÑ ÁÖ»çÀ§";
+        koreanDiceName = "ì¼ë°˜ ì£¼ì‚¬ìœ„";
+        diceInformation = "1ë¶€í„° 6ê¹Œì§€ì˜ ìˆ«ìžê°€ ìžˆëŠ” í‰ë²”í•œ ì£¼ì‚¬ìœ„";
         color = DiceColor.Yellow;
         diceIndex = 0;
     }
