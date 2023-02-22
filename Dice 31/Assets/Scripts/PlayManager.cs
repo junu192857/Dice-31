@@ -855,6 +855,12 @@ public class PlayManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            AnywayRollPlayerDice();
+            GameManager.Inst.um.DisableRollButton();
+        }
         #if UNITY_EDITOR
         if (GameManagerDisplay.AutoPlay)
         {
