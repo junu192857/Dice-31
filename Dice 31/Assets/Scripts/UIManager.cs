@@ -439,7 +439,11 @@ public class UIManager : MonoBehaviour
                 Vector2 targetWidth = new Vector2(0, 60);
 
                 GameObject laserSphere = Instantiate(laserSpherePrefab, new Vector3(1.9f, 1f, 1f), Quaternion.identity);
-                GameManager.Inst.sm.LaserChargeSound();
+
+                AudioSource sphereaudio = laserSphere.GetComponent<AudioSource>();
+                sphereaudio.volume = GameManager.Inst.sm.SFXVolume;
+                sphereaudio.Play();
+
                 while (runTime < 1f)
                 {
                     runTime += Time.deltaTime;
@@ -454,7 +458,11 @@ public class UIManager : MonoBehaviour
                 GameObject laserBeam = Instantiate(laserBeamPrefab, new Vector3(1.9f, 1f, 1f), Quaternion.Euler(90f, 0f, laserBeamRotations[playerIndex]));
                 laserBeam.transform.localScale = new Vector3(0.05f, -0.005f, 0.05f);
                 Vector3 startPos = laserBeam.transform.position;
-                GameManager.Inst.sm.LaserShootingSound();
+
+                AudioSource beamaudio = laserBeam.GetComponent<AudioSource>();
+                beamaudio.volume = GameManager.Inst.sm.SFXVolume;
+                beamaudio.Play();
+
                 while (runTime < 0.3f)
                 {
                     runTime += Time.deltaTime;
@@ -568,7 +576,11 @@ public class UIManager : MonoBehaviour
                 GameObject explosion = Instantiate(explosionPrefab, new Vector3(-3.5f, 1f, -0.54f - (playerIndex * 2.46f / 7)), Quaternion.Euler(90, 0, 0));
                 explosion.transform.localScale = new Vector3(0.08f, 0.08f, 1f);
                 explosion.GetComponent<Animator>().Play("EXPAnimator");
-                GameManager.Inst.sm.PlayExplosionSound();
+
+                AudioSource bombaudio = explosion.GetComponent<AudioSource>();
+                bombaudio.volume = GameManager.Inst.sm.SFXVolume;
+                bombaudio.Play();
+
                 BombHolder.transform.GetChild(0).gameObject.SetActive(true);
                 //Destroy(explosion);
                 if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
