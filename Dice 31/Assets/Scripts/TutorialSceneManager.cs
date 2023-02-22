@@ -19,6 +19,9 @@ public class TutorialSceneManager : MonoBehaviour
     
     private DiceInfoData diceInfoData;
 
+    private int page;
+
+    [SerializeField] private List<GameObject> Informations;
     private void Start()
     {
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
@@ -67,7 +70,12 @@ public class TutorialSceneManager : MonoBehaviour
         dice.transform.localRotation = rotation;
         dice.transform.localScale = Vector3.one * 0.15f;
     }
-
+    private void ShowHelpPage(int currentPage) { 
+        
+    }
+    private void HandleMovingPage(bool left) { 
+    
+    }
     public void HandleBackClick()
     {
         SceneManager.LoadScene(mainSceneName);

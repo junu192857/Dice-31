@@ -8,27 +8,27 @@
       "faces": [
         {
           "image": "DiceFaces/Normal1",
-          "description": "진행도를 1 증가시킨다"
+          "description": "1~6: 나온 숫자만큼 진행도를 증가시킨다"
         },
         {
           "image": "DiceFaces/Normal2",
-          "description": "진행도를 2 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Normal3",
-          "description": "진행도를 3 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Normal4",
-          "description": "진행도를 4 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Normal5",
-          "description": "진행도를 5 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Normal6",
-          "description": "진행도를 6 증가시킨다"
+          "description": ""
         }
       ]
     },
@@ -40,7 +40,7 @@
       "faces": [
         {
           "image": "DiceFaces/Plus1",
-          "description": "진행도를 1 증가시킨다"
+          "description": "1, 2, 3: 나온 숫자만큼 진행도를 증가시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -48,7 +48,7 @@
         },
         {
           "image": "DiceFaces/Plus2",
-          "description": "진행도를 2 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Empty",
@@ -56,7 +56,7 @@
         },
         {
           "image": "DiceFaces/Plus3",
-          "description": "진행도를 3 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Empty",
@@ -72,7 +72,7 @@
       "faces": [
         {
           "image": "DiceFaces/Minus-1",
-          "description": "진행도를 1 감소시킨다"
+          "description": "-1, -2, -3: 나온 숫자만큼 진행도를 감소시킨다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -80,7 +80,7 @@
         },
         {
           "image": "DiceFaces/Minus-2",
-          "description": "진행도를 2 감소시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Empty",
@@ -88,7 +88,7 @@
         },
         {
           "image": "DiceFaces/Minus-3",
-          "description": "진행도를 3 감소시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Empty",
@@ -104,27 +104,27 @@
       "faces": [
         {
           "image": "DiceFaces/Extend1",
-          "description": "최대 카운트를 1 증가시킨다"
+          "description": "1, 2, 3, 4, 5, 20: 나온 숫자만큼 최대 카운트를 증가시킨다"
         },
         {
           "image": "DiceFaces/Extend2",
-          "description": "최대 카운트를 2 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Extend3",
-          "description": "최대 카운트를 3 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Extend4",
-          "description": "최대 카운트를 4 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Extend5",
-          "description": "최대 카운트를 5 증가시킨다"
+          "description": ""
         },
         {
           "image": "DiceFaces/Extend20",
-          "description": "최대 카운트를 20 증가시킨다"
+          "description": ""
         }
       ]
     },
@@ -232,7 +232,7 @@
       "faces": [
         {
           "image": "DiceFaces/AssassinBow",
-          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 1, 2, 3, 4를 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
+          "description": "다음 사람이 일반 주사위에서 <color=#FFB0B0>1, 2, 3, 4</color>를 굴리면 암살 성공"
         },
         {
           "image": "DiceFaces/Empty",
@@ -240,7 +240,7 @@
         },
         {
           "image": "DiceFaces/AssassinSword",
-          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 3, 4, 5, 6을 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
+          "description": "다음 사람이 일반 주사위에서 <color=#FFB0B0>3, 4, 5, 6</color>을 굴리면 암살 성공"
         },
         {
           "image": "DiceFaces/Empty",
@@ -248,11 +248,11 @@
         },
         {
           "image": "DiceFaces/AssassinGun",
-          "description": "<color=#FF0000>다음 사람이 일반 주사위에서 1, 2, 4, 5를 굴리면 암살 성공</color>\n암살 성공 시 그 사람 사망, 실패 시 자기자신 사망"
+          "description": "다음 사람이 일반 주사위에서 <color=#FFB0B0>1, 2, 4, 5</color>를 굴리면 암살 성공"
         },
         {
           "image": "DiceFaces/Empty",
-          "description": ""
+          "description": "암살 성공 시 해당 플레이어 탈락, 실패 시 자기자신 탈락"
         }
       ]
     },
@@ -264,27 +264,27 @@
       "faces": [
         {
           "image": "DiceFaces/Bomb1",
-          "description": "다음 사람부터, 일반 주사위에서 1이 나오면 폭탄이 터져 사망"
+          "description": "1~6: 다음 사람부터, 일반 주사위에서 폭탄과 같은 숫자가 나오면 폭탄이 터져 탈락한다"
         },
         {
           "image": "DiceFaces/Bomb2",
-          "description": "다음 사람부터, 일반 주사위에서 2가 나오면 폭탄이 터져 사망"
+          "description": ""
         },
         {
           "image": "DiceFaces/Bomb3",
-          "description": "다음 사람부터, 일반 주사위에서 3이 나오면 폭탄이 터져 사망"
+          "description": ""
         },
         {
           "image": "DiceFaces/Bomb4",
-          "description": "다음 사람부터, 일반 주사위에서 4가 나오면 폭탄이 터져 사망"
+          "description": ""
         },
         {
           "image": "DiceFaces/Bomb5",
-          "description": "다음 사람부터, 일반 주사위에서 5가 나오면 폭탄이 터져 사망"
+          "description": ""
         },
         {
           "image": "DiceFaces/Bomb6",
-          "description": "다음 사람부터, 일반 주사위에서 6이 나오면 폭탄이 터져 사망"
+          "description": ""
         }
       ]
     },
@@ -308,7 +308,7 @@
         },
         {
           "image": "DiceFaces/RevivalFail",
-          "description": "부활 실패로 자신이 사망한다"
+          "description": "부활 실패로 자신이 탈락한다"
         },
         {
           "image": "DiceFaces/Empty",
@@ -335,16 +335,16 @@
           "description": ""
         },
         {
-          "image": "DiceFaces/Empty",
-          "description": ""
-        },
-        {
           "image": "DiceFaces/Corrupted",
-          "description": "타락 단계가 1 증가한다\n타락 4단계: 모든 숫자 2배로 적용, 타락 5단계: 플레이어 사망"
+          "description": "타락 단계가 1 증가한다\n타락 4단계: 모든 숫자 2배로 적용, 타락 5단계: 플레이어 탈락"
         },
         {
           "image": "DiceFaces/Empty",
           "description": ""
+        },
+        {
+          "image": "DiceFaces/Empty",
+          "description": "타락 주사위를 가진 채로 탈락 위기에 처할 시, 언데드가 된다\n언데드는 타락 5단계가 되거나, 타락 주사위를 다른 사람에게 넘긴다면 타락의 힘이 빠져나가 탈락"
         },
         {
           "image": "DiceFaces/Empty",

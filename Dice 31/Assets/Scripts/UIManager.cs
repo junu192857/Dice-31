@@ -66,6 +66,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject purpleGlow;
 
+    public Text gameLog;
+
     [SerializeField]
     private List<GameObject> Numbers;
 
@@ -635,6 +637,25 @@ public class UIManager : MonoBehaviour
         else NumberText.text = $"{maxCount} / {maxCount}";
     }
 
+    public IEnumerator ShowGameLog(string log) {
+        var runTime = 0f;
+        gameLog.text = log;
+        gameLog.rectTransform.anchoredPosition = Vector3.down * 434;
+        while (runTime < 0.3f) {
+            runTime += Time.deltaTime;
+            gameLog.color = new Color { a = runTime / 0.3f, b = 1, g = 1, r = 1 };
+            yield return null;
+        }
+        yield return new WaitForSeconds(2);
+        runTime = 0f;
+        while (runTime < 2f) {
+            runTime += Time.deltaTime;
+            gameLog.color = new Color { a = 1 - (runTime / 2f), b = 1, g = 1, r = 1 };
+            yield return null;
+        }
+        gameLog.text = "";
+        gameLog.color = new Color { a = 1, b = 1, g = 1, r = 1 };
+    }
     /* public List<Player> alivePlayers;
     public List<GameObject> playerPanels;
     public GameObject currentPlayerPanel;
@@ -658,10 +679,15 @@ public class UIManager : MonoBehaviour
     public void ShowOMOButton() {
         SelectOneButton.gameObject.SetActive(true);
         SelectTwoButton.gameObject.SetActive(true);
+        gameLog.text = "1과 2 중 하나를 선택하세요!";
+        gameLog.rectTransform.anchoredPosition = Vector3.down * 231;
+        gameLog.color = Color.black;
     }
     public void HideOMOButton() {
         SelectOneButton.gameObject.SetActive(false);
         SelectTwoButton.gameObject.SetActive(false);
+        gameLog.text = "";
+        gameLog.color = Color.white;
     }
     public void DisableRollButton() {
         SpecialDiceToggle.interactable = false;

@@ -816,7 +816,7 @@ public class PlayManager : MonoBehaviour
             isNewUnDead = true;
         }
         else if (player.unDead && deadCause != DeadCause.Corrupted) {
-            Debug.Log("언데드는 타락 이외의 이유로 사망하지 않습니다.");
+            StartCoroutine(GameManager.Inst.um.ShowGameLog("! 언데드는 타락을 제외한 이유로 사망하지 않습니다. !"));
             pendingRoundEnd = true;
             return;
         }
