@@ -93,6 +93,10 @@ public class SetupSceneManager : MonoBehaviour
 
     public void HandleStartClick()
     {
+        var BGM = FindObjectsOfType<MainSceneBGM>();
+        foreach (var bgm in BGM) {
+            Destroy(bgm.gameObject);
+        }
         playerNames = new string[8];
         for (var i = 0; i < inputs.transform.childCount; i++)
         {
@@ -108,6 +112,8 @@ public class SetupSceneManager : MonoBehaviour
             isBot[i] = toggles.transform.GetChild(i).GetComponent<Toggle>().isOn;
         }
         tableCamera.GetComponent<Animator>().SetTrigger(StartGame);
+
+        
     }
 
     public void HandleAnimationEnd()
