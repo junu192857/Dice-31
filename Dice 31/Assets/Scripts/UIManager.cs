@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -56,11 +57,10 @@ public class UIManager : MonoBehaviour
 
     public List<Sprite> PlayerStates;
 
-    public Toggle NormalDiceToggle;
     public Toggle SpecialDiceToggle;
+    [SerializeField] private GameObject specialDiceToggleArrow;
 
-    public Button SelectOneButton;
-    public Button SelectTwoButton;
+    public GameObject omoSelectUI;
     public List<Button> RollDiceButtonByTeam;
 
     public bool operatorDiceDone = true;
@@ -75,11 +75,41 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject pausePanel;
 
+    [SerializeField] private GameObject normalPleaseArrow;
+    [SerializeField] private GameObject specialPleaseArrow;
+    [SerializeField] private GameObject rollButtonTooltip;
+
     private float scaleDuration = 0.25f;
     private float moveDuration = 0.5f;
 
     private Color ActivatedColor = new Color(1f, 1f, 1f);
     private Color DeactivatedColor = new Color(100 / 255f, 100 / 255f, 100 / 255f);
+
+    public void ShowArrow(Dice dice)
+    {
+        var diceName = dice.diceName;
+        var isNormal = diceName == "Normal Dice";
+
+        //GameManager.Inst.gsm.OperateAnimation();
+
+        Debug.Log($"ShowArrow: {diceName} - isNormal ? {isNormal}");
+        var screenPoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 60, 0);
+        var target = Camera.main.ScreenToWorldPoint(screenPoint);
+        var arrow = isNormal ? normalPleaseArrow : specialPleaseArrow;
+        arrow.transform.position = target;
+        arrow.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+    }
+    
+    public void HideSpecialPleaseArrow()
+    {
+        specialPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+    }
+    
+    public void HideNormalPleaseArrow()
+    {
+        normalPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+    }
+
     public void ShowNumberAnimate(GameObject dice, int number)
     {
         StartCoroutine(ShowNumber(dice, number));
@@ -291,6 +321,14 @@ public class UIManager : MonoBehaviour
         {
             DiceSelectPanel.sprite = DiceSelectPanelByTeam[1];
         }
+        
+        specialDiceToggleArrow.SetActive(SpecialDiceToggle.interactable);
+        if (GameManager.gameMode == GameMode.Drag)
+        {
+            normalPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+            specialPleaseArrow.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+        }
+        
         GameManager.Inst.um.EnableRollButton();
     }
 
@@ -683,20 +721,18 @@ public class UIManager : MonoBehaviour
 
     } */
     public void ShowOMOButton() {
-        SelectOneButton.gameObject.SetActive(true);
-        SelectTwoButton.gameObject.SetActive(true);
+        omoSelectUI.SetActive(true);
         gameLog.text = "1과 2 중 하나를 선택하세요!";
         gameLog.rectTransform.anchoredPosition = Vector3.down * 231;
         gameLog.color = Color.black;
     }
     public void HideOMOButton() {
-        SelectOneButton.gameObject.SetActive(false);
-        SelectTwoButton.gameObject.SetActive(false);
+        omoSelectUI.SetActive(false);
         gameLog.text = "";
         gameLog.color = Color.white;
     }
     public void DisableRollButton() {
-        SpecialDiceToggle.interactable = false;
+        DisableSpecialDiceToggle();
         Debug.Log(GameManager.Inst.gsm.State);
         if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
         {
@@ -706,20 +742,34 @@ public class UIManager : MonoBehaviour
         {
             RollDiceButtonByTeam[1].gameObject.SetActive(false);
         }
+        rollButtonTooltip.SetActive(false);
+    }
+
+    public void DisableSpecialDiceToggle()
+    {
+        SpecialDiceToggle.interactable = false;
+        specialDiceToggleArrow.SetActive(false);
     }
     public void EnableRollButton() {
-        if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
+        if (GameManager.Inst.pm.activatedPlayer.isBot || GameManager.gameMode == GameMode.Drag)
         {
-            RollDiceButtonByTeam[0].gameObject.SetActive(true);
+            RollDiceButtonByTeam[0].gameObject.SetActive(false);
             RollDiceButtonByTeam[1].gameObject.SetActive(false);
-            RollDiceButtonByTeam[0].interactable = true;
-            RollDiceButtonByTeam[0].transform.GetChild(0).gameObject.SetActive(true);
         }
         else {
-            RollDiceButtonByTeam[1].gameObject.SetActive(true);
-            RollDiceButtonByTeam[0].gameObject.SetActive(false);
-            RollDiceButtonByTeam[1].interactable = true;
-            RollDiceButtonByTeam[1].transform.GetChild(0).gameObject.SetActive(true);
+            if (GameManager.Inst.pm.activatedPlayer.team == Team.Red)
+            {
+                RollDiceButtonByTeam[0].gameObject.SetActive(true);
+                RollDiceButtonByTeam[1].gameObject.SetActive(false);
+                RollDiceButtonByTeam[0].interactable = true;
+                RollDiceButtonByTeam[0].transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else {
+                RollDiceButtonByTeam[1].gameObject.SetActive(true);
+                RollDiceButtonByTeam[0].gameObject.SetActive(false);
+                RollDiceButtonByTeam[1].interactable = true;
+                RollDiceButtonByTeam[1].transform.GetChild(0).gameObject.SetActive(true);
+            }
         }
     }
     public void ActivateBow() {

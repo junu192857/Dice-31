@@ -367,21 +367,12 @@ public class PlayManager : MonoBehaviour
             GameManager.Inst.um.PlayerActivate(activatedPlayer);
         }
         
-        LoadDicesToRoll();
-
         activatedPlayer.normalDice.GetComponent<DiceController>().ResetDice();
         activatedPlayer.specialDice.GetComponent<DiceController>().ResetDice();
         GameManager.Inst.um.UpdateDiceSelectPanel();
 
-        if (activatedPlayer.isBot)
-        {
-            GameManager.Inst.um.DisableRollButton();
-        }
-        else
-        {
-            GameManager.Inst.um.EnableRollButton();
-        }
-
+        LoadDicesToRoll();
+        
         if (CountExceeded())
         {
             CurrentPlayerDie(DeadCause.Number);
@@ -398,7 +389,13 @@ public class PlayManager : MonoBehaviour
 
         else if (GameManager.Inst.gsm.State != GameState.Gameover)
         {
-            GameManager.Inst.gsm.WaitForInput();
+            if (GameManager.gameMode == GameMode.OneClick)
+                GameManager.Inst.gsm.WaitForInput();
+            else
+            {
+                GameManager.Inst.gsm.WaitForDrag();
+            }
+            
             if (activatedPlayer.isBot)
             {
                 StartCoroutine(DoBotTurn());
@@ -494,81 +491,77 @@ public class PlayManager : MonoBehaviour
         specialDice.audioPlayedCount = 0;
 
         dicesToRoll.Clear();
-        dicesToRoll.Add(activatedPlayer.normalDice);
-        normalDice.transform.position = NormalDicePosition;
-        normalDice.currentlyRolling = true;
-        normalDice.transform.rotation = Quaternion.Euler(
-            Random.Range(0, 4) * 90f,
-            Random.Range(0, 4) * 90f,
-            Random.Range(0, 4) * 90f
-        );
-        normalDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        AddDice(normalDice, NormalDicePosition);
         if (specialDice is CorruptedDice)
         {
-            dicesToRoll.Add(specialDice);
-            specialDice.transform.position = SpecialDicePosition;
-            specialDice.currentlyRolling = true;
-            specialDice.transform.rotation = Quaternion.Euler(
-                Random.Range(0, 4) * 90f,
-                Random.Range(0, 4) * 90f,
-                Random.Range(0, 4) * 90f
-            );
-            specialDice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            AddDice(specialDice, SpecialDicePosition);
         }
         else if (specialDice is RevivalDice) {
             allAlive = playerInfos.Count(player => player.team == activatedPlayer.team && player.alive) == 4;
         }
     }
 
+    private void AddDice(Dice dice, Vector3 position)
+    {
+        dicesToRoll.Add(dice);
+        dice.transform.position = position;
+        dice.currentlyRolling = true;
+        dice.transform.rotation = Quaternion.Euler(
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f,
+            Random.Range(0, 4) * 90f
+        );
+        dice.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        if (GameManager.gameMode == GameMode.Drag)
+        {
+            GameManager.Inst.um.ShowArrow(dice);
+        }
+    }
+
     //인게임에서, 특수 주사위를 굴린다고 check했을 때 작동할 함수
     public void AddSpecialDiceCommand()
     {
-        if (GameManager.Inst.gsm.State == GameState.WaitingForInput)
+        if (GameManager.Inst.gsm.State is not (GameState.WaitingForInput or GameState.WaitingForDrag)) return;
+        if (dicesToRoll.Count != 1)
         {
-            if (dicesToRoll.Count != 1)
-            {
-                Debug.Log(dicesToRoll.Count);
-                Debug.LogWarning("dicesToRoll.Count should be 1");
-                return;
-            }
-
-            if (!(activatedPlayer.specialDice.available))
-            {
-                Debug.LogWarning("This dice has been already used");
-                return;
-            }
-
-            Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
-            dicesToRoll.Add(activatedPlayer.specialDice);
-            activatedPlayer.specialDice.transform.position = SpecialDicePosition;
-            activatedPlayer.specialDice.transform.rotation = Quaternion.identity;
-            activatedPlayer.specialDice.currentlyRolling = true;
+            Debug.Log(dicesToRoll.Count);
+            Debug.LogWarning("dicesToRoll.Count should be 1");
+            return;
         }
+
+        if (!(activatedPlayer.specialDice.available))
+        {
+            Debug.LogWarning("This dice has been already used");
+            return;
+        }
+
+        Debug.Log("add special dice: " + activatedPlayer.specialDice.diceName);
+        AddDice(activatedPlayer.specialDice, SpecialDicePosition);
     }
 
     //인게임에서, 특수 주사위를 굴린다는 check를 해제했을 때 작동할 함수
     public void RemoveSpecialDiceCommand()
     {
-        if (GameManager.Inst.gsm.State == GameState.WaitingForInput)
+        if (GameManager.Inst.gsm.State is not (GameState.WaitingForInput or GameState.WaitingForDrag)) return;
+        if (dicesToRoll.Count != 2)
         {
-            if (dicesToRoll.Count != 2)
-            {
-                Debug.Log(dicesToRoll.Count);
-                Debug.LogWarning("dicesToRoll.Count should be 2");
-                return;
-            }
-
-            if (activatedPlayer.specialDice is CorruptedDice)
-            {
-                Debug.LogWarning("special dice should not be corrupted dice");
-                return;
-            }
-
-            Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
-            dicesToRoll.Remove(activatedPlayer.specialDice);
-            activatedPlayer.specialDice.transform.position = StoragePosition;
-            activatedPlayer.specialDice.currentlyRolling = false;
+            Debug.Log(dicesToRoll.Count);
+            Debug.LogWarning("dicesToRoll.Count should be 2");
+            return;
         }
+
+        if (activatedPlayer.specialDice is CorruptedDice)
+        {
+            Debug.LogWarning("special dice should not be corrupted dice");
+            return;
+        }
+
+        Debug.Log("remove special dice: " + activatedPlayer.specialDice.diceName);
+        dicesToRoll.Remove(activatedPlayer.specialDice);
+        activatedPlayer.specialDice.transform.position = StoragePosition;
+        activatedPlayer.specialDice.currentlyRolling = false;
+        if (GameManager.gameMode == GameMode.Drag)
+            GameManager.Inst.um.HideSpecialPleaseArrow();
     }
 
     public void OnClickToggleButton(Toggle toggle)
@@ -583,18 +576,6 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    public void AnywayRollPlayerDice() {
-        if (GameManager.gameMode == GameMode.Drag)
-        {
-            OnRollPlayerDice();
-        }
-        else
-        {
-            InstantlyRollPlayerDice();
-        }
-    }
-
-
     // 주사위를 굴리는 버튼을 눌렀을 때 작동할 함수
     public void OnRollPlayerDice()
     {
@@ -603,6 +584,14 @@ public class PlayManager : MonoBehaviour
         StartCoroutine(RollPlayerDice());
     }
 
+    public void OnClickDice()
+    {
+        if (GameManager.Inst.gsm.State != GameState.WaitingForDrag) return;
+        GameManager.Inst.um.DisableSpecialDiceToggle();
+        GameManager.Inst.gsm.BeginRoll();
+        StartCoroutine(RollPlayerDice());
+    }
+    
     //주사위 바로 굴리기 버튼을 눌렀을 때 작동할 함수
     public void InstantlyRollPlayerDice()
     {
@@ -856,16 +845,16 @@ public class PlayManager : MonoBehaviour
                 break;
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (GameManager.gameMode == GameMode.OneClick && Input.GetKeyDown(KeyCode.R))
         {
-            AnywayRollPlayerDice();
+            InstantlyRollPlayerDice();
             GameManager.Inst.um.DisableRollButton();
         }
-        #if UNITY_EDITOR
-        if (GameManagerDisplay.AutoPlay)
+#if UNITY_EDITOR
+        if (GameManager.Inst.gsm.State == GameState.WaitingForInput && GameManagerDisplay.AutoPlay)
         {
-            GameManager.Inst.pm.InstantlyRollPlayerDice();
+            InstantlyRollPlayerDice();
         }
-        #endif
+#endif
     }
 }

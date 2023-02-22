@@ -6,6 +6,7 @@ public enum GameState {
     Waiting,
     BeforePlayerTurn,
     InPlayerTurn,
+    WaitingForDrag,
     WaitingForInput,
     WaitingForNumber,
     DiceRolling,
@@ -42,6 +43,11 @@ public class GameStateManager : MonoBehaviour
     public void OperateGameOver()
     {
         State = GameState.Gameover;
+    }
+
+    public void WaitForDrag()
+    {
+        State = GameState.WaitingForDrag;
     }
 
     public void WaitForNumberSelect() {
