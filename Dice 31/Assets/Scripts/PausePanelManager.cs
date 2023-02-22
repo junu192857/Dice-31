@@ -22,6 +22,7 @@ public class PausePanelManager : MonoBehaviour
     {
         ShowMainMenu();
         Time.timeScale = 0;
+        gameObject.SetActive(false);
     }
     
     public void ShowMainMenu()
@@ -58,14 +59,13 @@ public class PausePanelManager : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1;
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     
     public void BackToMain()
     {
         Time.timeScale = 1;
         GameManager.Destroy();
-        Destroy(gameObject);
         UnityEngine.SceneManagement.SceneManager.LoadScene("joongwon_MainScene");
     }
 
@@ -75,21 +75,24 @@ public class PausePanelManager : MonoBehaviour
         GameManager.Inst.sm.LaserShootingSound();
     }
 
+    public void PressEsc()
+    {
+        switch (state)
+        {
+            case PauseMenuState.MainMenu:
+                ResumeGame();
+                break;
+            case PauseMenuState.SettingsMenu:
+                ShowMainMenu();
+                break;
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            switch (state)
-            {
-                case PauseMenuState.MainMenu:
-                    ResumeGame();
-                    break;
-                case PauseMenuState.SettingsMenu:
-                    ShowMainMenu();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            PressEsc();
         }
     }
 }

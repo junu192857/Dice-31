@@ -72,8 +72,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> Numbers;
 
-    [SerializeField] private GameObject canvas;
-    [FormerlySerializedAs("pausePanel")] [SerializeField] private GameObject pausePanelPrefab;
+    [SerializeField]
     private GameObject pausePanel;
 
     private float scaleDuration = 0.25f;
@@ -786,8 +785,7 @@ public class UIManager : MonoBehaviour
 
     public void PauseGame()
     {
-        if (!pausePanel)
-            pausePanel = Instantiate(pausePanelPrefab, canvas.transform);
+        pausePanel.SetActive(true);
     }
     void Start()
     {
