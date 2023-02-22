@@ -19,9 +19,8 @@ public class TutorialSceneManager : MonoBehaviour
     
     private DiceInfoData diceInfoData;
 
-    private int page;
-
-    [SerializeField] private List<GameObject> Informations;
+    private int page = 0;
+    [SerializeField] private List<GameObject> GeneralInfos;
     private void Start()
     {
         diceInfoData = JsonUtility.FromJson<DiceInfoData>(Resources.Load<TextAsset>(diceDataPath).text);
@@ -70,11 +69,21 @@ public class TutorialSceneManager : MonoBehaviour
         dice.transform.localRotation = rotation;
         dice.transform.localScale = Vector3.one * 0.15f;
     }
-    private void ShowHelpPage(int currentPage) { 
-        
+    private void ShowHelpPage(int currentPage) {
+        for (int i = 0; i < GeneralInfos.Count; i++)
+        {
+            if (i == currentPage) { 
+                GeneralInfos[i].gameObject.SetActive(true);
+            }
+            else GeneralInfos[i].gameObject.SetActive(false);
+        }
     }
-    private void HandleMovingPage(bool left) { 
-    
+    public void HandleMovingPage(bool left) {
+        if (left)
+        {
+            ShowHelpPage(--page);
+        }
+        else ShowHelpPage(++page);
     }
     public void HandleBackClick()
     {
