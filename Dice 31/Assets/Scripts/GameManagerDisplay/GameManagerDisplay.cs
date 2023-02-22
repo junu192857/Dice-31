@@ -56,6 +56,7 @@ public class GameManagerDisplay : EditorWindow
         GUILayout.BeginHorizontal();
         AutoPlay = GUILayout.Toggle(AutoPlay, "자동 플레이");
         AlwaysThrow = GUILayout.Toggle(AlwaysThrow, "봇은 무지성 굴리기");
+        GameManager.gameMode = GUILayout.Toggle(GameManager.gameMode == GameMode.OneClick, "원클릭굴리기") ? GameMode.OneClick : GameMode.Drag;
         GUILayout.EndHorizontal();
         
         GUILayout.BeginHorizontal();
