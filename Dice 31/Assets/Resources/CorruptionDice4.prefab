@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6504507823545752875}
   - component: {fileID: 6504507823545752873}
   - component: {fileID: 6504507823545752874}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Aura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 6504507824121845195}
   - component: {fileID: 6504507824121845193}
   - component: {fileID: 6504507824121845194}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Corruption4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9642,7 +9642,7 @@ GameObject:
   - component: {fileID: 7588491773030775416}
   - component: {fileID: -7625602197887017529}
   - component: {fileID: 3220609041114091907}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CorruptionDice4
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -9807,6 +9807,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &3220609041114091907
 AudioSource:
@@ -9915,7 +9916,7 @@ GameObject:
   - component: {fileID: 7588491771600866761}
   - component: {fileID: 7588491771600866763}
   - component: {fileID: 7588491771600866760}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9998,7 +9999,7 @@ GameObject:
   - component: {fileID: 7588491772077058797}
   - component: {fileID: 7588491772077058799}
   - component: {fileID: 7588491772077058796}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10081,7 +10082,7 @@ GameObject:
   - component: {fileID: 7588491772298422543}
   - component: {fileID: 7588491772298422529}
   - component: {fileID: 7588491772298422542}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10164,7 +10165,7 @@ GameObject:
   - component: {fileID: 7588491773052753322}
   - component: {fileID: 7588491773052753324}
   - component: {fileID: 7588491773052753325}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10247,7 +10248,7 @@ GameObject:
   - component: {fileID: 7588491773462582383}
   - component: {fileID: 7588491773462582369}
   - component: {fileID: 7588491773462582382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10330,7 +10331,7 @@ GameObject:
   - component: {fileID: 7588491773545893933}
   - component: {fileID: 7588491773545893935}
   - component: {fileID: 7588491773545893932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

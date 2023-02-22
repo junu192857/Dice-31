@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4302226799089049219}
   - component: {fileID: -2493659697233189983}
   - component: {fileID: 2031648838490825276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MinusDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -181,6 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &2031648838490825276
 AudioSource:
@@ -289,7 +290,7 @@ GameObject:
   - component: {fileID: 4302226797917359638}
   - component: {fileID: 4302226797917359636}
   - component: {fileID: 4302226797917359639}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +373,7 @@ GameObject:
   - component: {fileID: 4302226798209732084}
   - component: {fileID: 4302226798209732090}
   - component: {fileID: 4302226798209732085}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +456,7 @@ GameObject:
   - component: {fileID: 4302226798665132338}
   - component: {fileID: 4302226798665132336}
   - component: {fileID: 4302226798665132339}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +539,7 @@ GameObject:
   - component: {fileID: 4302226799098589521}
   - component: {fileID: 4302226799098589527}
   - component: {fileID: 4302226799098589526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +622,7 @@ GameObject:
   - component: {fileID: 4302226799402300630}
   - component: {fileID: 4302226799402300628}
   - component: {fileID: 4302226799402300631}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +705,7 @@ GameObject:
   - component: {fileID: 4302226799453106324}
   - component: {fileID: 4302226799453106330}
   - component: {fileID: 4302226799453106325}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 9073554583100854300}
   - component: {fileID: 7835498389343634568}
   - component: {fileID: -1003532688568849640}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AssassinDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -181,6 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &-1003532688568849640
 AudioSource:
@@ -289,7 +290,7 @@ GameObject:
   - component: {fileID: 9073554581895610505}
   - component: {fileID: 9073554581895610507}
   - component: {fileID: 9073554581895610504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +373,7 @@ GameObject:
   - component: {fileID: 9073554582221833067}
   - component: {fileID: 9073554582221833061}
   - component: {fileID: 9073554582221833066}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +456,7 @@ GameObject:
   - component: {fileID: 9073554582375737261}
   - component: {fileID: 9073554582375737263}
   - component: {fileID: 9073554582375737260}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +539,7 @@ GameObject:
   - component: {fileID: 9073554583076847566}
   - component: {fileID: 9073554583076847560}
   - component: {fileID: 9073554583076847561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +622,7 @@ GameObject:
   - component: {fileID: 9073554583112677961}
   - component: {fileID: 9073554583112677963}
   - component: {fileID: 9073554583112677960}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +705,7 @@ GameObject:
   - component: {fileID: 9073554583197269515}
   - component: {fileID: 9073554583197269509}
   - component: {fileID: 9073554583197269514}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

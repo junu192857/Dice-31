@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 656902571278980238}
   - component: {fileID: 7221509650289063463}
   - component: {fileID: -1669207837664403703}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OnMyOwnDice
   m_TagString: Dice
   m_Icon: {fileID: 0}
@@ -181,6 +181,7 @@ MonoBehaviour:
   koreanDiceName: 
   diceInformation: 
   audioSource: {fileID: 0}
+  audioPlayedCount: 0
   currentlyRolling: 0
 --- !u!82 &-1669207837664403703
 AudioSource:
@@ -289,7 +290,7 @@ GameObject:
   - component: {fileID: 656902569554633535}
   - component: {fileID: 656902569554633533}
   - component: {fileID: 656902569554633534}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +373,7 @@ GameObject:
   - component: {fileID: 656902569879439353}
   - component: {fileID: 656902569879439351}
   - component: {fileID: 656902569879439352}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +456,7 @@ GameObject:
   - component: {fileID: 656902570165814299}
   - component: {fileID: 656902570165814297}
   - component: {fileID: 656902570165814298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +539,7 @@ GameObject:
   - component: {fileID: 656902570828873435}
   - component: {fileID: 656902570828873433}
   - component: {fileID: 656902570828873434}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +622,7 @@ GameObject:
   - component: {fileID: 656902570913102489}
   - component: {fileID: 656902570913102487}
   - component: {fileID: 656902570913102488}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +705,7 @@ GameObject:
   - component: {fileID: 656902571271551836}
   - component: {fileID: 656902571271551834}
   - component: {fileID: 656902571271551835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
