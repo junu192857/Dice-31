@@ -18,7 +18,7 @@ public class AssassinDice : Dice
     {
         return DiceUtil.Roll(this, diceName, i =>
         {
-            value = 2;
+            value = i;
             GameManager.Inst.um.ShowNumberAnimate(gameObject, value);
             switch (value)
         {
