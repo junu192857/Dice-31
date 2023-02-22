@@ -18,6 +18,11 @@ public class AfterBowCharging : MonoBehaviour
         float rotation = Vector2.Angle(new Vector2(-1, 0), new Vector2(target.x-start.x,target.z-start.z));
         Debug.Log(rotation);
         arrow.transform.rotation = Quaternion.Euler(90f, 0f, -45 + rotation);
+
+        AudioSource arrowAudio = arrow.GetComponent<AudioSource>();
+        arrowAudio.volume = GameManager.Inst.sm.SFXVolume;
+        arrowAudio.Play();
+
         var runTime = 0f;
         while (runTime < shootTime) {
             runTime += Time.deltaTime;

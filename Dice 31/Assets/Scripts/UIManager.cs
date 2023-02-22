@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public Light dirLight;
+
     public List<Image> PlayerImages;
 
     public List<Sprite> Dice2D;
@@ -133,6 +135,11 @@ public class UIManager : MonoBehaviour
         Vector3 screenpoint = Camera.main.WorldToScreenPoint(dice.transform.position) + new Vector3(0, 120, 0);
         Vector3 target = Camera.main.ScreenToWorldPoint(screenpoint);
         GameObject numberSprite = Instantiate(Numbers[numberIndex], target, Quaternion.Euler(90f, 0f, 0f));
+
+        AudioSource numberAudio = numberSprite.GetComponent<AudioSource>();
+        numberAudio.volume = GameManager.Inst.sm.SFXVolume;
+        numberAudio.Play();
+
 
         float runtime = 0f;
         while (runtime < scaleDuration)
@@ -486,6 +493,11 @@ public class UIManager : MonoBehaviour
                         Vector3 target = GameManager.Inst.um.arrowTarget;
                         float rotation = Vector2.Angle(new Vector2(-1, 0), new Vector2(target.x - start.x, target.z - start.z));
                         GameObject bow = Instantiate(bowPrefab, start, Quaternion.Euler(90, 0, -45+rotation));
+
+                        AudioSource bowAudio = bow.GetComponent<AudioSource>();
+                        bowAudio.volume = GameManager.Inst.sm.SFXVolume;
+                        bowAudio.Play();
+
                         yield return new WaitUntil(() => arrowShootDone);
                         if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
                         Destroy(bow);
@@ -503,6 +515,11 @@ public class UIManager : MonoBehaviour
                         Vector3 swordTargetRotation = new Vector3(90, 0, 135 + Vector2.Angle(new Vector2(-1, 0), new Vector2(finalTarget.x - targetPos.x, finalTarget.z - targetPos.z)));
 
                         runTime = 0f;
+
+                        AudioSource swordAudio = sword.GetComponent<AudioSource>();
+                        swordAudio.volume = GameManager.Inst.sm.SFXVolume;
+                        swordAudio.Play();
+
                         while (runTime < 0.5f) {
                             runTime += Time.deltaTime;
                             sword.transform.position = (runTime * targetPos + (0.5f - runTime) * swordStartPos) / 0.5f;
@@ -526,13 +543,25 @@ public class UIManager : MonoBehaviour
                         GameObject gun = Instantiate(gunPrefab, new Vector3(1.13f, 1f, 0.72f), Quaternion.Euler(90, 0, 0));
                         gun.transform.localScale = new Vector3(-0.1f, 0.1f, 0.1f);
 
+                        AudioSource gunAudio = gun.GetComponent<AudioSource>();
+                        gunAudio.volume = GameManager.Inst.sm.SFXVolume;
+                        gunAudio.Play();
+
                         Vector3 curPos = gun.transform.position;
                         Vector3 targetPosition = new Vector3(-3f, 1f, -0.4f - (playerIndex * 2.4f / 7));
                         Vector3 targetRotation = new Vector3(90f, 0f, Vector2.Angle(new Vector2(-1, 0), new Vector2(targetPosition.x - curPos.x, targetPosition.z - curPos.z)));
+
                         gun.transform.rotation = Quaternion.Euler(targetRotation);
-                        yield return new WaitForSeconds(1f);
+
+                        yield return new WaitForSeconds(1.5f);
                         Vector3 bulletStartPos = new Vector3(0.83f, 1f, 0.71f);
                         GameObject bullet = Instantiate(bulletPrefab, bulletStartPos, Quaternion.Euler(targetRotation));
+                        bullet.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+
+                        AudioSource bulletAudio = bullet.GetComponent<AudioSource>();
+                        bulletAudio.volume = GameManager.Inst.sm.SFXVolume;
+                        bulletAudio.Play();
+
                         runTime = 0f;
                         while (runTime < 0.2f) {
                             runTime += Time.deltaTime;
@@ -540,9 +569,13 @@ public class UIManager : MonoBehaviour
                             bullet.transform.position = Vector3.Lerp(bulletStartPos, targetPosition, runTime / 0.2f);
                             yield return null;
                         }
+                        bullet.GetComponent<SpriteRenderer>().color = new Color { a = 0 };
+                        if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
+                        yield return new WaitForSeconds(0.5f);
                         Destroy(bullet);
                         Destroy(gun);
-                        if (GameManager.Inst.pm.isNewUnDead || !GameManager.Inst.pm.playerInfos[playerIndex].unDead) PlayerDie(playerIndex, deadCause);
+                        
+                        yield return new WaitForSeconds(1);
                         GunImage.transform.GetChild(0).gameObject.SetActive(true);
                         GameManager.Inst.pm.assassinInfo = AssassinInfo.None;
                         break;
@@ -590,6 +623,11 @@ public class UIManager : MonoBehaviour
                 GameObject skull = Instantiate(skullPrefab, new Vector3(-3.4f, 1f, -0.5f - (playerIndex * 2.47f / 7)), Quaternion.Euler(90, 0, 0));
                 runTime = 0f;
                 SpriteRenderer skullSprite = skull.GetComponent<SpriteRenderer>();
+
+                AudioSource skullAudio = skull.GetComponent<AudioSource>();
+                skullAudio.volume = GameManager.Inst.sm.SFXVolume;
+                skullAudio.Play();
+
                 while (runTime < 0.7f) {
                     runTime += Time.deltaTime;
                     skullSprite.color = new Color { a = runTime / 0.5f, b = 1, g = 1, r = 1 };
@@ -830,6 +868,12 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         purpleGlow.SetActive(false);
+    }
+    public void TurnOffLight() {
+        dirLight.color = Color.black; 
+    }
+    public void TurnOnLight() {
+        dirLight.color = new Color(1, 244f / 255, 214f / 255);
     }
     public void ResetUI() {
         //TODO: 경기 시작 및 매치 초기화 때 모든 UI 초기화.

@@ -690,6 +690,8 @@ public class PlayManager : MonoBehaviour
 
     private IEnumerator OperateDieAndRevivalAnimation() {
         GameManager.Inst.gsm.OperateAnimation();
+        GameManager.Inst.um.TurnOffLight();
+        GameManager.Inst.sm.TurnOffBGM();
         foreach (KeyValuePair<int, DeadCause> item in deadInfo) {
             yield return StartCoroutine(GameManager.Inst.um.PlayerDieAnimation(item.Key, item.Value));
         }
@@ -698,7 +700,8 @@ public class PlayManager : MonoBehaviour
             yield return StartCoroutine(GameManager.Inst.um.PlayerReviveAnimation(revivalInfo));
             revivalInfo = -1;
         }
-
+        GameManager.Inst.um.TurnOnLight();
+        GameManager.Inst.sm.UpdateBGMVolume();
         if (pendingRoundEnd)
         {
             ResetRound();

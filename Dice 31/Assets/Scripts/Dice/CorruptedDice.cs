@@ -26,11 +26,13 @@ public class CorruptedDice : Dice
             if (GameManager.Inst.pm.corruptStack == 4)
             {
                 GameManager.Inst.um.GlowFadeIn();
+                StartCoroutine(GameManager.Inst.sm.CorruptedBGMFadeIn());
             }
             else if (GameManager.Inst.pm.corruptStack == 5)
             {
                 GameManager.Inst.pm.CurrentPlayerDie(DeadCause.Corrupted);
                 GameManager.Inst.um.GlowFadeOut();
+                StartCoroutine(GameManager.Inst.sm.CorruptedBGMFadeOut());
             }
             Debug.Log($"corrupted: {GameManager.Inst.pm.corruptStack}");
         }

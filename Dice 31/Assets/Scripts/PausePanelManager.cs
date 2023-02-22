@@ -52,6 +52,7 @@ public class PausePanelManager : MonoBehaviour
     public void UpdateBGMVolume()
     {
         GameManager.Inst.sm.BGMVolume = bgmSlider.value;
+        GameManager.Inst.sm.UpdateBGMVolume();
     }
     
     public void ResumeGame()

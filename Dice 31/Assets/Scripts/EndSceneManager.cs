@@ -28,4 +28,7 @@ public class EndSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene("joongwon_MainScene");
     }
+    public void HandleBackToPlay() {
+        SceneManager.LoadScene("JunwooUI");
+    }
 }
