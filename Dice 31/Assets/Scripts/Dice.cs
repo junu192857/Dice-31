@@ -46,7 +46,7 @@ public abstract class Dice : MonoBehaviour
             after = Time.time;
             if (after - former > 0.1f)
             {
-                audioSource.volume = Mathf.Pow(0.9f, audioPlayedCount);
+                audioSource.volume = Mathf.Pow(0.9f, audioPlayedCount) * GameManager.Inst.sm.SFXVolume;
                 audioSource.Play();
                 audioPlayedCount++;
                 former = Time.time;

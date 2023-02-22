@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -70,6 +71,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> Numbers;
+
+    [SerializeField] private GameObject canvas;
+    [FormerlySerializedAs("pausePanel")] [SerializeField] private GameObject pausePanelPrefab;
 
     private float scaleDuration = 0.25f;
     private float moveDuration = 0.5f;
@@ -776,6 +780,11 @@ public class UIManager : MonoBehaviour
         formerMoveDone = true;
         operatorDiceDone = true;
     }
+
+    public void PauseGame()
+    {
+        Instantiate(pausePanelPrefab, canvas.transform);
+    }
     void Start()
     {
         ResetUI();
@@ -784,7 +793,9 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateUI();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseGame();
+        }
     }
-
-
 }
