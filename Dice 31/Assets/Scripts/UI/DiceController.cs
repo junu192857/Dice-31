@@ -55,6 +55,7 @@ public class DiceController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (GameManager.Inst.pm.activatedPlayer.isBot) return;
         if (!preview) GameManager.Inst.pm.OnClickDice();
         if ((GameManager.Inst.gsm.State == GameState.DiceRolling && !alreadyRolled) || preview)
         {
