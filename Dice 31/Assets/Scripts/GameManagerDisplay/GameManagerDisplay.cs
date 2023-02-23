@@ -24,7 +24,7 @@ public class GameManagerDisplay : EditorWindow
     private void OnGUI()
     {
         var gameManager = GameManager.Inst;
-        if (gameManager is null)
+        if (gameManager is null || gameManager.pm is null)
         {
             GUILayout.Box("No GameManager found in the scene.");
             return;
