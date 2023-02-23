@@ -103,7 +103,8 @@ public class UIManager : MonoBehaviour
         var target = Camera.main.ScreenToWorldPoint(screenPoint);
         var arrow = isNormal ? normalPleaseArrow : specialPleaseArrow;
         arrow.transform.position = target;
-        arrow.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
+        if (!GameManager.Inst.pm.activatedPlayer.isBot)
+            arrow.transform.GetChild(0).GetComponent<Renderer>().enabled = true;
     }
     
     public void HideSpecialPleaseArrow()
@@ -325,6 +326,9 @@ public class UIManager : MonoBehaviour
             Debug.Log("Hello from 3");
             SpecialDiceToggle.interactable = false;
         }
+
+        if (player.isBot)
+            SpecialDiceToggle.interactable = false;
 
         if (player.team == Team.Red)
         {
