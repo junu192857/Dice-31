@@ -60,6 +60,7 @@ public class PausePanelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         gameObject.SetActive(false);
+        Cursor.visible = false;
     }
     
     public void BackToMain()
