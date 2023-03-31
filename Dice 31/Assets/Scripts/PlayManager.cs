@@ -160,6 +160,7 @@ public class PlayManager : MonoBehaviour
 
     public void SaveInfoAndLoadEndScene()
     {
+        Cursor.visible = true;
         if (winCount["Red"] > winCount["Blue"])
         {
             EndSceneManager.winnerSprites = new[]

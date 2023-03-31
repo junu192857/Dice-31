@@ -97,6 +97,7 @@ public class TutorialSceneManager : MonoBehaviour
             panel.gameObject.SetActive(false);
         }
         DiceInfo.gameObject.SetActive(true);
+        HandleSelectDiceClick(0);
         pageText.text = "";
     }
     public void HandleBackClick()

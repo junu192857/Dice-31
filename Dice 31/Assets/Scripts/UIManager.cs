@@ -85,11 +85,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject specialPleaseArrow;
     [SerializeField] private GameObject rollButtonTooltip;
 
+    [SerializeField] private GameObject mouseCursor;
+
     private float scaleDuration = 0.25f;
     private float moveDuration = 0.5f;
 
     private Color ActivatedColor = new Color(1f, 1f, 1f);
     private Color DeactivatedColor = new Color(100 / 255f, 100 / 255f, 100 / 255f);
+
 
     public void ShowArrow(Dice dice)
     {
@@ -354,6 +357,7 @@ public class UIManager : MonoBehaviour
         BombNumberText.text = GameManager.Inst.pm.bombDiceNum == 0 ? "" : $"{GameManager.Inst.pm.bombDiceNum}";
         CorruptedCountText.text = $"{GameManager.Inst.pm.corruptStack}";
 
+        mouseCursor.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
         //UpdatePlayerPanel(GameManager.Inst.pm.activatedPlayer);
     }
 
@@ -909,6 +913,11 @@ public class UIManager : MonoBehaviour
     public void TurnOnLight() {
         dirLight.color = new Color(1, 244f / 255, 214f / 255);
     }
+    //처음 플레이 씬으로 들어왔을 때 단 한번만 실행
+    private void InitiateUI() {
+        ResetUI();
+        Cursor.visible = false;
+    }
     public void ResetUI() {
         //TODO: 경기 시작 및 매치 초기화 때 모든 UI 초기화.
         ResetPlayerImage();
@@ -930,10 +939,11 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("Pause");
         pausePanel.SetActive(true);
+        Cursor.visible = true;
     }
     void Start()
     {
-        ResetUI();
+        InitiateUI();
     }
 
     void Update()
