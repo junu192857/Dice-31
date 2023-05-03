@@ -17,7 +17,7 @@ public class PlayManager : MonoBehaviour
     public List<GameObject> players;
     public List<Player> playerInfos;
 
-    private int index;
+    private int turnIndex;
     public int turnDirection = 1;
 
     //winCount는 n판 m선승 체제에서 팀이 몇 번 이겼냐를 나타냄. maxCount는 m에 해당하는 숫자
@@ -90,9 +90,9 @@ public class PlayManager : MonoBehaviour
 
     public void UpdatePlayerIndex(int amount)
     {
-        index += amount * turnDirection;
-        if (index < 0) index += 8;
-        index %= 8;
+        turnIndex += amount * turnDirection;
+        if (turnIndex < 0) turnIndex += 8;
+        turnIndex %= 8;
     }
 
 
@@ -103,7 +103,7 @@ public class PlayManager : MonoBehaviour
         if (GameManager.Inst.gsm.State == GameState.Waiting || GameManager.Inst.gsm.State == GameState.Gameover)
         {
             Debug.Log(GameManager.gameMode);
-            index = -1;
+            //turnIndex = -1; ResetMatch에 이미 있음.
             matchCount = 0;
             winCount["Red"] = 0;
             winCount["Blue"] = 0;
@@ -211,13 +211,17 @@ public class PlayManager : MonoBehaviour
         }
         else
         {
-            index = -1;
             roundCount = 0;
+
+            turnIndex = -1;
+            turnDirection = 1;
+
             bombDiceNum = 0;
             onMyOwnDiceNum = 0;
             assassinInfo = AssassinInfo.None;
             corruptStack = 0;
-            turnDirection = 1;
+
+
             dicesToRoll.Clear();
             previousDices.Clear();
             matchCount++;
@@ -457,7 +461,7 @@ public class PlayManager : MonoBehaviour
     {
         for (int i = 1; i <= 7; i++)
         {
-            int nextIndex = (index + i * turnDirection + 8) % 8;
+            int nextIndex = (turnIndex + i * turnDirection + 8) % 8;
             if (playerInfos[nextIndex].alive)
             {
                 return playerInfos[nextIndex];
@@ -480,7 +484,7 @@ public class PlayManager : MonoBehaviour
     private void AdvancePlayer()
     {
         UpdatePlayerIndex(1);
-        activatedPlayer = playerInfos[index];
+        activatedPlayer = playerInfos[turnIndex];
         Debug.Log($"{activatedPlayer.playerName}'s turn");
     }
 
